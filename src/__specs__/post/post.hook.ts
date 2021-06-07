@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { BeforeFilterHook } from '../../interfaces/hooks.interface';
-import { RequestWithIdentity } from '../../interfaces/options.interface';
 
-import { Post } from './dtos/post.dto';
+import { SubjectBeforeFilterHook } from '../../interfaces/hooks.interface';
+import { AuthorizableRequest } from '../../interfaces/options.interface';
 import { PostService } from './post.service';
+import { Post } from './dtos/post.dto';
 
 @Injectable()
-export class PostHook implements BeforeFilterHook<Post> {
+export class PostHook implements SubjectBeforeFilterHook<Post> {
   constructor(readonly postService: PostService) {}
 
-  run(request: RequestWithIdentity) {
-    return this.postService.findById(request.id);
+  async run({ params }: AuthorizableRequest) {
+    return this.postService.findById(params.input.id);
   }
 }

@@ -1,6 +1,6 @@
 export { CaslModule } from './casl.module';
 
-export { UserIdentity } from './interfaces/user-identity.interface';
+export { AuthorizableUser as UserIdentity } from './interfaces/authorizable-user.interface';
 
 export { DefaultActions, AnyPermissions, DefinePermissions, Permissions } from './interfaces/permissions.interface';
 

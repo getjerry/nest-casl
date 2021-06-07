@@ -2,19 +2,19 @@
 import { AnyClass } from '@casl/ability/dist/types/types';
 import { CustomDecorator, SetMetadata } from '@nestjs/common';
 import { CASL_META_ABILITY } from '../casl.constants';
-import { BeforeFilterHook, BeforeFilterTuple } from '../interfaces/hooks.interface';
-import { RequestWithIdentity } from '../interfaces/options.interface';
+import { SubjectBeforeFilterHook, SubjectBeforeFilterTuple } from '../interfaces/hooks.interface';
+import { AuthorizableRequest } from '../interfaces/options.interface';
 
-export interface AbilityMetadata<Subject = any, Provider = any, Request = RequestWithIdentity> {
+export interface AbilityMetadata<Subject = any, Service = any, Request = AuthorizableRequest> {
   action: string,
   subject: AnyClass<Subject>,
-  subjectHook?: BeforeFilterHook<Subject, Request> | BeforeFilterTuple<Provider, Subject, Request>
+  subjectHook?: SubjectBeforeFilterHook<Subject, Request> | SubjectBeforeFilterTuple<Service, Subject, Request>
 }
 
-export function UseAbility<Subject = any, Provider = any, Request = RequestWithIdentity>(
+export function UseAbility<Subject = any, Service = any, Request = AuthorizableRequest>(
   action: string,
   subject: AnyClass<Subject>,
-  subjectHook?: AnyClass<BeforeFilterHook<Subject, Request>> | BeforeFilterTuple<Provider, Subject, Request>,
+  subjectHook?: AnyClass<SubjectBeforeFilterHook<Subject, Request>> | SubjectBeforeFilterTuple<Service, Subject, Request>,
 ): CustomDecorator {
   return SetMetadata(CASL_META_ABILITY, { action, subject, subjectHook });
 }

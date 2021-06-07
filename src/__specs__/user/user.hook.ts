@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
-import { BeforeFilterHook } from '../../interfaces/hooks.interface';
-import { User } from './dtos/user.dto';
+import { UserBeforeFilterHook } from '../../interfaces/hooks.interface';
 import { UserService } from './user.service';
+import { User } from './dtos/user.dto';
 
 @Injectable()
-export class UserHook implements BeforeFilterHook<User> {
+export class UserHook implements UserBeforeFilterHook<User> {
   constructor(readonly userService: UserService) {}
 
-  async run(request: any) { // TODO any
-    return this.userService.findById(request.caslUser.id);
+  async run(user: User) {
+    return {
+      ...user,
+      ...(await this.userService.findById(user.id)),
+    };
   }
 }

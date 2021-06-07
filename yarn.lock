@@ -1112,7 +1112,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@ucast/core@^1.0.0", "@ucast/core@^1.4.1", "@ucast/core@^1.6.1":
+"@ucast/core@^1.0.0", "@ucast/core@^1.10.0", "@ucast/core@^1.4.1", "@ucast/core@^1.6.1":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@ucast/core/-/core-1.10.0.tgz#a9c3a1fd3ce6197698c2e64e7c58246b721f5aa1"
   integrity sha512-utMIzLxgsj1VkPTN9Yzt9EaCPWYdF33Pe6fxhsK/jEiMf8M0w/cM4K3Ywc3tZSBn/Cc2YQsx7pVYe8I2NWrBRg==
@@ -1133,12 +1133,19 @@
     "@ucast/js" "^3.0.0"
     "@ucast/mongo" "^2.4.0"
 
-"@ucast/mongo@^2.4.0":
+"@ucast/mongo@^2.4.0", "@ucast/mongo@^2.4.1":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@ucast/mongo/-/mongo-2.4.1.tgz#da18b9dc962128313f399b3a77e81af7dfc2c3c3"
   integrity sha512-l/hc3TxjWO9inBrgM5iMCAcsIeV2DToppRlabQa5xB/6uHYtCXfm3TPaJgr8TU1OFxqPlaXEnNQhaV0sVHGsoQ==
   dependencies:
     "@ucast/core" "^1.4.1"
+
+"@ucast/sql@^1.0.0-alpha.1":
+  version "1.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@ucast/sql/-/sql-1.0.0-alpha.1.tgz#575bf0e74252b05e87ec3c988e66533e6b7e245e"
+  integrity sha512-0XqQ5hskjO0FjCc259MxelpdAdKbx7rg3ZbS4NAudG6HB/ddnle1RtSlO/I+z/Y4viOmJgGDCC9NVIKm+5BG5g==
+  dependencies:
+    "@ucast/core" "^1.0.0"
 
 "@wry/equality@^0.1.2":
   version "0.1.11"

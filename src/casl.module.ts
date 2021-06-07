@@ -3,8 +3,9 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { OptionsForFeature, OptionsForRoot } from './interfaces/options.interface';
 import { CASL_ROOT_OPTIONS, CASL_FEATURE_OPTIONS } from './casl.constants';
 import { AccessService } from './access.service';
-import { AbilityFactory } from './ability.factory';
-import { UserIdentity } from './interfaces/user-identity.interface';
+import { AbilityFactory } from './factories/ability.factory';
+import { AuthorizableUser } from './interfaces/authorizable-user.interface';
+import { CaslConfig } from './casl.config';
 
 @Module({
   imports: [],
@@ -16,14 +17,14 @@ import { UserIdentity } from './interfaces/user-identity.interface';
       useValue: {},
     },
   ],
-  exports: [AccessService, AbilityFactory, CASL_FEATURE_OPTIONS],
+  exports: [AccessService],
 })
 export class CaslModule {
   static forFeature(options: OptionsForFeature): DynamicModule {
     return {
       module: CaslModule,
       imports: [],
-      exports: [AccessService, AbilityFactory],
+      // exports: [AccessService],
       providers: [
         AccessService,
         AbilityFactory,
@@ -35,8 +36,8 @@ export class CaslModule {
     };
   }
 
-  static forRoot<U = UserIdentity>(options: OptionsForRoot<U>): DynamicModule {
-    Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, AccessService);
+  static forRoot<U = AuthorizableUser>(options: OptionsForRoot<U>): DynamicModule {
+    Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, CaslConfig);
     return {
       module: CaslModule,
     };

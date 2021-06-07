@@ -3,10 +3,13 @@ import { ModuleRef, Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { AccessService } from './access.service';
+import { CaslConfig } from './casl.config';
 import { CASL_META_ABILITY } from './casl.constants';
 import { AbilityMetadata } from './decorators/use-ability';
-import { hookFactory } from './hook.factory';
-import { ContextWithIdentity } from './interfaces/options.interface';
+import { subjectHookFactory } from './factories/subject-hook.factory';
+import { userHookFactory } from './factories/user-hook.factory';
+import { ContextWithAuthorizableRequest } from './interfaces/options.interface';
+import { RequestProxy } from './proxies/request.proxy';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -15,14 +18,18 @@ export class AccessGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ability = this.reflector.get<AbilityMetadata | undefined>(CASL_META_ABILITY, context.getHandler());
     // TODO rest
-    const request = GqlExecutionContext.create(context).getContext<ContextWithIdentity>().req;
-    const { getUserHook } =  this.accessService.getRootOptions();
-
-    const hooks = {
-      subject: await hookFactory(this.moduleRef, ability?.subjectHook),
-      user: await hookFactory(this.moduleRef, getUserHook as any), // TODO any
+    const ctx = GqlExecutionContext.create(context);
+    const request = ctx.getContext<ContextWithAuthorizableRequest>().req;
+    request.params = {
+      ...(ctx.getArgs() || {}),
+      ...(request.params || {}),
     };
+    const { getUserHook } = CaslConfig.getRootOptions();
 
-    return await this.accessService.canActivateAbility(request, ability, hooks);
+    const req = new RequestProxy(request);
+    req.setUserHook(await userHookFactory(this.moduleRef, getUserHook as any))
+    req.setSubjectHook(await subjectHookFactory(this.moduleRef, ability?.subjectHook))
+
+    return await this.accessService.canActivateAbility(request, ability);
   }
 }

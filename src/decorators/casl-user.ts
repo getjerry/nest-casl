@@ -1,10 +1,12 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-// import { ModuleRef } from '@nestjs/core';
+import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { CaslConfig } from '../casl.config';
+
+import { UserProxy } from '../proxies/user.proxy';
 
 export const CaslUser = createParamDecorator(async (data: unknown, context: ExecutionContext) => {
   // TODO rest
   const ctx = GqlExecutionContext.create(context);
-  // force hook run if no caslUser
-  return ctx.getContext().req.caslUser;
+
+  return new UserProxy(ctx.getContext().req, CaslConfig.getRootOptions().getUserFromRequest);
 });

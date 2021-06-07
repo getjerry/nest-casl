@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Ability, PureAbility, subject } from "@casl/ability";
-import { CASL_ROOT_OPTIONS } from './casl.constants';
-import { OptionsForRoot, RequestWithIdentity } from './interfaces/options.interface';
 
-import { AbilityFactory } from './ability.factory';
+import { AuthorizableRequest } from './interfaces/options.interface';
+import { AbilityFactory } from './factories/ability.factory';
 import { AbilityMetadata } from './decorators/use-ability';
-import { ConditionsProxy } from './conditions.proxy';
+import { UserProxy } from './proxies/user.proxy';
+import { CaslConfig } from './casl.config';
+import { AuthorizableUser } from './interfaces/authorizable-user.interface';
+import { RequestProxy } from './proxies/request.proxy';
+import { ConditionsProxy } from './proxies/conditions.proxy';
 
 @Injectable()
 export class AccessService {
@@ -13,28 +16,42 @@ export class AccessService {
     private abilityFactory: AbilityFactory,
   ) {}
 
-  public getRootOptions(): OptionsForRoot {
-    const rootOptions = Reflect.getMetadata(CASL_ROOT_OPTIONS, AccessService) as OptionsForRoot;
-    if(!rootOptions.getUserFromRequest) {
-      rootOptions.getUserFromRequest = (request) => request.user;
+  public hasAbility(user: AuthorizableUser, action: string, subject: any): boolean {
+    const { superuserRole } = CaslConfig.getRootOptions();
+    let userAbilities = this.abilityFactory.createForUser(user);
+
+    // No user - no access
+    if (!user) {
+      return false;
     }
-    return rootOptions;
+
+    // User exists but no ability metadata - allow access
+    if (!action || !subject) {
+      return true;
+    }
+
+    // Always allow access for superuser
+    if (superuserRole && user.roles.includes(superuserRole)) {
+      return true;
+    }
+    
+    return userAbilities.can(action, subject);
   }
 
-  public hasAbility(request: RequestWithIdentity, ability?: Omit<AbilityMetadata, 'subjectHook'>): boolean {
-    return false
+  public assertAbility(user: AuthorizableUser, action: string, subject: any): void {
+    if (!this.hasAbility(user, action, subject)) {
+      throw new UnauthorizedException();
+    }
   }
 
-  public assertAbility(request: RequestWithIdentity, ability?: Omit<AbilityMetadata, 'subjectHook'>): void {
-    return;
-  }
+  public async canActivateAbility(request: AuthorizableRequest, ability?: AbilityMetadata): Promise<boolean> {
+    const { getUserFromRequest, superuserRole } = CaslConfig.getRootOptions();
 
-  public async canActivateAbility(request: RequestWithIdentity, ability?: AbilityMetadata, hooks?: any): Promise<boolean> {
-    const { getUserFromRequest, superuserRole } = this.getRootOptions();
+    const userProxy = new UserProxy(request, getUserFromRequest);
+    const req = new RequestProxy(request);
 
     // Attempt to get user from request
-    const user = getUserFromRequest && getUserFromRequest(request);
-    request.caslUser = user;
+    const user = userProxy.getFromRequest();
 
     // No user - no access
     if (!user) {
@@ -46,7 +63,7 @@ export class AccessService {
       return true;
     }
 
-    // Alway allow access for superuser
+    // Always allow access for superuser
     if (superuserRole && user.roles.includes(superuserRole)) {
       return true;
     }
@@ -56,28 +73,28 @@ export class AccessService {
 
     const relevantRules = userAbilities.rulesFor(ability.action, ability.subject);
 
+    const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => (rule.conditions || {}));
+    req.setConditions(new ConditionsProxy(conditions));
+
     // If no relevant rules with conditions or no subject hook exists check against subject class
     if (!relevantRules.every((rule) => rule.conditions) || !ability.subjectHook) {
-      // TODO implement proxy
-      request.caslConditions = new ConditionsProxy();
       return userAbilities.can(ability.action, ability.subject);
     }
 
     // Otherwise try to obtain subject
-    request.caslSubject = await hooks.subject.run(request)
+    const subjectInstance = await req.getSubjectHook().run(request);
+    req.setSubject(subjectInstance);
 
-    // do not call user hook when no subject hook present
-    // TODO spec it should pass without subject with conditions available through @CaslConditions() param
-    if(ability.subjectHook) {
-      const augmentedUser = await hooks.user.run(request)
-      if (augmentedUser) {
-        request.caslUser = augmentedUser;
-        // when user received recreate ability factory with new data
-        userAbilities = this.abilityFactory.createForUser(augmentedUser);
-      }
+    if(!subjectInstance) {
+      return userAbilities.can(ability.action, ability.subject);
+    }
+
+    const finalUser = await userProxy.get();
+    if(finalUser !== userProxy.getFromRequest()) {
+      userAbilities = this.abilityFactory.createForUser(finalUser);
     }
 
     // and match agains subject instance
-    return userAbilities.can(ability.action, subject(ability.subject as any, request.caslSubject))
+    return userAbilities.can(ability.action, subject(ability.subject as any, subjectInstance))
   }
 }

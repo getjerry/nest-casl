@@ -1,7 +1,7 @@
 import { Ability, AbilityBuilder } from '@casl/ability';
 import { AnyClass } from '@casl/ability/dist/types/types';
 
-import { UserIdentity } from './user-identity.interface';
+import { AuthorizableUser } from './authorizable-user.interface';
 
 export enum DefaultActions {
   read = 'read',
@@ -18,7 +18,7 @@ export const Actions = DefaultActions;
 export class UserAbilityBuilder<
   Subjects = any,
   Actions extends string = DefaultActions,
-  User extends UserIdentity = UserIdentity
+  User extends AuthorizableUser = AuthorizableUser
 > extends AbilityBuilder<Ability> {
   constructor(
     public user: User,
@@ -43,16 +43,16 @@ export class UserAbilityBuilder<
 export type DefinePermissions<
   Subjects = any,
   Actions extends string = DefaultActions,
-  User extends UserIdentity = UserIdentity
+  User extends AuthorizableUser = AuthorizableUser
 > = (builder: UserAbilityBuilder<Subjects, Actions, User>) => void;
 
 export type Permissions<
   Roles extends string,
   Subjects = any,
   Actions extends string = DefaultActions,
-  User extends UserIdentity = UserIdentity
+  User extends AuthorizableUser = AuthorizableUser
 > = Partial<
   Record<Roles | 'every' | 'everyone', DefinePermissions<Subjects, Actions, User>>
 >;
 
-export type AnyPermissions = Permissions<any, any, any, UserIdentity>;
+export type AnyPermissions = Permissions<any, any, any, AuthorizableUser>;

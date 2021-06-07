@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { AbilityFactory } from './ability.factory';
 
-import { DefaultActions as Actions, Permissions } from './interfaces/permissions.interface';
-import { Roles } from './__specs__/roles';
-import { Post } from './__specs__/post/dtos/post.dto';
-import { CASL_FEATURE_OPTIONS } from './casl.constants';
+import { DefaultActions as Actions, Permissions } from '../interfaces/permissions.interface';
+import { Roles } from '../__specs__/roles';
+import { Post } from '../__specs__/post/dtos/post.dto';
+import { CASL_FEATURE_OPTIONS } from '../casl.constants';
 
 const permissions: Permissions<Roles, Post> = {
   everyone({ can }) {
@@ -36,6 +36,7 @@ describe('AbilityFactory', () => {
   describe('AbilityFactory', () => {
     it("everyone's rules applied to customer", async () => {
       let user = {
+        id: 'userId',
         roles: [Roles.customer],
       };
       const ability = abilityFactory.createForUser(user);
@@ -44,6 +45,7 @@ describe('AbilityFactory', () => {
 
     it('operator inherits rules from user', async () => {
       let user = {
+        id: 'userId',
         roles: [Roles.operator],
       };
       const ability = abilityFactory.createForUser(user);

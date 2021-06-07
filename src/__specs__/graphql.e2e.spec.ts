@@ -17,11 +17,12 @@ import { UserHook } from './user/user.hook';
 const getUser = (role: Roles, id: string = 'userId') => ({ id, roles: [role] });
 
 const getPostService = (post: Post) => ({
-  findAll: async () => [post],
-  findById: async () => post,
-  create: async () => post,
-  update: async () => post,
-  delete: async () => post,
+  findAll: jest.fn().mockImplementation(async () => [post]),
+  findById: jest.fn().mockImplementation(async () => post),
+  create: jest.fn().mockImplementation(async () => post),
+  update: jest.fn().mockImplementation(async () => post),
+  addUser: jest.fn().mockImplementation(async () => post),
+  delete: jest.fn().mockImplementation(async () => post),
 });
 
 const getUserService = (user: User) => ({
@@ -31,7 +32,7 @@ const getUserService = (user: User) => ({
 const createCaslTestingModule = async (
   caslOptions: OptionsForRoot,
   postService: PostService,
-  userService: UserService
+  userService: UserService,
 ): Promise<INestApplication> => {
   const moduleRef = await Test.createTestingModule({
     imports: [
@@ -63,19 +64,32 @@ const graphql = (app: INestApplication) => {
 const q = (query: string) => ({ query });
 
 const Queries = {
-  POST: q('{ post(id: "id") { id userId } }'),
-  POSTS: q('{ posts { id userId } }'),
+  POST: q('{ post(id: "id") { id userId title } }'),
+  POSTS: q('{ posts { id userId title } }'),
 };
 
 const Mutations = {
-  CREATE_POST: q('mutation { createPost(input: { userId: "userId" }) { id userId } }'),
-  UPDATE_POST: q('mutation { updatePost(input: { id: "id", userId: "userId" }) { id userId } }'),
-  UPDATE_POST_NO_HOOK: q('mutation { updatePostNoHook(input: { id: "id", userId: "userId" }) { id userId } }'),
-  DELETE_POST: q('mutation { deletePost(id: "id") { id userId } }'),
+  CREATE_POST: q('mutation { createPost(input: { userId: "userId", title: "Post title" }) { id userId title } }'),
+  UPDATE_POST: q(
+    'mutation { updatePost(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_NO_HOOK: q(
+    'mutation { updatePostNoHook(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_TUPLE_HOOK: q(
+    'mutation { updatePostTupleHook(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_USER_PARAM: q(
+    'mutation { updatePostUserParam(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_USER_PARAM_NO_ABILITY: q(
+    'mutation { updatePostUserParamNoAbility(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  DELETE_POST: q('mutation { deletePost(id: "id") { id userId title } }'),
 };
 
 describe('Graphql resolver with authorization', () => {
-  const post = { id: 'id', userId: 'userId' };
+  const post = { id: 'id', userId: 'userId', title: 'Post title' };
   const user = { id: 'userId', name: 'John Doe', roles: [] };
   let app: INestApplication;
   let postService: PostService;
@@ -88,12 +102,10 @@ describe('Graphql resolver with authorization', () => {
 
   afterEach(async () => {
     await app.close();
-    jest.clearAllMocks();
-    jest.resetAllMocks();
   });
 
   // TODO implement specs for anonymous visitor
-  describe('without authenticated user', () => {});
+  describe('accessed without authenticated user', () => {});
 
   describe('accessed by admin', () => {
     beforeEach(async () => {
@@ -103,7 +115,7 @@ describe('Graphql resolver with authorization', () => {
           getUserFromRequest: () => getUser(Roles.admin),
         },
         postService,
-        userService
+        userService,
       );
     });
 
@@ -151,7 +163,7 @@ describe('Graphql resolver with authorization', () => {
           getUserFromRequest: () => getUser(Roles.admin),
         },
         getPostService(otherUserPost),
-        userService
+        userService,
       );
 
       return graphql(app)
@@ -179,7 +191,7 @@ describe('Graphql resolver with authorization', () => {
           getUserFromRequest: () => getUser(Roles.admin),
         },
         postService,
-        userService
+        userService,
       );
     });
 
@@ -218,7 +230,7 @@ describe('Graphql resolver with authorization', () => {
           getUserFromRequest: () => getUser(Roles.customer),
         },
         postService,
-        userService
+        userService,
       );
     });
 
@@ -265,7 +277,7 @@ describe('Graphql resolver with authorization', () => {
           getUserFromRequest: () => getUser(Roles.customer),
         },
         getPostService(otherUserPost),
-        userService
+        userService,
       );
 
       return graphql(app)
@@ -286,42 +298,6 @@ describe('Graphql resolver with authorization', () => {
     });
   });
 
-  describe('subject hook', () => {
-    beforeEach(async () => {
-      app = await createCaslTestingModule(
-        {
-          getUserFromRequest: () => getUser(Roles.customer),
-          getUserHook: UserHook,
-        },
-        postService,
-        userService
-      );
-    });
-
-    it(`should not be called for ability without conditions`, async () => {
-      await graphql(app)
-        .send(Queries.POST)
-        .expect(200);
-      expect(userService.findById).not.toBeCalled()
-    });
-
-    it(`should not be called for ability without subject hook`, async () => {
-      postService.update = jest.fn();
-      await graphql(app)
-        .send(Mutations.UPDATE_POST_NO_HOOK)
-        .expect(200);
-      expect(userService.findById).not.toBeCalled()
-    });
-
-    it(`should be called for ability with conditions and subject hook`, async () => {
-      await graphql(app)
-        .send(Mutations.UPDATE_POST)
-        .expect(200);
-      expect(userService.findById).toBeCalledWith('userId')
-    });
-  });
-
-  // TODO user hook
   describe('user hook', () => {
     beforeEach(async () => {
       app = await createCaslTestingModule(
@@ -330,35 +306,84 @@ describe('Graphql resolver with authorization', () => {
           getUserHook: UserHook,
         },
         postService,
-        userService
+        userService,
       );
     });
 
     it(`should not be called for ability without conditions`, async () => {
-      await graphql(app)
-        .send(Queries.POST)
-        .expect(200);
-      expect(userService.findById).not.toBeCalled()
+      await graphql(app).send(Queries.POST).expect(200);
+      expect(userService.findById).not.toBeCalled();
     });
 
     it(`should not be called for ability without subject hook`, async () => {
       postService.update = jest.fn();
-      await graphql(app)
-        .send(Mutations.UPDATE_POST_NO_HOOK)
-        .expect(200);
-      expect(userService.findById).not.toBeCalled()
+      await graphql(app).send(Mutations.UPDATE_POST_NO_HOOK).expect(200);
+      expect(userService.findById).not.toBeCalled();
     });
 
     it(`should be called for ability with conditions and subject hook`, async () => {
-      await graphql(app)
-        .send(Mutations.UPDATE_POST)
-        .expect(200);
-      expect(userService.findById).toBeCalledWith('userId')
+      await graphql(app).send(Mutations.UPDATE_POST).expect(200);
+      expect(userService.findById).toBeCalledWith('userId');
+      expect(userService.findById).toBeCalledTimes(1);
+    });
+
+    it(`should be called for ability with conditions and tuple subject hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST_TUPLE_HOOK).expect(200);
+      expect(userService.findById).toBeCalledWith('userId');
+      expect(userService.findById).toBeCalledTimes(1);
     });
   });
 
-  // TODO test CaslUser decorator
-  describe('CaslUser decorator', () => {});
+  describe('subject hook', () => {
+    beforeEach(async () => {
+      app = await createCaslTestingModule(
+        {
+          getUserFromRequest: () => getUser(Roles.customer),
+        },
+        postService,
+        userService,
+      );
+    });
+
+    it(`should be called for ability with subject hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST).expect(200);
+      expect(postService.findById).toBeCalledWith('id');
+      expect(postService.findById).toBeCalledTimes(1);
+    });
+
+    it(`should be called for ability with tuple subject hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST_TUPLE_HOOK).expect(200);
+      expect(postService.findById).toBeCalledWith('id');
+      expect(postService.findById).toBeCalledTimes(1);
+    });
+  });
+
+  describe('CaslUser decorator', () => {
+    beforeEach(async () => {
+      app = await createCaslTestingModule(
+        {
+          getUserFromRequest: () => getUser(Roles.customer),
+          getUserHook: UserHook,
+        },
+        postService,
+        userService,
+      );
+    });
+
+    it(`should get user data through user proxy`, async () => {
+      userService.findById = jest.fn().mockImplementation(() => ({ name: 'john' }));
+      await graphql(app).send(Mutations.UPDATE_POST_USER_PARAM).expect(200);
+      expect(postService.addUser).toBeCalledWith({ ...getUser(Roles.customer), name: 'john' });
+      expect(userService.findById).toBeCalledTimes(1);
+    });
+
+    it(`should get user data through user proxy without ability`, async () => {
+      userService.findById = jest.fn().mockImplementation(() => ({ name: 'john' }));
+      await graphql(app).send(Mutations.UPDATE_POST_USER_PARAM_NO_ABILITY).expect(200);
+      expect(postService.addUser).toBeCalledWith({ ...getUser(Roles.customer), name: 'john' });
+      expect(userService.findById).toBeCalledTimes(1);
+    });
+  });
 
   // TODO test CaslSubject decorator
   describe('CaslSubject decorator', () => {});

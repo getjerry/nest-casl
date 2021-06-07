@@ -10,7 +10,7 @@ export class PostService {
     return [];
   }
 
-  async findById(id: string): Promise<Post> {
+  async findById(id?: string): Promise<Post> {
     return new Post();
   }
 
@@ -18,7 +18,11 @@ export class PostService {
     return new Post();
   }
 
-  async update(input: UpdatePostInput): Promise<Post> {
+  async update(input: UpdatePostInput, conditions?: any): Promise<Post> {
+    return new Post();
+  }
+
+  async addUser(user: any): Promise<Post> {
     return new Post();
   }
 

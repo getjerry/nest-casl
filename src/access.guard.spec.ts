@@ -4,6 +4,7 @@ import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-hos
 
 import { AccessGuard } from './access.guard';
 import { AccessService } from './access.service';
+import { CaslConfig } from './casl.config';
 
 describe('AccessGuard', () => {
   const req = new Object();
@@ -12,11 +13,13 @@ describe('AccessGuard', () => {
   let accessService: AccessService;
 
   beforeEach(async () => {
+    CaslConfig.getRootOptions = jest.fn().mockImplementation(() => ({}));
+
     const moduleRef = await Test.createTestingModule({
       providers: [
         AccessGuard,
         { provide: Reflector, useValue: { get: jest.fn().mockImplementation(() => ability) } },
-        { provide: AccessService, useValue: { canActivateAbility: jest.fn(), getRootOptions: jest.fn().mockImplementation(() => ({})) } },
+        { provide: AccessService, useValue: { canActivateAbility: jest.fn() } },
       ],
     }).compile();
 
@@ -27,6 +30,6 @@ describe('AccessGuard', () => {
   it('passes context request and ability to AccessService.canActivateAbility method', async () => {
     const context = new ExecutionContextHost([undefined, undefined, { req }]);
     await accessGuard.canActivate(context);
-    expect(accessService.canActivateAbility).toBeCalledWith(req, ability, { subject: {}, user: {} });
+    expect(accessService.canActivateAbility).toBeCalledWith(req, ability);
   });
 });
