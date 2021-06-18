@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Ability, PureAbility, subject } from "@casl/ability";
 
-import { AuthorizableRequest } from './interfaces/options.interface';
+import { AuthorizableRequest } from "./interfaces/request.interface";
 import { AbilityFactory } from './factories/ability.factory';
 import { AbilityMetadata } from './decorators/use-ability';
 import { UserProxy } from './proxies/user.proxy';

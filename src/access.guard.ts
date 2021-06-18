@@ -8,7 +8,7 @@ import { CASL_META_ABILITY } from './casl.constants';
 import { AbilityMetadata } from './decorators/use-ability';
 import { subjectHookFactory } from './factories/subject-hook.factory';
 import { userHookFactory } from './factories/user-hook.factory';
-import { ContextWithAuthorizableRequest } from './interfaces/options.interface';
+import { ContextWithAuthorizableRequest } from './interfaces/request.interface';
 import { RequestProxy } from './proxies/request.proxy';
 
 @Injectable()

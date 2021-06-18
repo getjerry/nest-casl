@@ -3,7 +3,7 @@ import { AnyClass } from '@casl/ability/dist/types/types';
 import { CustomDecorator, SetMetadata } from '@nestjs/common';
 import { CASL_META_ABILITY } from '../casl.constants';
 import { SubjectBeforeFilterHook, SubjectBeforeFilterTuple } from '../interfaces/hooks.interface';
-import { AuthorizableRequest } from '../interfaces/options.interface';
+import { AuthorizableRequest } from "../interfaces/request.interface";
 
 export interface AbilityMetadata<Subject = any, Service = any, Request = AuthorizableRequest> {
   action: string,

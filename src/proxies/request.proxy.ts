@@ -1,4 +1,5 @@
-import { AuthorizableRequest, CaslRequestCache } from "../interfaces/options.interface";
+import { AuthorizableRequest } from "../interfaces/request.interface";
+import { CaslRequestCache } from "../interfaces/casl-request-cache.interface";
 import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
 import { SubjectBeforeFilterHook, UserBeforeFilterHook } from "../interfaces/hooks.interface";
 import { NullSubjectHook } from '../factories/subject-hook.factory';

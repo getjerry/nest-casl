@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserBeforeFilterHook } from '../../interfaces/hooks.interface';
+import { UserBeforeFilterHook } from '../../../interfaces/hooks.interface';
 import { UserService } from './user.service';
 import { User } from './dtos/user.dto';
 

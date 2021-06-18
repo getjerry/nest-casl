@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
+import { CaslModule } from 'nest-casl';
 
-import { CaslModule } from '../../casl.module';
 import { PostResolver } from './post.resolver';
 import { PostService } from './post.service';
 import { permissions } from './post.permissions';

@@ -2,7 +2,7 @@
   "name": "nest-casl",
   "version": "0.0.1",
   "description": "Casl integration for NestJS",
-  "author": "Denis Grankin",
+  "author": "Denis Grankin @ Jerry",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bugs": {
@@ -33,17 +33,19 @@
     "@ucast/sql": "^1.0.0-alpha.1"
   },
   "peerDependencies": {
-    "@nestjs/common": "^7.6.15",
-    "@nestjs/core": "^7.6.15",
-    "@nestjs/graphql": "^7.6.15",
-    "reflect-metadata": "^0.1.13"
+    "@nestjs/common": "^7.0.0",
+    "@nestjs/core": "^7.0.0",
+    "@nestjs/graphql": "^7.0.0",
+    "reflect-metadata": "^0.1.13",
+    "class-transformer": "^0.4.0",
+    "rxjs": "^7.1.0"
   },
   "devDependencies": {
-    "@nestjs/common": "^7.6.15",
-    "@nestjs/core": "^7.6.15",
-    "@nestjs/graphql": "^7.6.15",
-    "@nestjs/platform-express": "^7.6.17",
-    "@nestjs/testing": "^7.6.15",
+    "@nestjs/common": "^7.0.0",
+    "@nestjs/core": "^7.0.0",
+    "@nestjs/graphql": "^7.0.0",
+    "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/testing": "^7.0.0",
     "@types/jest": "26.0.23",
     "@types/node": "^15.0.1",
     "@types/supertest": "^2.0.11",
@@ -57,22 +59,5 @@
     "ts-jest": "26.5.5",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "node_modules"
-    ],
-    "rootDir": "src",
-    "testRegex": ".spec.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "testEnvironment": "node",
-    "resetMocks": true
   }
 }

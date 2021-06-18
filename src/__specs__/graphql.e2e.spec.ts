@@ -4,15 +4,15 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { Test } from '@nestjs/testing';
 
 import { OptionsForRoot } from '../interfaces/options.interface';
-import { PostService } from './post/post.service';
-import { PostModule } from './post/post.module';
+import { PostService } from './app/post/post.service';
+import { PostModule } from './app/post/post.module';
 import { CaslModule } from '../casl.module';
-import { Post } from './post/dtos/post.dto';
-import { Roles } from './roles';
-import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
-import { User } from './user/dtos/user.dto';
-import { UserHook } from './user/user.hook';
+import { Post } from './app/post/dtos/post.dto';
+import { Roles } from './app/app.roles';
+import { UserModule } from './app/user/user.module';
+import { UserService } from './app/user/user.service';
+import { User } from './app/user/dtos/user.dto';
+import { UserHook } from './app/user/user.hook';
 
 const getUser = (role: Roles, id: string = 'userId') => ({ id, roles: [role] });
 
@@ -83,7 +83,19 @@ const Mutations = {
     'mutation { updatePostUserParam(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
   ),
   UPDATE_POST_USER_PARAM_NO_ABILITY: q(
-    'mutation { updatePostUserParamNoAbility(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+    'mutation { updatePostUserParam(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_SUBJECT_PARAM: q(
+    'mutation { updatePostSubjectParam(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_SUBJECT_PARAM_TUPLE_HOOK: q(
+    'mutation { updatePostSubjectParamTuple(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_CONDITION_PARAM: q(
+    'mutation { updatePostConditionParam(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
+  ),
+  UPDATE_POST_CONDITION_PARAM_NO_HOOK: q(
+    'mutation { updatePostConditionParamNoHook(input: { id: "id", userId: "userId", title: "Post title" }) { id userId title } }',
   ),
   DELETE_POST: q('mutation { deletePost(id: "id") { id userId title } }'),
 };
@@ -104,8 +116,80 @@ describe('Graphql resolver with authorization', () => {
     await app.close();
   });
 
-  // TODO implement specs for anonymous visitor
-  describe('accessed without authenticated user', () => {});
+  describe('accessed without authenticated user', () => {
+    beforeEach(async () => {
+      app = await createCaslTestingModule(
+        {
+          getUserFromRequest: () => undefined,
+        },
+        postService,
+        userService,
+      );
+    });
+
+    it(`can not query post`, () => {
+      return graphql(app)
+        .send(Queries.POST)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+
+    it(`can not query posts`, () => {
+      return graphql(app)
+        .send(Queries.POSTS)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+
+    it(`can not create post`, () => {
+      return graphql(app)
+        .send(Mutations.CREATE_POST)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+
+    it(`can not update own post`, () => {
+      return graphql(app)
+        .send(Mutations.UPDATE_POST)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+
+    it(`can not update other user's post`, async () => {
+      const otherUserPost = { ...post, userId: 'otherUserId' };
+      app = await createCaslTestingModule(
+        {
+          getUserFromRequest: () => getUser(Roles.customer),
+        },
+        getPostService(otherUserPost),
+        userService,
+      );
+
+      return graphql(app)
+        .send(Mutations.UPDATE_POST)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+
+    it(`can not delete post`, () => {
+      return graphql(app)
+        .send(Mutations.DELETE_POST)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeNull();
+        });
+    });
+  });
 
   describe('accessed by admin', () => {
     beforeEach(async () => {
@@ -385,9 +469,51 @@ describe('Graphql resolver with authorization', () => {
     });
   });
 
-  // TODO test CaslSubject decorator
-  describe('CaslSubject decorator', () => {});
+  describe('CaslSubject decorator', () => {
+    beforeEach(async () => {
+      app = await createCaslTestingModule(
+        {
+          getUserFromRequest: () => getUser(Roles.customer),
+        },
+        postService,
+        userService,
+      );
+    });
 
-  // TODO test CaslConditions decorator
-  describe('CaslConditions decorator', () => {});
+    it(`should get cached subject with class subject hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST_SUBJECT_PARAM).expect(200);
+      expect(postService.update).toBeCalledWith(post);
+      expect(postService.findById).toHaveBeenCalledTimes(1);
+    });
+
+    it(`should get cached subject with tuple subject hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST_SUBJECT_PARAM_TUPLE_HOOK).expect(200);
+      expect(postService.update).toBeCalledWith(post);
+      expect(postService.findById).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('CaslConditions decorator', () => {
+    const expectedSqlConditions = ['"userId" = $1', ['userId'], []];
+
+    beforeEach(async () => {
+      app = await createCaslTestingModule(
+        {
+          getUserFromRequest: () => getUser(Roles.customer),
+        },
+        postService,
+        userService,
+      );
+    });
+
+    it(`should get conditions proxy with hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST_CONDITION_PARAM).expect(200);
+      expect(postService.update).toBeCalledWith(post, expectedSqlConditions);
+    });
+
+    it(`should get conditions proxy without hook`, async () => {
+      await graphql(app).send(Mutations.UPDATE_POST_CONDITION_PARAM_NO_HOOK).expect(200);
+      expect(postService.update).toBeCalledWith(post, expectedSqlConditions);
+    });
+  });
 });

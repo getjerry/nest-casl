@@ -14,11 +14,12 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "es2019",
+    "baseUrl": "./src"
   },
   "include": [
     "src/**/*",
     "__specs__/**/*",
-    "__mocks__/**/*",
+    "__mocks__/**/*"
   ],
   "exclude": ["node_modules", "dist"]
 }

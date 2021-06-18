@@ -1,20 +1,22 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  AccessGuard,
+  AccessService,
+  ConditionsProxy,
+  CaslConditions,
+  CaslSubject,
+  CaslUser,
+  UseAbility,
+  Actions,
+  UserProxy,
+} from 'nest-casl';
 
-import { AccessGuard } from '../../access.guard';
-import { ConditionsProxy } from '../../proxies/conditions.proxy';
-import { CaslConditions } from '../../decorators/casl-conditions';
-import { CaslUser } from '../../decorators/casl-user';
-import { UseAbility } from '../../decorators/use-ability';
-import { Actions } from '../../interfaces/permissions.interface';
-import { UserProxy } from '../../proxies/user.proxy';
-import { CreatePostInput } from './dtos/create-post-input.dto';
 import { Post } from './dtos/post.dto';
-import { UpdatePostInput } from './dtos/update-post-input.dto';
 import { PostHook } from './post.hook';
 import { PostService } from './post.service';
-import { AccessService } from '../../access.service';
-import { CaslSubject } from '../../decorators/casl-subject';
+import { CreatePostInput } from './dtos/create-post-input.dto';
+import { UpdatePostInput } from './dtos/update-post-input.dto';
 
 @Resolver(() => Post)
 export class PostResolver {

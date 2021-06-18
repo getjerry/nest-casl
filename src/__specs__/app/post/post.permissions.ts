@@ -1,8 +1,13 @@
-import { Actions, Permissions } from '../../interfaces/permissions.interface';
-import { Post } from './dtos/post.dto';
-import { Roles } from '../roles';
+import { Actions, Permissions } from 'nest-casl';
 
-export const permissions: Permissions<Roles, Post, Actions> = {
+import { Roles } from '../app.roles';
+import { Post } from './dtos/post.dto';
+
+type Subjects =
+  | Post 
+  | typeof Post;
+
+export const permissions: Permissions<Roles, Subjects, Actions> = {
   everyone({ can }) {
     can(Actions.read, Post);
   },

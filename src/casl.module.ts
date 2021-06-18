@@ -36,7 +36,7 @@ export class CaslModule {
     };
   }
 
-  static forRoot<U = AuthorizableUser>(options: OptionsForRoot<U>): DynamicModule {
+  static forRoot<User = AuthorizableUser>(options: OptionsForRoot<User>): DynamicModule {
     Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, CaslConfig);
     return {
       module: CaslModule,

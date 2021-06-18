@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { AuthorizableRequest, SubjectBeforeFilterHook } from 'nest-casl';
 
-import { SubjectBeforeFilterHook } from '../../interfaces/hooks.interface';
-import { AuthorizableRequest } from '../../interfaces/options.interface';
 import { PostService } from './post.service';
 import { Post } from './dtos/post.dto';
 

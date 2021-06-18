@@ -1,4 +1,4 @@
-import { AuthorizableRequest } from "../interfaces/options.interface";
+import { AuthorizableRequest } from "../interfaces/request.interface";
 import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
 import { RequestProxy } from "./request.proxy";
 
