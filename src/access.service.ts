@@ -72,7 +72,6 @@ export class AccessService {
     let userAbilities = this.abilityFactory.createForUser(user, ability.subjectHook ? Ability : PureAbility);
 
     const relevantRules = userAbilities.rulesFor(ability.action, ability.subject);
-
     const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => (rule.conditions || {}));
     req.setConditions(new ConditionsProxy(conditions));
 

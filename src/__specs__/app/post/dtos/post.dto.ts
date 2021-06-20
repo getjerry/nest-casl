@@ -3,10 +3,10 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class Post {
   @Field()
-  id!: string;
+  id: string;
 
   @Field()
-  userId!: string;
+  userId: string;
 
   @Field({ nullable: true })
   title?: string;

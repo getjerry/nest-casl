@@ -12,7 +12,7 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
     "target": "es2019",
     "baseUrl": "./src"
   },

@@ -6,6 +6,7 @@ import { AccessService } from './access.service';
 import { AbilityFactory } from './factories/ability.factory';
 import { AuthorizableUser } from './interfaces/authorizable-user.interface';
 import { CaslConfig } from './casl.config';
+import { AuthorizableRequest } from 'interfaces/request.interface';
 
 @Module({
   imports: [],
@@ -36,7 +37,9 @@ export class CaslModule {
     };
   }
 
-  static forRoot<User = AuthorizableUser>(options: OptionsForRoot<User>): DynamicModule {
+  static forRoot<Roles = string, User = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
+    options: OptionsForRoot<Roles, User, Request>,
+  ): DynamicModule {
     Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, CaslConfig);
     return {
       module: CaslModule,

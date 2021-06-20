@@ -17,3 +17,4 @@ renovate.json
 node_modules
 tsconfig*.json
 !dist/**/*
+*.tsbuildinfo

@@ -3,10 +3,10 @@ import { InputType, Field } from '@nestjs/graphql';
 @InputType()
 export class UpdatePostInput {
   @Field()
-  id!: string;
+  id: string;
 
   @Field()
-  userId!: string;
+  userId: string;
 
   @Field({ nullable: true })
   title?: string;

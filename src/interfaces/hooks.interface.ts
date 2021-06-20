@@ -15,7 +15,7 @@ export interface UserBeforeFilterHook<User = AuthorizableUser, RequestUser = Use
   run: (user: RequestUser) => Promise<User | undefined>;
 }
 
-export type UserBeforeFilterTuple<Service = any, User = AuthorizableUser, RequestUser = AuthorizableUser> = [
+export type UserBeforeFilterTuple<Service = any, User = AuthorizableUser, RequestUser = User> = [
   AnyClass<Service>,
   (service: Service, user: RequestUser) => Promise<User>,
 ];

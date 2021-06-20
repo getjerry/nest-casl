@@ -28,3 +28,5 @@ export { UserProxy } from './proxies/user.proxy';
 export { AccessGuard } from './access.guard';
 
 export { AccessService } from './access.service';
+
+export { InferSubjects } from '@casl/ability';

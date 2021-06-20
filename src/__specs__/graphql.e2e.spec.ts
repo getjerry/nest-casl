@@ -30,7 +30,7 @@ const getUserService = (user: User) => ({
 });
 
 const createCaslTestingModule = async (
-  caslOptions: OptionsForRoot,
+  caslOptions: OptionsForRoot<Roles>,
   postService: PostService,
   userService: UserService,
 ): Promise<INestApplication> => {
@@ -43,7 +43,7 @@ const createCaslTestingModule = async (
         playground: false,
         debug: true,
       }),
-      CaslModule.forRoot(caslOptions),
+      CaslModule.forRoot<Roles>(caslOptions),
     ],
   })
     .overrideProvider(PostService)
@@ -103,6 +103,7 @@ const Mutations = {
 describe('Graphql resolver with authorization', () => {
   const post = { id: 'id', userId: 'userId', title: 'Post title' };
   const user = { id: 'userId', name: 'John Doe', roles: [] };
+
   let app: INestApplication;
   let postService: PostService;
   let userService: UserService;
