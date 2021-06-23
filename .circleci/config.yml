@@ -11,9 +11,7 @@ jobs:
         type: string
     steps:
       - checkout
-      - node/install:
-          node-version: << parameters.version >>
-          install-yarn: true
+      - install: yarn install --immutable
       - run: yarn test
 workflows:
   all-tests:
