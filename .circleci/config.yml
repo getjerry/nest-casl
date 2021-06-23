@@ -11,11 +11,11 @@ commands:
           node-version: << parameters.version >>
       - node/install-packages:
           pkg-manager: yarn
-          cache-key: yarn.lock
 
 jobs:
   lint-and-test:
-    executor: node
+    executor:
+      name: node/default
     parameters:
       version:
         type: string
