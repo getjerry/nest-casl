@@ -14,7 +14,7 @@ import { UserService } from './app/user/user.service';
 import { User } from './app/user/dtos/user.dto';
 import { UserHook } from './app/user/user.hook';
 
-const getUser = (role: Roles, id: string = 'userId') => ({ id, roles: [role] });
+const getUser = (role: Roles, id = 'userId') => ({ id, roles: [role] });
 
 const getPostService = (post: Post) => ({
   findAll: jest.fn().mockImplementation(async () => [post]),

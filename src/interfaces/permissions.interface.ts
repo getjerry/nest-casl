@@ -22,7 +22,7 @@ export class UserAbilityBuilder<
   };
 
   permissionsFor(role: string) {
-    const rolePermissions = this.permissions[role] as Function;
+    const rolePermissions = this.permissions[role] as (permission: any) => void;
     if (rolePermissions) {
       rolePermissions(this);
     }

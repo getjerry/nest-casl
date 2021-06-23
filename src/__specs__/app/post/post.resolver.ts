@@ -18,7 +18,6 @@ import { PostService } from './post.service';
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
 import { User } from '../user/dtos/user.dto';
-import { Roles } from '../app.roles';
 
 @Resolver(() => Post)
 export class PostResolver {
