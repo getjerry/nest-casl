@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   test:
+    executor: node
     parameters:
       version:
         type: string
@@ -17,7 +18,8 @@ jobs:
 workflows:
   all-tests:
     jobs:
-      - test:
+      - node/test:
+          
           matrix:
             parameters:
               version: ['15.1', 'lts', '12.21']
