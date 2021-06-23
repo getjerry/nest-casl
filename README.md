@@ -1,6 +1,6 @@
 # nest-casl
-
-[![CircleCI](https://circleci.com/gh/getjerry/nest-casl.svg?style=svg)](https://circleci.com/gh/getjerry/nest-casl)
+[![CircleCI Build Status](https://circleci.com/gh/getjerry/nest-casl.svg?style=shield)](https://circleci.com/gh/getjerry/nest-casl)
+[![Dependabot][dependabot-shield]][dependabot]
 
 Access control with Nestjs and  CASL (only for GraphQL yet)
 
