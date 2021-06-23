@@ -5,7 +5,7 @@ module.exports = {
   },
   preset: 'ts-jest',
   moduleFileExtensions: ['js', 'json', 'ts'],
-  coveragePathIgnorePatterns: ['node_modules'],
+  coveragePathIgnorePatterns: ['node_modules', 'src/__specs__'],
   testRegex: '.spec.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
