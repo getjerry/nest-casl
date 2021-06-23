@@ -1,10 +1,16 @@
 module.exports = {
-  extends: ['@heise'],
+  root: true,
+  parser: "@typescript-eslint/parser",
+  plugins: [
+    "@typescript-eslint"
+  ],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   rules: {
-    'node/no-missing-import': 'off',
-    'unicorn/import-style': 'off',
-    'unicorn/no-null': 'off',
-    'unicorn/prevent-abbreviations': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off'
   },
   env: {
     node: true,
@@ -12,7 +18,8 @@ module.exports = {
   overrides: [{
     files: ['*.spec.ts'],
     rules: {
-      '@typescript-eslint/unbound-method': 'off'
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-empty-function': 'off'
     }
   }]
 }

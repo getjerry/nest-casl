@@ -18,7 +18,7 @@ export class AccessService {
 
   public hasAbility(user: AuthorizableUser, action: string, subject: any): boolean {
     const { superuserRole } = CaslConfig.getRootOptions();
-    let userAbilities = this.abilityFactory.createForUser(user);
+    const userAbilities = this.abilityFactory.createForUser(user);
 
     // No user - no access
     if (!user) {

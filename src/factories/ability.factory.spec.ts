@@ -36,7 +36,7 @@ describe('AbilityFactory', () => {
 
   describe('AbilityFactory', () => {
     it("everyone's rules applied to customer", async () => {
-      let user = {
+      const user = {
         id: 'userId',
         roles: [Roles.customer],
       };
@@ -45,7 +45,7 @@ describe('AbilityFactory', () => {
     });
 
     it('operator inherits rules from user', async () => {
-      let user = {
+      const user = {
         id: 'userId',
         roles: [Roles.operator],
       };

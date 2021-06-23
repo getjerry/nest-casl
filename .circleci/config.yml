@@ -3,31 +3,35 @@ version: 2.1
 orbs:
   node: circleci/node@4.1
 
+commands:
+  setup-node-and-yarn-install-with-cache:
+    steps:
+      - node/install:
+          install-yarn: true
+          node-version: latest
+      - node/install-packages:
+          pkg-manager: yarn
+          cache-key: yarn.lock
+
 jobs:
-  test:
+  lint-and-test:
     executor: node
     parameters:
       version:
         type: string
     steps:
       - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - install: yarn install --immutable
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - .yarn/cache
-            - .yarn/unplugged
-      - run: yarn test
+      - setup-node-and-yarn-install-with-cache
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Run tests
+          command: yarn test
 workflows:
-  all-tests:
+  ci-build:
     jobs:
-      - node/test:
-          
+      - lint-and-test:
           matrix:
             parameters:
               version: ['15.1', 'lts', '12.21']
