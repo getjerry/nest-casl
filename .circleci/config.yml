@@ -8,7 +8,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: latest
+          node-version: << parameters.version >>
       - node/install-packages:
           pkg-manager: yarn
           cache-key: yarn.lock
