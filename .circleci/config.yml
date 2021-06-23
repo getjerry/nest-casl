@@ -5,7 +5,9 @@ orbs:
 
 jobs:
   lint-and-test:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: << parameters.version >>
     parameters:
       version:
         type: string
