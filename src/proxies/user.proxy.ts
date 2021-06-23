@@ -2,18 +2,18 @@ import { AuthorizableRequest } from "../interfaces/request.interface";
 import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
 import { RequestProxy } from "./request.proxy";
 
-export class UserProxy {
-  constructor(private request: AuthorizableRequest, private getUserFromRequest: any) {}
+export class UserProxy<User = AuthorizableUser> {
+  constructor(private request: AuthorizableRequest<User>, private getUserFromRequest: any) {}
 
   public async get() {
     return await this.getFromHook() || this.getFromRequest() || undefined;
   }
 
-  public getFromRequest() {
+  public getFromRequest(): User {
     return this.getUserFromRequest(this.request);
   }
 
-  public async getFromHook(): Promise<AuthorizableUser | undefined> {
+  public async getFromHook(): Promise<User | undefined> {
     const req = this.getRequest();
 
     if (req.getUser()) {

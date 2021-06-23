@@ -4,7 +4,7 @@ import { CaslRequestCache } from './casl-request-cache.interface';
 export interface AuthorizableRequest<User = AuthorizableUser, Subject = any> {
   user?: User;
   currentUser?: User;
-  casl: CaslRequestCache<Subject>;
+  casl: CaslRequestCache<User, Subject>;
   [key: string]: any;
 }
 

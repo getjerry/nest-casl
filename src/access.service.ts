@@ -89,7 +89,7 @@ export class AccessService {
     }
 
     const finalUser = await userProxy.get();
-    if(finalUser !== userProxy.getFromRequest()) {
+    if(finalUser && finalUser !== userProxy.getFromRequest()) {
       userAbilities = this.abilityFactory.createForUser(finalUser);
     }
 

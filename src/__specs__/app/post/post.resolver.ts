@@ -3,12 +3,12 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AccessGuard,
   AccessService,
+  Actions,
   ConditionsProxy,
   CaslConditions,
   CaslSubject,
   CaslUser,
   UseAbility,
-  Actions,
   UserProxy,
 } from 'nest-casl';
 
@@ -17,6 +17,8 @@ import { PostHook } from './post.hook';
 import { PostService } from './post.service';
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
+import { User } from '../user/dtos/user.dto';
+import { Roles } from '../app.roles';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -59,9 +61,9 @@ export class PostResolver {
 
   @Mutation(() => Post)
   @UseGuards(AccessGuard)
-  @UseAbility<Post, PostService>(Actions.update, Post, [
+  @UseAbility<Post>(Actions.update, Post, [
     PostService,
-      (service, { params }) => service.findById(params.input.id),
+      (service: PostService, { params }) => service.findById(params.input.id),
   ])
   async updatePostTupleHook(@Args('input') input: UpdatePostInput) {
     return this.postService.update(input);
@@ -77,14 +79,14 @@ export class PostResolver {
   @Mutation(() => Post)
   @UseGuards(AccessGuard)
   @UseAbility(Actions.update, Post, PostHook)
-  async updatePostUserParam(@Args('input') input: UpdatePostInput, @CaslUser() user: UserProxy) {
+  async updatePostUserParam(@Args('input') input: UpdatePostInput, @CaslUser() user: UserProxy<User>) {
     this.postService.addUser(await user.get());
     return this.postService.update(input);
   }
 
   @Mutation(() => Post)
   @UseGuards(AccessGuard)
-  async updatePostUserParamNoAbility(@Args('input') input: UpdatePostInput, @CaslUser() user: UserProxy) {
+  async updatePostUserParamNoAbility(@Args('input') input: UpdatePostInput, @CaslUser() user: UserProxy<User>) {
     this.postService.addUser(await user.get());
     return this.postService.update(input);
   }
@@ -98,9 +100,9 @@ export class PostResolver {
 
   @Mutation(() => Post)
   @UseGuards(AccessGuard)
-  @UseAbility<Post, PostService>(Actions.update, Post, [
+  @UseAbility<Post>(Actions.update, Post, [
     PostService,
-    (service, { params }) => service.findById(params.input.id),
+    (service: PostService, { params }) => service.findById(params.input.id),
   ])
   async updatePostSubjectParamTuple(@Args('input') input: UpdatePostInput, @CaslSubject() subject: Post) {
     return this.postService.update(subject);

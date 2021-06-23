@@ -6,20 +6,20 @@ import { NullSubjectHook } from '../factories/subject-hook.factory';
 import { NullUserHook } from '../factories/user-hook.factory';
 import { ConditionsProxy } from "./conditions.proxy";
 
-export class RequestProxy {
-  private readonly defaultCaslCache: CaslRequestCache = {
+export class RequestProxy<User = AuthorizableUser> {
+  private readonly defaultCaslCache: CaslRequestCache<User> = {
     hooks: {
       subject: new NullSubjectHook(),
       user: new NullUserHook(),
     }
   }
 
-  constructor(private request: AuthorizableRequest) {
-    this.request.casl = this.request.casl || this.defaultCaslCache as CaslRequestCache;
+  constructor(private request: AuthorizableRequest<User>) {
+    this.request.casl = this.request.casl || this.defaultCaslCache as CaslRequestCache<User>;
   }
 
-  public get cached(): CaslRequestCache {
-    return this.request.casl;
+  public get cached(): CaslRequestCache<User> {
+    return this.request.casl  as CaslRequestCache<User>;
   }
 
   public getConditions() {
@@ -31,26 +31,26 @@ export class RequestProxy {
   }
 
   public getSubject() {
-    return this.cached.user;
+    return this.cached.subject;
   }
 
   public setSubject(subject: any) {
     return this.cached.subject = subject;
   }
 
-  public getUser() {
+  public getUser(): User | undefined {
     return this.cached.user;
   }
 
-  public setUser(user: AuthorizableUser | undefined) {
-    return this.cached.user =  user;
+  public setUser(user: User | undefined) {
+    return this.cached.user = user;
   }
 
   public getUserHook() {
     return this.cached.hooks.user;
   }
 
-  public setUserHook(hook: UserBeforeFilterHook) {
+  public setUserHook(hook: UserBeforeFilterHook<User>) {
     return this.cached.hooks.user = hook;
   }
 

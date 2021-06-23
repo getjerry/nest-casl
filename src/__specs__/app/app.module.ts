@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { CaslModule, AuthorizableRequest, UserBeforeFilterHook } from 'nest-casl';
+import { CaslModule } from 'nest-casl';
 
-import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
+import { UserModule } from './user/user.module';
+import { UserHook } from './user/user.hook';
 import { Roles } from './app.roles';
-import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -20,9 +20,7 @@ import { UserService } from './user/user.service';
       getUserFromRequest(request) {
         return request.user;
       },
-      getUserHook: [UserService, async (service: UserService, user) => {
-        return service.findById(user.id);
-      }],
+      getUserHook: UserHook,
     }),
     UserModule,
     PostModule,

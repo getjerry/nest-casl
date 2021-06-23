@@ -1,5 +1,6 @@
 import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { AuthorizableUser } from 'interfaces/authorizable-user.interface';
 import { CaslConfig } from '../casl.config';
 
 import { UserProxy } from '../proxies/user.proxy';

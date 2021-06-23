@@ -4,12 +4,12 @@ import { ConditionsProxy } from '../proxies/conditions.proxy';
 
 
 
-export interface CaslRequestCache<Subject = any> {
-  user?: AuthorizableUser;
+export interface CaslRequestCache<User = AuthorizableUser, Subject = any> {
+  user?: User;
   subject?: Subject;
   conditions?: ConditionsProxy;
   hooks: {
-    user: UserBeforeFilterHook;
+    user: UserBeforeFilterHook<User>;
     subject: SubjectBeforeFilterHook<Subject>;
   };
 }

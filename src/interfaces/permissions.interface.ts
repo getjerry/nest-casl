@@ -2,18 +2,7 @@ import { Ability, AbilityBuilder } from '@casl/ability';
 import { AnyClass } from '@casl/ability/dist/types/types';
 
 import { AuthorizableUser } from './authorizable-user.interface';
-
-export enum DefaultActions {
-  read = 'read',
-  aggregate = 'aggregate',
-  create = 'create',
-  update = 'update',
-  delete = 'delete',
-  manage = 'manage',
-}
-
-export type Actions = DefaultActions;
-export const Actions = DefaultActions;
+import { DefaultActions } from '../actions.enum';
 
 export class UserAbilityBuilder<
   Subjects = any,

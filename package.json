@@ -1,6 +1,6 @@
 {
   "name": "nest-casl",
-  "version": "0.0.1",
+  "version": "0.8.1",
   "description": "Casl integration for NestJS",
   "author": "Denis Grankin @ Jerry",
   "main": "dist/index.js",
@@ -38,15 +38,15 @@
     "@nestjs/graphql": "^7.0.0"
   },
   "devDependencies": {
-    "@nestjs/common": "^7.0.0",
-    "@nestjs/core": "^7.0.0",
-    "@nestjs/graphql": "^7.0.0",
-    "@nestjs/platform-express": "^7.0.0",
-    "@nestjs/testing": "^7.0.0",
+    "@nestjs/common": "^7.6.18",
+    "@nestjs/core": "^7.6.18",
+    "@nestjs/graphql": "^7.11.0",
+    "@nestjs/platform-express": "^7.6.18",
+    "@nestjs/testing": "^7.6.18",
     "@types/jest": "26.0.23",
     "@types/node": "^15.0.1",
     "@types/supertest": "^2.0.11",
-    "apollo-server-express": "^2.24.1",
+    "apollo-server-express": "^2.25.1",
     "graphql": "^15.5.0",
     "jest": "^26.6.3",
     "reflect-metadata": "^0.1.13",
@@ -58,6 +58,6 @@
     "typescript": "^4.2.4",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.0",
-    "apollo-server-core": "^2.21.1"
+    "apollo-server-core": "^2.25.1"
   }
 }

@@ -3,6 +3,7 @@ export { CaslModule } from './casl.module';
 export { AuthorizableUser } from './interfaces/authorizable-user.interface';
 
 export { AuthorizableRequest } from './interfaces/request.interface';
+export { AuthorizableRequest as Request } from './interfaces/request.interface';
 
 export { CaslConditions, CaslQueryAuthorize, CaslSubject, CaslUser, UseAbility } from './decorators';
 
@@ -14,12 +15,15 @@ export {
 } from './interfaces/hooks.interface';
 
 export {
-  Actions,
-  DefaultActions,
   AnyPermissions,
   DefinePermissions,
   Permissions,
 } from './interfaces/permissions.interface';
+
+export {
+  Actions,
+  DefaultActions,
+} from './actions.enum';
 
 export { ConditionsProxy } from './proxies/conditions.proxy';
 

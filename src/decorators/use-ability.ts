@@ -8,13 +8,13 @@ import { AuthorizableRequest } from "../interfaces/request.interface";
 export interface AbilityMetadata<Subject = any, Service = any, Request = AuthorizableRequest> {
   action: string,
   subject: AnyClass<Subject>,
-  subjectHook?: SubjectBeforeFilterHook<Subject, Request> | SubjectBeforeFilterTuple<Service, Subject, Request>
+  subjectHook?: SubjectBeforeFilterHook<Subject, Request> | SubjectBeforeFilterTuple<Subject, Request>
 }
 
-export function UseAbility<Subject = any, Service = any, Request = AuthorizableRequest>(
+export function UseAbility<Subject = any, Request = AuthorizableRequest>(
   action: string,
   subject: AnyClass<Subject>,
-  subjectHook?: AnyClass<SubjectBeforeFilterHook<Subject, Request>> | SubjectBeforeFilterTuple<Service, Subject, Request>,
+  subjectHook?: AnyClass<SubjectBeforeFilterHook<Subject, Request>> | SubjectBeforeFilterTuple<Subject, Request>,
 ): CustomDecorator {
   return SetMetadata(CASL_META_ABILITY, { action, subject, subjectHook });
 }

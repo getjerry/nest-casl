@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthorizableRequest, SubjectBeforeFilterHook } from 'nest-casl';
+import { Request, SubjectBeforeFilterHook } from 'nest-casl';
 
 import { PostService } from './post.service';
 import { Post } from './dtos/post.dto';
@@ -8,7 +8,7 @@ import { Post } from './dtos/post.dto';
 export class PostHook implements SubjectBeforeFilterHook<Post> {
   constructor(readonly postService: PostService) {}
 
-  async run({ params }: AuthorizableRequest) {
+  async run({ params }: Request) {
     return this.postService.findById(params.input.id);
   }
 }

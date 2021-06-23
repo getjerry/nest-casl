@@ -6,9 +6,9 @@ export interface SubjectBeforeFilterHook<Subject = any, Request = AuthorizableRe
   run: (request: Request) => Promise<Subject | undefined>;
 }
 
-export type SubjectBeforeFilterTuple<Service = any, Subject = any, Request = AuthorizableRequest> = [
-  AnyClass<Service>,
-  (service: Service, request: Request) => Promise<Subject>,
+export type SubjectBeforeFilterTuple<Subject = any, Request = AuthorizableRequest> = [
+  AnyClass,
+  (service: any, request: Request) => Promise<Subject>,
 ];
 
 export interface UserBeforeFilterHook<User = AuthorizableUser, RequestUser = User> {
