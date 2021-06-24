@@ -1,6 +1,6 @@
 {
   "name": "nest-casl",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Casl integration for NestJS",
   "author": "Denis Grankin @ Jerry",
   "main": "dist/index.js",
