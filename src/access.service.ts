@@ -3,7 +3,7 @@ import { Ability, PureAbility, subject } from "@casl/ability";
 
 import { AuthorizableRequest } from "./interfaces/request.interface";
 import { AbilityFactory } from './factories/ability.factory';
-import { AbilityMetadata } from './decorators/use-ability';
+import { AbilityMetadata } from './interfaces/ability-metadata.interface';
 import { UserProxy } from './proxies/user.proxy';
 import { CaslConfig } from './casl.config';
 import { AuthorizableUser } from './interfaces/authorizable-user.interface';

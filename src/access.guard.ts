@@ -5,7 +5,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { AccessService } from './access.service';
 import { CaslConfig } from './casl.config';
 import { CASL_META_ABILITY } from './casl.constants';
-import { AbilityMetadata } from './decorators/use-ability';
+import { AbilityMetadata } from './interfaces/ability-metadata.interface';
 import { subjectHookFactory } from './factories/subject-hook.factory';
 import { userHookFactory } from './factories/user-hook.factory';
 import { ContextWithAuthorizableRequest } from './interfaces/request.interface';

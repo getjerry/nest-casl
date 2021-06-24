@@ -10,6 +10,7 @@ Access control with Nestjs and  CASL (only for GraphQL yet)
 
 ## Installation
 Install npm package with `yarn add nest-casl` or `npm i nest-casl`
+
 Peer dependencies are `@nestjs/core`, `@nestjs/common` and `@nestjs/graphql` 
 
 ## Application configuration
@@ -48,7 +49,7 @@ import { Roles } from './app.roles';
 export class AppModule {}
 ```
 
-`superuserRole` will have unrestricted access.  If `getUserFromRequest` omitted `request.user` will be used.  User expected to have properties `id: string` and `roles: Roles[]` by default, request and user types [can be customized](#-custom-user-and-request-types).
+`superuserRole` will have unrestricted access.  If `getUserFromRequest` omitted `request.user` will be used.  User expected to have properties `id: string` and `roles: Roles[]` by default, request and user types [can be customized](#custom-user-and-request-types).
 
 ## Permissions definition
 `nest-casl` comes with a set of default actions, aligned with [Nestjs Query](https://doug-martin.github.io/nestjs-query/docs/graphql/authorization).
@@ -66,7 +67,7 @@ export enum DefaultActions {
 }
 ```
 
-In case you need custom actions either [extend DefaultActions](#-custom-actions) or just copy and update, if extending typescript enum looks too tricky.
+In case you need custom actions either [extend DefaultActions](#custom-actions) or just copy and update, if extending typescript enum looks too tricky.
 
 Permissions defined per module. `everyone` permissions applied to every user, it has `every` alias for `every({ user, can })` be more readable. Roles can be extended with previously defined roles.
 
@@ -92,9 +93,9 @@ export const permissions: Permissions<Roles, Subjects, Actions> = {
   },
 
   operator({ can, cannot, extend }) {
-	extend(Roles.customer);
+    extend(Roles.customer);
 
-	can(Actions.manage, PostCategory);
+    can(Actions.manage, PostCategory);
     can(Actions.manage, Post);
     cannot(Actions.delete, Post);
   },
@@ -123,7 +124,7 @@ Assuming authentication handled by AuthGuard. AccessGuard expects user to at lea
 
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AccessGuard, UseAbility, Actions } from 'nest-casl';
+import { AccessGuard, SetAbility, UseAbility, Actions } from 'nest-casl';
 
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
@@ -148,16 +149,23 @@ export class PostResolver {
     return this.postService.findById(id);
   }
 
-  // Tags method with ability action and subject
-  @UseGuards(AuthGuard, AccessGuard)
+  // Tags method with ability action and subject and adds AccessGuard implicitly
+  @UseGuards(AuthGuard)
   @UseAbility(Actions.create, Post)
+  async createPost(@Args('input') input: CreatePostInput) {
+    return this.postService.create(input);
+  }
+
+  // Same as above
+  @UseGuards(AuthGuard, AccessGuard)
+  @SetAbility(Actions.create, Post)
   async createPost(@Args('input') input: CreatePostInput) {
     return this.postService.create(input);
   }
 
   // Use hook to get subject for conditional rule
   @Mutation(() => Post)
-  @UseGuards(AuthGuard, AccessGuard)
+  @UseGuards(AuthGuard)
   @UseAbility(Actions.update, Post, PostHook)
   async updatePost(@Args('input') input: UpdatePostInput) {
     return this.postService.update(input);
@@ -191,7 +199,7 @@ passed as third argument of UserAbility
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard, AccessGuard)
+@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post, PostHook)
 async updatePost(@Args('input') input: UpdatePostInput) {
   return this.postService.update(input);
@@ -202,7 +210,7 @@ Class hooks are preferred method, it has full dependency injection support and c
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AccessGuard)
+@UseGuards(AuthGuard)
 @UseAbility<Post>(Actions.update, Post, [
   PostService,
   (service: PostService, { params }) => service.findById(params.input.id),
@@ -217,7 +225,7 @@ Subject instance returned from subject hook is cached on request object and can 
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard, AccessGuard)
+@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post, PostHook)
 async updatePost(
   @Args('input') input: UpdatePostInput,
@@ -232,7 +240,7 @@ Permission conditions can be used in resolver through CaslConditions decorator, 
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AccessGuard)
+@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post)
 async updatePostConditionParamNoHook(
   @Args('input') input: UpdatePostInput,
@@ -243,11 +251,11 @@ async updatePostConditionParamNoHook(
 ```
 
 ### CaslUser decorator
-`CaslUser` decorator provides access to lazy loaded user, obtained from request or [user hook](#-user-hook) and cached on request object.
+`CaslUser` decorator provides access to lazy loaded user, obtained from request or [user hook](#user-hook) and cached on request object.
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AccessGuard)
+@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post)
 async updatePostConditionParamNoHook(
   @Args('input') input: UpdatePostInput,
@@ -402,9 +410,7 @@ export class AppModule {}
 ```
 
 ## TODO
-
-- Add badges to readme
-- CI test matrix with different node version 
+- Fix lint warnings
 - Rest support
 - Nest query integration
 - Field-level access control

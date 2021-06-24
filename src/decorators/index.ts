@@ -1,3 +1,5 @@
+export { SetAbility } from './set-ability';
+
 export { UseAbility } from './use-ability';
 
 export { CaslSubject } from './casl-subject';
