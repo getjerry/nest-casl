@@ -6,6 +6,7 @@ import { User } from './dtos/user.dto';
 export class UserService {
   async findById(id: string): Promise<User> {
     const user = new User()
+    user.id = id;
     user.name = 'john';
     return user;
   }

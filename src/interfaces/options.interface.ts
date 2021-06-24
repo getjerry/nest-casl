@@ -8,7 +8,7 @@ import { AuthorizableRequest } from './request.interface';
 export interface OptionsForRoot<Roles = string, User = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>> {
   superuserRole?: Roles;
   getUserFromRequest?: (request: Request) => User | undefined;
-  getUserHook?: AnyClass<UserBeforeFilterHook<User>> | UserBeforeFilterTuple<any, User>;
+  getUserHook?: AnyClass<UserBeforeFilterHook<User>> | UserBeforeFilterTuple<User>;
 }
 
 export interface OptionsForFeature {

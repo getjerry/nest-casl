@@ -14,7 +14,7 @@ export class ConditionsProxy {
     return parser.parse(this.get());
   }
 
-  public toSql(dialect = 'pg') {
+  public toSql() {
     const interpret = createSqlInterpreter(allInterpreters);
     return interpret(this.toAst(), {
       ...pg,

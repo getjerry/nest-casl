@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
+import { ConditionsProxy } from 'nest-casl';
 
 import { Post } from './dtos/post.dto';
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
+import { User } from '../user/dtos/user.dto';
 
 @Injectable()
 export class PostService {
@@ -18,11 +21,11 @@ export class PostService {
     return new Post();
   }
 
-  async update(input: UpdatePostInput, conditions?: any): Promise<Post> {
+  async update(input: UpdatePostInput, conditions?: ConditionsProxy): Promise<Post> {
     return new Post();
   }
 
-  async addUser(user: any): Promise<Post> {
+  async addUser(user: User): Promise<Post> {
     return new Post();
   }
 

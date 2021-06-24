@@ -1,11 +1,11 @@
 import { Ability, AbilityBuilder } from '@casl/ability';
-import { AnyClass } from '@casl/ability/dist/types/types';
+import { AnyClass, SubjectType } from '@casl/ability/dist/types/types';
 
 import { AuthorizableUser } from './authorizable-user.interface';
 import { DefaultActions } from '../actions.enum';
 
 export class UserAbilityBuilder<
-  Subjects = any,
+  Subjects = SubjectType,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser
 > extends AbilityBuilder<Ability> {
@@ -22,7 +22,7 @@ export class UserAbilityBuilder<
   };
 
   permissionsFor(role: string) {
-    const rolePermissions = this.permissions[role] as (permission: any) => void;
+    const rolePermissions = this.permissions[role];
     if (rolePermissions) {
       rolePermissions(this);
     }
@@ -30,18 +30,18 @@ export class UserAbilityBuilder<
 }
 
 export type DefinePermissions<
-  Subjects = any,
+  Subjects = SubjectType,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser
 > = (builder: UserAbilityBuilder<Subjects, Actions, User>) => void;
 
 export type Permissions<
   Roles extends string,
-  Subjects = any,
+  Subjects = SubjectType,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser
 > = Partial<
   Record<Roles | 'every' | 'everyone', DefinePermissions<Subjects, Actions, User>>
 >;
 
-export type AnyPermissions = Permissions<any, any, any, AuthorizableUser>;
+export type AnyPermissions = Permissions<string, SubjectType, string, AuthorizableUser>;

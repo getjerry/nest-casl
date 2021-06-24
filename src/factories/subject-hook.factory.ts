@@ -1,23 +1,28 @@
+import { AnyClass, AnyObject } from '@casl/ability/dist/types/types';
 import { ModuleRef } from '@nestjs/core';
 
+import { AuthorizableRequest } from '../interfaces/request.interface';
 import { SubjectBeforeFilterHook, SubjectBeforeFilterTuple } from '../interfaces/hooks.interface';
 
 export class NullSubjectHook implements SubjectBeforeFilterHook {
-  public async run(request: any) {
+  public async run() {
     return undefined;
   }
 }
 
 // TODO request generic params
-export class TupleSubjectHook<Service = any> implements SubjectBeforeFilterHook {
-  constructor(private service: Service, private runFunc: any){}
+export class TupleSubjectHook<Service> implements SubjectBeforeFilterHook {
+  constructor(
+    private service: Service,
+    private runFunc: (service: Service, request: AuthorizableRequest) => Promise<AnyObject | undefined>
+  ){}
 
-  public async run(request: any) {
+  public async run(request: AuthorizableRequest) {
     return this.runFunc(this.service, request);
   }
 }
 
-export async function subjectHookFactory(moduleRef: ModuleRef, hookOrTuple?: SubjectBeforeFilterHook | SubjectBeforeFilterTuple) {
+export async function subjectHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<SubjectBeforeFilterHook> | SubjectBeforeFilterTuple) {
   if (!hookOrTuple) {
     return new NullSubjectHook();
   }
@@ -26,5 +31,5 @@ export async function subjectHookFactory(moduleRef: ModuleRef, hookOrTuple?: Sub
     const service = moduleRef.get(ServiceClass);
     return new TupleSubjectHook<typeof ServiceClass>(service, runFunction);
   }
-  return moduleRef.create<SubjectBeforeFilterHook>(hookOrTuple as any);
+  return moduleRef.create<SubjectBeforeFilterHook>(hookOrTuple);
 }

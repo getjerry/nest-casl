@@ -26,7 +26,7 @@ const getPostService = (post: Post) => ({
 });
 
 const getUserService = (user: User) => ({
-  findById: jest.fn(),
+  findById: jest.fn(async () => user),
 });
 
 const createCaslTestingModule = async (

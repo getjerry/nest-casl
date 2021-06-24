@@ -1,19 +1,23 @@
 import { AnyClass } from '@casl/ability/dist/types/types';
 import { ModuleRef } from '@nestjs/core';
 
+import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
 import { UserBeforeFilterHook, UserBeforeFilterTuple } from '../interfaces/hooks.interface';
 
 export class NullUserHook implements UserBeforeFilterHook {
-  public async run(user: any) {
+  public async run() {
     return undefined;
   }
 }
 
 // TODO request generic params
-export class TupleUserHook<Service = any> implements UserBeforeFilterHook {
-  constructor(private service: Service, private runFunc: any){}
+export class TupleUserHook<Service> implements UserBeforeFilterHook {
+  constructor(
+    private service: Service,
+    private runFunc: (service: Service, user: AuthorizableUser) => Promise<AuthorizableUser | undefined>
+  ){}
 
-  public async run(user?: any) {
+  public async run(user: AuthorizableUser) {
     return this.runFunc(this.service, user);
   }
 }

@@ -1,3 +1,5 @@
+import { AnyObject } from "@casl/ability/dist/types/types";
+
 import { AuthorizableRequest } from "../interfaces/request.interface";
 import { CaslRequestCache } from "../interfaces/casl-request-cache.interface";
 import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
@@ -26,39 +28,39 @@ export class RequestProxy<User = AuthorizableUser> {
     return this.cached.conditions;
   }
 
-  public setConditions(conditions: ConditionsProxy) {
-    return this.cached.conditions = conditions;
+  public setConditions(conditions: ConditionsProxy): void {
+    this.cached.conditions = conditions;
   }
 
-  public getSubject() {
+  public getSubject(): AnyObject | undefined {
     return this.cached.subject;
   }
 
-  public setSubject(subject: any) {
-    return this.cached.subject = subject;
+  public setSubject(subject: AnyObject | undefined): void {
+    this.cached.subject = subject;
   }
 
   public getUser(): User | undefined {
     return this.cached.user;
   }
 
-  public setUser(user: User | undefined) {
-    return this.cached.user = user;
+  public setUser(user: User | undefined): void {
+    this.cached.user = user;
   }
 
-  public getUserHook() {
+  public getUserHook(): UserBeforeFilterHook<User> | undefined {
     return this.cached.hooks.user;
   }
 
-  public setUserHook(hook: UserBeforeFilterHook<User>) {
-    return this.cached.hooks.user = hook;
+  public setUserHook(hook: UserBeforeFilterHook<User>): void {
+    this.cached.hooks.user = hook;
   }
 
-  public getSubjectHook() {
+  public getSubjectHook(): SubjectBeforeFilterHook {
     return this.cached.hooks.subject;
   }
 
-  public setSubjectHook(hook: SubjectBeforeFilterHook) {
-    return this.cached.hooks.subject =  hook;
+  public setSubjectHook(hook: SubjectBeforeFilterHook): void {
+    this.cached.hooks.subject =  hook;
   }
 }

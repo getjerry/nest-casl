@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Ability, PureAbility, subject } from "@casl/ability";
+import { AnyObject } from '@casl/ability/dist/types/types';
 
 import { AuthorizableRequest } from "./interfaces/request.interface";
 import { AbilityFactory } from './factories/ability.factory';
@@ -16,7 +17,7 @@ export class AccessService {
     private abilityFactory: AbilityFactory,
   ) {}
 
-  public hasAbility(user: AuthorizableUser, action: string, subject: any): boolean {
+  public hasAbility(user: AuthorizableUser, action: string, subject: AnyObject): boolean {
     const { superuserRole } = CaslConfig.getRootOptions();
     const userAbilities = this.abilityFactory.createForUser(user);
 
@@ -38,7 +39,7 @@ export class AccessService {
     return userAbilities.can(action, subject);
   }
 
-  public assertAbility(user: AuthorizableUser, action: string, subject: any): void {
+  public assertAbility(user: AuthorizableUser, action: string, subject: AnyObject): void {
     if (!this.hasAbility(user, action, subject)) {
       throw new UnauthorizedException();
     }
@@ -94,6 +95,7 @@ export class AccessService {
     }
 
     // and match agains subject instance
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return userAbilities.can(ability.action, subject(ability.subject as any, subjectInstance))
   }
 }
