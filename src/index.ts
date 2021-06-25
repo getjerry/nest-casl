@@ -14,16 +14,9 @@ export {
   UserBeforeFilterTuple,
 } from './interfaces/hooks.interface';
 
-export {
-  AnyPermissions,
-  DefinePermissions,
-  Permissions,
-} from './interfaces/permissions.interface';
+export { AnyPermissions, DefinePermissions, Permissions } from './interfaces/permissions.interface';
 
-export {
-  Actions,
-  DefaultActions,
-} from './actions.enum';
+export { Actions, DefaultActions } from './actions.enum';
 
 export { ConditionsProxy } from './proxies/conditions.proxy';
 

@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Ability, PureAbility, subject } from "@casl/ability";
+import { Ability, PureAbility, subject } from '@casl/ability';
 import { AnyObject } from '@casl/ability/dist/types/types';
 
-import { AuthorizableRequest } from "./interfaces/request.interface";
+import { AuthorizableRequest } from './interfaces/request.interface';
 import { AbilityFactory } from './factories/ability.factory';
 import { AbilityMetadata } from './interfaces/ability-metadata.interface';
 import { UserProxy } from './proxies/user.proxy';
@@ -13,9 +13,7 @@ import { ConditionsProxy } from './proxies/conditions.proxy';
 
 @Injectable()
 export class AccessService {
-  constructor(
-    private abilityFactory: AbilityFactory,
-  ) {}
+  constructor(private abilityFactory: AbilityFactory) {}
 
   public hasAbility(user: AuthorizableUser, action: string, subject: AnyObject): boolean {
     const { superuserRole } = CaslConfig.getRootOptions();
@@ -35,7 +33,7 @@ export class AccessService {
     if (superuserRole && user.roles.includes(superuserRole)) {
       return true;
     }
-    
+
     return userAbilities.can(action, subject);
   }
 
@@ -73,7 +71,7 @@ export class AccessService {
     let userAbilities = this.abilityFactory.createForUser(user, ability.subjectHook ? Ability : PureAbility);
 
     const relevantRules = userAbilities.rulesFor(ability.action, ability.subject);
-    const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => (rule.conditions || {}));
+    const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => rule.conditions || {});
     req.setConditions(new ConditionsProxy(conditions));
 
     // If no relevant rules with conditions or no subject hook exists check against subject class
@@ -85,17 +83,17 @@ export class AccessService {
     const subjectInstance = await req.getSubjectHook().run(request);
     req.setSubject(subjectInstance);
 
-    if(!subjectInstance) {
+    if (!subjectInstance) {
       return userAbilities.can(ability.action, ability.subject);
     }
 
     const finalUser = await userProxy.get();
-    if(finalUser && finalUser !== userProxy.getFromRequest()) {
+    if (finalUser && finalUser !== userProxy.getFromRequest()) {
       userAbilities = this.abilityFactory.createForUser(finalUser);
     }
 
     // and match agains subject instance
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return userAbilities.can(ability.action, subject(ability.subject as any, subjectInstance))
+    return userAbilities.can(ability.action, subject(ability.subject as any, subjectInstance));
   }
 }

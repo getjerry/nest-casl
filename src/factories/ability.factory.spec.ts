@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AbilityFactory } from './ability.factory';
 
 import { Permissions } from '../interfaces/permissions.interface';
-import { DefaultActions as Actions } from "../actions.enum";
+import { DefaultActions as Actions } from '../actions.enum';
 import { Roles } from '../__specs__/app/app.roles';
 import { Post } from '../__specs__/app/post/dtos/post.dto';
 import { CASL_FEATURE_OPTIONS } from '../casl.constants';

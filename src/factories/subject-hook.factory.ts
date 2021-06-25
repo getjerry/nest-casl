@@ -14,15 +14,18 @@ export class NullSubjectHook implements SubjectBeforeFilterHook {
 export class TupleSubjectHook<Service> implements SubjectBeforeFilterHook {
   constructor(
     private service: Service,
-    private runFunc: (service: Service, request: AuthorizableRequest) => Promise<AnyObject | undefined>
-  ){}
+    private runFunc: (service: Service, request: AuthorizableRequest) => Promise<AnyObject | undefined>,
+  ) {}
 
   public async run(request: AuthorizableRequest): Promise<AnyObject | undefined> {
     return this.runFunc(this.service, request);
   }
 }
 
-export async function subjectHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<SubjectBeforeFilterHook> | SubjectBeforeFilterTuple): Promise<SubjectBeforeFilterHook> {
+export async function subjectHookFactory(
+  moduleRef: ModuleRef,
+  hookOrTuple?: AnyClass<SubjectBeforeFilterHook> | SubjectBeforeFilterTuple,
+): Promise<SubjectBeforeFilterHook> {
   if (!hookOrTuple) {
     return new NullSubjectHook();
   }

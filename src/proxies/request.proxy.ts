@@ -1,27 +1,27 @@
-import { AnyObject } from "@casl/ability/dist/types/types";
+import { AnyObject } from '@casl/ability/dist/types/types';
 
-import { AuthorizableRequest } from "../interfaces/request.interface";
-import { CaslRequestCache } from "../interfaces/casl-request-cache.interface";
-import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
-import { SubjectBeforeFilterHook, UserBeforeFilterHook } from "../interfaces/hooks.interface";
+import { AuthorizableRequest } from '../interfaces/request.interface';
+import { CaslRequestCache } from '../interfaces/casl-request-cache.interface';
+import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
+import { SubjectBeforeFilterHook, UserBeforeFilterHook } from '../interfaces/hooks.interface';
 import { NullSubjectHook } from '../factories/subject-hook.factory';
 import { NullUserHook } from '../factories/user-hook.factory';
-import { ConditionsProxy } from "./conditions.proxy";
+import { ConditionsProxy } from './conditions.proxy';
 
 export class RequestProxy<User = AuthorizableUser> {
   private readonly defaultCaslCache: CaslRequestCache<User> = {
     hooks: {
       subject: new NullSubjectHook(),
       user: new NullUserHook(),
-    }
-  }
+    },
+  };
 
   constructor(private request: AuthorizableRequest<User>) {
-    this.request.casl = this.request.casl || this.defaultCaslCache as CaslRequestCache<User>;
+    this.request.casl = this.request.casl || (this.defaultCaslCache as CaslRequestCache<User>);
   }
 
   public get cached(): CaslRequestCache<User> {
-    return this.request.casl  as CaslRequestCache<User>;
+    return this.request.casl as CaslRequestCache<User>;
   }
 
   public getConditions(): ConditionsProxy | undefined {
@@ -61,6 +61,6 @@ export class RequestProxy<User = AuthorizableUser> {
   }
 
   public setSubjectHook(hook: SubjectBeforeFilterHook): void {
-    this.cached.hooks.subject =  hook;
+    this.cached.hooks.subject = hook;
   }
 }

@@ -54,7 +54,7 @@ export class PostResolver {
   @Mutation(() => Post)
   @UseAbility<Post>(Actions.update, Post, [
     PostService,
-      (service: PostService, { params }) => service.findById(params.input.id),
+    (service: PostService, { params }) => service.findById(params.input.id),
   ])
   async updatePostTupleHook(@Args('input') input: UpdatePostInput) {
     return this.postService.update(input);
@@ -102,7 +102,10 @@ export class PostResolver {
 
   @Mutation(() => Post)
   @UseAbility(Actions.update, Post)
-  async updatePostConditionParamNoHook(@Args('input') input: UpdatePostInput, @CaslConditions() conditions: ConditionsProxy) {
+  async updatePostConditionParamNoHook(
+    @Args('input') input: UpdatePostInput,
+    @CaslConditions() conditions: ConditionsProxy,
+  ) {
     return this.postService.update(input, conditions.toSql());
   }
 }

@@ -1,15 +1,15 @@
-import { AuthorizableRequest } from "../interfaces/request.interface";
-import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
-import { RequestProxy } from "./request.proxy";
+import { AuthorizableRequest } from '../interfaces/request.interface';
+import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
+import { RequestProxy } from './request.proxy';
 
 export class UserProxy<User = AuthorizableUser> {
   constructor(
     private request: AuthorizableRequest<User>,
-    private getUserFromRequest: (request: AuthorizableRequest<User>) => User | undefined
+    private getUserFromRequest: (request: AuthorizableRequest<User>) => User | undefined,
   ) {}
 
   public async get(): Promise<User | undefined> {
-    return await this.getFromHook() || this.getFromRequest() || undefined;
+    return (await this.getFromHook()) || this.getFromRequest() || undefined;
   }
 
   public getFromRequest(): User | undefined {

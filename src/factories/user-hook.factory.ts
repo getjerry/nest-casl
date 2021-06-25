@@ -14,15 +14,18 @@ export class NullUserHook implements UserBeforeFilterHook {
 export class TupleUserHook<Service> implements UserBeforeFilterHook {
   constructor(
     private service: Service,
-    private runFunc: (service: Service, user: AuthorizableUser) => Promise<AuthorizableUser | undefined>
-  ){}
+    private runFunc: (service: Service, user: AuthorizableUser) => Promise<AuthorizableUser | undefined>,
+  ) {}
 
   public async run(user: AuthorizableUser): Promise<AuthorizableUser | undefined> {
     return this.runFunc(this.service, user);
   }
 }
 
-export async function userHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<UserBeforeFilterHook> | UserBeforeFilterTuple): Promise<UserBeforeFilterHook> {
+export async function userHookFactory(
+  moduleRef: ModuleRef,
+  hookOrTuple?: AnyClass<UserBeforeFilterHook> | UserBeforeFilterTuple,
+): Promise<UserBeforeFilterHook> {
   if (!hookOrTuple) {
     return new NullUserHook();
   }

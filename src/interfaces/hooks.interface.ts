@@ -1,6 +1,6 @@
 import { AnyClass, AnyObject } from '@casl/ability/dist/types/types';
 
-import { AuthorizableRequest } from "./request.interface";
+import { AuthorizableRequest } from './request.interface';
 import { AuthorizableUser } from './authorizable-user.interface';
 
 export interface SubjectBeforeFilterHook<Subject = AnyObject, Request = AuthorizableRequest> {

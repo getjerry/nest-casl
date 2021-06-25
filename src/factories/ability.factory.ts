@@ -1,22 +1,22 @@
-import { Ability, AnyAbility, PureAbility } from "@casl/ability";
-import { Inject, Injectable } from "@nestjs/common";
+import { Ability, AnyAbility, PureAbility } from '@casl/ability';
+import { Inject, Injectable } from '@nestjs/common';
 
-import { OptionsForFeature } from "../interfaces/options.interface";
-import { AuthorizableUser } from "../interfaces/authorizable-user.interface";
-import { UserAbilityBuilder } from "../interfaces/permissions.interface";
-import { CASL_FEATURE_OPTIONS } from "../casl.constants";
+import { OptionsForFeature } from '../interfaces/options.interface';
+import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
+import { UserAbilityBuilder } from '../interfaces/permissions.interface';
+import { CASL_FEATURE_OPTIONS } from '../casl.constants';
 
 @Injectable()
 export class AbilityFactory {
   constructor(
     @Inject(CASL_FEATURE_OPTIONS)
-    private readonly featureOptions: OptionsForFeature
+    private readonly featureOptions: OptionsForFeature,
   ) {}
 
   createForUser(user: AuthorizableUser, abilityClass = Ability): AnyAbility {
     const { permissions = {} } = this.featureOptions;
     const ability = new UserAbilityBuilder(user, permissions, abilityClass);
-    const everyone = permissions["everyone"] || permissions["every"];
+    const everyone = permissions['everyone'] || permissions['every'];
 
     if (everyone) {
       everyone(ability);

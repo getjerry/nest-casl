@@ -3,7 +3,7 @@ import { Actions, Permissions, InferSubjects } from 'nest-casl';
 import { Roles } from '../app.roles';
 import { Post } from './dtos/post.dto';
 
-type Subjects = InferSubjects<typeof Post>
+type Subjects = InferSubjects<typeof Post>;
 
 export const permissions: Permissions<Roles, Subjects, Actions> = {
   everyone({ can }) {
