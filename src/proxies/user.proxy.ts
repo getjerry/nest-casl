@@ -8,7 +8,7 @@ export class UserProxy<User = AuthorizableUser> {
     private getUserFromRequest: (request: AuthorizableRequest<User>) => User | undefined
   ) {}
 
-  public async get() {
+  public async get(): Promise<User | undefined> {
     return await this.getFromHook() || this.getFromRequest() || undefined;
   }
 

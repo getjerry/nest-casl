@@ -24,7 +24,7 @@ export class RequestProxy<User = AuthorizableUser> {
     return this.request.casl  as CaslRequestCache<User>;
   }
 
-  public getConditions() {
+  public getConditions(): ConditionsProxy | undefined {
     return this.cached.conditions;
   }
 

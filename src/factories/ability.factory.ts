@@ -1,4 +1,4 @@
-import { Ability, PureAbility } from "@casl/ability";
+import { Ability, AnyAbility, PureAbility } from "@casl/ability";
 import { Inject, Injectable } from "@nestjs/common";
 
 import { OptionsForFeature } from "../interfaces/options.interface";
@@ -13,7 +13,7 @@ export class AbilityFactory {
     private readonly featureOptions: OptionsForFeature
   ) {}
 
-  createForUser(user: AuthorizableUser, abilityClass = Ability) {
+  createForUser(user: AuthorizableUser, abilityClass = Ability): AnyAbility {
     const { permissions = {} } = this.featureOptions;
     const ability = new UserAbilityBuilder(user, permissions, abilityClass);
     const everyone = permissions["everyone"] || permissions["every"];

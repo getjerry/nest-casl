@@ -17,11 +17,11 @@ export class UserAbilityBuilder<
     super(AbilityType);
   }
 
-  extend = (role: string) => {
+  extend = (role: string): void => {
     this.permissionsFor(role);
   };
 
-  permissionsFor(role: string) {
+  permissionsFor(role: string): void {
     const rolePermissions = this.permissions[role];
     if (rolePermissions) {
       rolePermissions(this);

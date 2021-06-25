@@ -8,7 +8,7 @@ import { Post } from './dtos/post.dto';
 export class PostHook implements SubjectBeforeFilterHook<Post> {
   constructor(readonly postService: PostService) {}
 
-  async run({ params }: Request) {
+  async run({ params }: Request): Promise<Post> {
     return this.postService.findById(params.input.id);
   }
 }

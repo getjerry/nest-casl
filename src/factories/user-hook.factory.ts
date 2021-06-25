@@ -5,7 +5,7 @@ import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
 import { UserBeforeFilterHook, UserBeforeFilterTuple } from '../interfaces/hooks.interface';
 
 export class NullUserHook implements UserBeforeFilterHook {
-  public async run() {
+  public async run(): Promise<undefined> {
     return undefined;
   }
 }
@@ -17,12 +17,12 @@ export class TupleUserHook<Service> implements UserBeforeFilterHook {
     private runFunc: (service: Service, user: AuthorizableUser) => Promise<AuthorizableUser | undefined>
   ){}
 
-  public async run(user: AuthorizableUser) {
+  public async run(user: AuthorizableUser): Promise<AuthorizableUser | undefined> {
     return this.runFunc(this.service, user);
   }
 }
 
-export async function userHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<UserBeforeFilterHook> | UserBeforeFilterTuple) {
+export async function userHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<UserBeforeFilterHook> | UserBeforeFilterTuple): Promise<UserBeforeFilterHook> {
   if (!hookOrTuple) {
     return new NullUserHook();
   }

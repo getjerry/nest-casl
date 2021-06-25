@@ -10,7 +10,7 @@ export function UseAbility<Subject = AnyObject, Request = AuthorizableRequest>(
   action: string,
   subject: AnyClass<Subject>,
   subjectHook?: AnyClass<SubjectBeforeFilterHook<Subject, Request>> | SubjectBeforeFilterTuple<Subject, Request>,
-) {
+): (target: AnyObject, propertyKey?: string | symbol | undefined, descriptor?: TypedPropertyDescriptor<unknown> | undefined) => void {
   return applyDecorators(
     SetAbility(action, subject, subjectHook),
     UseGuards(AccessGuard)

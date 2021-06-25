@@ -5,7 +5,7 @@ import { AuthorizableRequest } from '../interfaces/request.interface';
 import { SubjectBeforeFilterHook, SubjectBeforeFilterTuple } from '../interfaces/hooks.interface';
 
 export class NullSubjectHook implements SubjectBeforeFilterHook {
-  public async run() {
+  public async run(): Promise<undefined> {
     return undefined;
   }
 }
@@ -17,12 +17,12 @@ export class TupleSubjectHook<Service> implements SubjectBeforeFilterHook {
     private runFunc: (service: Service, request: AuthorizableRequest) => Promise<AnyObject | undefined>
   ){}
 
-  public async run(request: AuthorizableRequest) {
+  public async run(request: AuthorizableRequest): Promise<AnyObject | undefined> {
     return this.runFunc(this.service, request);
   }
 }
 
-export async function subjectHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<SubjectBeforeFilterHook> | SubjectBeforeFilterTuple) {
+export async function subjectHookFactory(moduleRef: ModuleRef, hookOrTuple?: AnyClass<SubjectBeforeFilterHook> | SubjectBeforeFilterTuple): Promise<SubjectBeforeFilterHook> {
   if (!hookOrTuple) {
     return new NullSubjectHook();
   }
