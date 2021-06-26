@@ -17,6 +17,11 @@ describe('CaslConfig', () => {
     expect(Reflect.getMetadata).toBeCalledWith(CASL_ROOT_OPTIONS, CaslConfig);
   });
 
+  it('should work with undefined metadata', async () => {
+    Reflect.getMetadata = jest.fn().mockImplementation(() => undefined);
+    expect(CaslConfig.getRootOptions()).toBeTruthy();
+  });
+
   it('should add default getUserFromRequest function if not set', async () => {
     rootOptions = {};
     expect(

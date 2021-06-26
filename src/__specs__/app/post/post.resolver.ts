@@ -1,11 +1,14 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AccessService,
+  AccessGuard,
   Actions,
   ConditionsProxy,
   CaslConditions,
   CaslSubject,
   CaslUser,
+  DefaultActions,
+  SetAbility,
   UseAbility,
   UserProxy,
 } from 'nest-casl';
@@ -16,6 +19,7 @@ import { PostService } from './post.service';
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
 import { User } from '../user/dtos/user.dto';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -30,6 +34,13 @@ export class PostResolver {
   @Query(() => [Post])
   @UseAbility(Actions.read, Post)
   async posts() {
+    return this.postService.findAll();
+  }
+
+  @Query(() => [Post])
+  @UseGuards(AccessGuard)
+  @SetAbility(DefaultActions.read, Post)
+  async postsSetAbility() {
     return this.postService.findAll();
   }
 

@@ -29,8 +29,8 @@ export class AccessGuard implements CanActivate {
       ...(request.params || {}),
     };
     const { getUserHook } = CaslConfig.getRootOptions();
-
     const req = new RequestProxy(request);
+
     req.setUserHook(await userHookFactory(this.moduleRef, getUserHook));
     req.setSubjectHook(await subjectHookFactory(this.moduleRef, ability?.subjectHook));
 

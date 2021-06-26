@@ -8,4 +8,4 @@ export { CaslUser } from './casl-user';
 
 export { CaslConditions } from './casl-conditions';
 
-export { CaslQueryAuthorize } from './casl-query-authorize';
+// export { CaslQueryAuthorize } from './casl-query-authorize';

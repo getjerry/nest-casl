@@ -13,6 +13,13 @@
     "type": "git",
     "url": "git+https://github.com/getjerry/nest-casl.git"
   },
+  "keywords": [
+    "authorization",
+    "authz",
+    "nest",
+    "nestjs",
+    "casl"
+  ],
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",

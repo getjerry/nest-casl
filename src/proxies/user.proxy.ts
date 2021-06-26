@@ -19,21 +19,16 @@ export class UserProxy<User = AuthorizableUser> {
   public async getFromHook(): Promise<User | undefined> {
     const req = this.getRequest();
     const requestUser = this.getFromRequest();
-    const userHook = req.getUserHook();
-
-    if (!requestUser) {
-      return undefined;
-    }
-
-    if (!userHook) {
-      return undefined;
-    }
 
     if (req.getUser()) {
       return req.getUser();
     }
 
-    req.setUser(await userHook.run(requestUser));
+    if (!requestUser) {
+      return undefined;
+    }
+
+    req.setUser(await req.getUserHook().run(requestUser));
     return req.getUser();
   }
 

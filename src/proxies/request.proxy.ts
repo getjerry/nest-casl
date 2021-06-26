@@ -48,7 +48,7 @@ export class RequestProxy<User = AuthorizableUser> {
     this.cached.user = user;
   }
 
-  public getUserHook(): UserBeforeFilterHook<User> | undefined {
+  public getUserHook(): UserBeforeFilterHook<User> {
     return this.cached.hooks.user;
   }
 

@@ -20,7 +20,11 @@ export class ConditionsProxy {
     const interpret = createSqlInterpreter(allInterpreters);
     return interpret(this.toAst(), {
       ...pg,
-      joinRelation: () => false,
+      joinRelation: this.joinRelation,
     });
+  }
+
+  public joinRelation(): boolean {
+    return false
   }
 }

@@ -8,7 +8,7 @@ import { CaslConfig } from './casl.config';
 
 describe('AccessGuard', () => {
   const req = new Object();
-  const ability = jest.fn();
+  let abilityMetadata: unknown | undefined = {};
   let accessGuard: AccessGuard;
   let accessService: AccessService;
 
@@ -18,7 +18,7 @@ describe('AccessGuard', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         AccessGuard,
-        { provide: Reflector, useValue: { get: jest.fn().mockImplementation(() => ability) } },
+        { provide: Reflector, useValue: { get: jest.fn().mockImplementation(() => abilityMetadata) } },
         { provide: AccessService, useValue: { canActivateAbility: jest.fn() } },
       ],
     }).compile();
@@ -30,6 +30,13 @@ describe('AccessGuard', () => {
   it('passes context request and ability to AccessService.canActivateAbility method', async () => {
     const context = new ExecutionContextHost([undefined, undefined, { req }]);
     await accessGuard.canActivate(context);
-    expect(accessService.canActivateAbility).toBeCalledWith(req, ability);
+    expect(accessService.canActivateAbility).toBeCalledWith(req, abilityMetadata);
+  });
+
+  it('passes context request and ability to AccessService.canActivateAbility method', async () => {
+    abilityMetadata = undefined;
+    const context = new ExecutionContextHost([undefined, undefined, { req }]);
+    await accessGuard.canActivate(context);
+    expect(accessService.canActivateAbility).toBeCalledWith(req, abilityMetadata);
   });
 });
