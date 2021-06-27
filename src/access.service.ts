@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Ability, PureAbility, subject } from '@casl/ability';
-import { AnyObject } from '@casl/ability/dist/types/types';
+import { Subject } from '@casl/ability/dist/types/types';
 
 import { AuthorizableRequest } from './interfaces/request.interface';
 import { AbilityFactory } from './factories/ability.factory';
@@ -15,19 +15,19 @@ import { ConditionsProxy } from './proxies/conditions.proxy';
 export class AccessService {
   constructor(private abilityFactory: AbilityFactory) {}
 
-  public hasAbility(user: AuthorizableUser, action: string, subject: AnyObject): boolean {
-    const { superuserRole } = CaslConfig.getRootOptions();
-    const userAbilities = this.abilityFactory.createForUser(user);
-
+  public hasAbility(user: AuthorizableUser, action: string, subject: Subject): boolean {
     // No user - no access
     if (!user) {
       return false;
     }
 
-    // User exists but no ability metadata - allow access
+    // User exists but no ability metadata - deny access
     if (!action || !subject) {
-      return true;
+      return false;
     }
+
+    const { superuserRole } = CaslConfig.getRootOptions();
+    const userAbilities = this.abilityFactory.createForUser(user);
 
     // Always allow access for superuser
     if (superuserRole && user.roles.includes(superuserRole)) {
@@ -37,8 +37,13 @@ export class AccessService {
     return userAbilities.can(action, subject);
   }
 
-  public assertAbility(user: AuthorizableUser, action: string, subject: AnyObject): void {
+  public assertAbility(user: AuthorizableUser, action: string, subject: Subject): void {
     if (!this.hasAbility(user, action, subject)) {
+      const userAbilities = this.abilityFactory.createForUser(user, Ability);
+      const relatedRules = userAbilities.rulesFor(action, typeof subject === 'object' ? subject.constructor : subject);
+      if (relatedRules.some((rule) => rule.conditions)) {
+        throw new NotFoundException();
+      }
       throw new UnauthorizedException();
     }
   }
@@ -57,9 +62,9 @@ export class AccessService {
       return false;
     }
 
-    // User exists but no ability metadata - allow access
+    // User exists but no ability metadata - deny access
     if (!ability) {
-      return true;
+      return false;
     }
 
     // Always allow access for superuser
