@@ -28,14 +28,14 @@ describe('AccessGuard', () => {
   });
 
   it('passes context request and ability to AccessService.canActivateAbility method', async () => {
-    const context = new ExecutionContextHost([undefined, undefined, { req }]);
+    const context = new ExecutionContextHost([req, undefined, { req }]);
     await accessGuard.canActivate(context);
     expect(accessService.canActivateAbility).toBeCalledWith(req, abilityMetadata);
   });
 
   it('passes context request and ability to AccessService.canActivateAbility method', async () => {
     abilityMetadata = undefined;
-    const context = new ExecutionContextHost([undefined, undefined, { req }]);
+    const context = new ExecutionContextHost([req, undefined, { req }]);
     await accessGuard.canActivate(context);
     expect(accessService.canActivateAbility).toBeCalledWith(req, abilityMetadata);
   });

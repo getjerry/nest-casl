@@ -1,6 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { AccessService } from './access.service';
 import { CaslConfig } from './casl.config';
@@ -8,8 +7,8 @@ import { CASL_META_ABILITY } from './casl.constants';
 import { AbilityMetadata } from './interfaces/ability-metadata.interface';
 import { subjectHookFactory } from './factories/subject-hook.factory';
 import { userHookFactory } from './factories/user-hook.factory';
-import { ContextWithAuthorizableRequest } from './interfaces/request.interface';
 import { RequestProxy } from './proxies/request.proxy';
+import { ContextProxy } from './proxies/context.proxy';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -21,13 +20,7 @@ export class AccessGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ability = this.reflector.get<AbilityMetadata | undefined>(CASL_META_ABILITY, context.getHandler());
-    // TODO rest
-    const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext<ContextWithAuthorizableRequest>().req;
-    request.params = {
-      ...(ctx.getArgs() || {}),
-      ...(request.params || {}),
-    };
+    const request = ContextProxy.create(context).getRequest();
     const { getUserHook } = CaslConfig.getRootOptions();
     const req = new RequestProxy(request);
 

@@ -9,6 +9,6 @@ export class PostHook implements SubjectBeforeFilterHook<Post> {
   constructor(readonly postService: PostService) {}
 
   async run({ params }: Request): Promise<Post> {
-    return this.postService.findById(params.input.id);
+    return this.postService.findById(params.id || params.input.id);
   }
 }

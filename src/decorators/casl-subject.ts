@@ -1,8 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
+
+import { ContextProxy } from '../proxies/context.proxy';
 
 export const CaslSubject = createParamDecorator((data: unknown, context: ExecutionContext) => {
-  // TODO rest
-  const ctx = GqlExecutionContext.create(context);
-  return ctx.getContext().req.casl.subject;
+  const request = ContextProxy.create(context).getRequest();
+  return request.casl.subject;
 });
