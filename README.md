@@ -408,10 +408,3 @@ class Request {
 })
 export class AppModule {}
 ```
-
-## TODO
-- Fix lint warnings
-- Rest support
-- Nest query integration
-- Field-level access control
-- Check circular dependencies

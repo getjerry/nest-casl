@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Ability, PureAbility, subject } from '@casl/ability';
-import { Subject } from '@casl/ability/dist/types/types';
+import { AnyObject, Subject } from '@casl/ability/dist/types/types';
 
 import { AuthorizableRequest } from './interfaces/request.interface';
 import { AbilityFactory } from './factories/ability.factory';
@@ -48,7 +48,7 @@ export class AccessService {
     }
   }
 
-  public async canActivateAbility(request: AuthorizableRequest, ability?: AbilityMetadata): Promise<boolean> {
+  public async canActivateAbility<Subject = AnyObject>(request: AuthorizableRequest, ability?: AbilityMetadata<Subject>): Promise<boolean> {
     const { getUserFromRequest, superuserRole } = CaslConfig.getRootOptions();
 
     const userProxy = new UserProxy(request, getUserFromRequest);
@@ -76,7 +76,7 @@ export class AccessService {
     let userAbilities = this.abilityFactory.createForUser(user, ability.subjectHook ? Ability : PureAbility);
 
     const relevantRules = userAbilities.rulesFor(ability.action, ability.subject);
-    const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => rule.conditions || {});
+    const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => rule.conditions);
     req.setConditions(new ConditionsProxy(conditions));
 
     // If no relevant rules with conditions or no subject hook exists check against subject class
