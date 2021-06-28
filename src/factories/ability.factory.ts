@@ -6,6 +6,8 @@ import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
 import { UserAbilityBuilder } from '../interfaces/permissions.interface';
 import { CASL_FEATURE_OPTIONS } from '../casl.constants';
 
+export const nullConditionsMatcher = () => (): boolean => true;
+
 @Injectable()
 export class AbilityFactory {
   constructor(
@@ -14,7 +16,7 @@ export class AbilityFactory {
   ) {}
 
   createForUser(user: AuthorizableUser, abilityClass = Ability): AnyAbility {
-    const { permissions = {} } = this.featureOptions;
+    const { permissions } = this.featureOptions;
     const ability = new UserAbilityBuilder(user, permissions, abilityClass);
     const everyone = permissions['everyone'] || permissions['every'];
 
@@ -28,7 +30,7 @@ export class AbilityFactory {
 
     // For PureAbility skip conditions check, conditions will be available for filtering through @CaslConditions() param
     if (abilityClass === PureAbility) {
-      return ability.build({ conditionsMatcher: () => () => true });
+      return ability.build({ conditionsMatcher: nullConditionsMatcher });
     }
     return ability.build();
   }

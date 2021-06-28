@@ -154,18 +154,18 @@ describe('AccessService', () => {
       user = { id: 'userId', roles: [Roles.customer] };
  
       class UserHook implements UserBeforeFilterHook<User> {
-        public async run(user: User) {
+        public async run() {
           return user;
         }
       }
 
       class PostHook implements SubjectBeforeFilterHook<Post> {
         public async run() {
-          return new Post();
+          return { ...new Post() };
         }
       }
 
-      const request = {
+      const request: AuthorizableRequest = {
         user,
         casl: {
           user,
@@ -175,13 +175,15 @@ describe('AccessService', () => {
           },
         },
       };
+
       const abilityMetadata = {
         action: Actions.update,
         subject: Post,
         subjectHook: PostHook,
       };
+
       expect(
-        await accessService.canActivateAbility(request as unknown as AuthorizableRequest, abilityMetadata),
+        await accessService.canActivateAbility(request, abilityMetadata),
       ).toBeFalsy();
     });
   });
