@@ -5,22 +5,17 @@ class ServiceClass {}
 
 describe('userHookFactory', () => {
   const moduleRef = {
-    get: jest.fn()
+    get: jest.fn(),
   } as unknown as ModuleRef;
 
-  // beforeEach(async () => {
-  //   abilityFactory = await getAbilityFactory(permissions);
-  // });
-
-  it("resolves to instance of TupleUserHook with tuple hook passed", async () => {
+  it('resolves to instance of TupleUserHook with tuple hook passed', async () => {
     expect(await userHookFactory(moduleRef, [ServiceClass, async (user) => user])).toBeInstanceOf(TupleUserHook);
   });
 
-  it("TupleUserHook runs passed function", async () => {
+  it('TupleUserHook runs passed function', async () => {
     const tupleFunc = jest.fn().mockImplementation(async (user) => user);
-    const tupleUserHook = await userHookFactory(moduleRef, [ServiceClass, tupleFunc])
+    const tupleUserHook = await userHookFactory(moduleRef, [ServiceClass, tupleFunc]);
     tupleUserHook.run({ id: 'id', roles: [] });
     expect(tupleFunc).toBeCalled();
   });
 });
-

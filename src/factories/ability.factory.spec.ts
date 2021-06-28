@@ -89,5 +89,5 @@ describe('AbilityFactory', () => {
 
   it('null conditions matcher always true', () => {
     expect(nullConditionsMatcher()()).toBeTruthy();
-  })
+  });
 });

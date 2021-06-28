@@ -25,6 +25,6 @@ export class ConditionsProxy {
   }
 
   public joinRelation(): boolean {
-    return false
+    return false;
   }
 }

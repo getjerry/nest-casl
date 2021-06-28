@@ -152,7 +152,7 @@ describe('AccessService', () => {
 
     it('allow access with subject hook returning object', async () => {
       user = { id: 'userId', roles: [Roles.customer] };
- 
+
       class UserHook implements UserBeforeFilterHook<User> {
         public async run() {
           return user;
@@ -182,9 +182,7 @@ describe('AccessService', () => {
         subjectHook: PostHook,
       };
 
-      expect(
-        await accessService.canActivateAbility(request, abilityMetadata),
-      ).toBeFalsy();
+      expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeFalsy();
     });
   });
 });

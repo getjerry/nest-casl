@@ -48,7 +48,10 @@ export class AccessService {
     }
   }
 
-  public async canActivateAbility<Subject = AnyObject>(request: AuthorizableRequest, ability?: AbilityMetadata<Subject>): Promise<boolean> {
+  public async canActivateAbility<Subject = AnyObject>(
+    request: AuthorizableRequest,
+    ability?: AbilityMetadata<Subject>,
+  ): Promise<boolean> {
     const { getUserFromRequest, superuserRole } = CaslConfig.getRootOptions();
 
     const userProxy = new UserProxy(request, getUserFromRequest);
