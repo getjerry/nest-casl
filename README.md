@@ -150,8 +150,8 @@ export class PostResolver {
   }
 
   // Tags method with ability action and subject and adds AccessGuard implicitly
-  @UseGuards(AuthGuard)
   @UseAbility(Actions.create, Post)
+  @UseGuards(AuthGuard)
   async createPost(@Args('input') input: CreatePostInput) {
     return this.postService.create(input);
   }
@@ -165,8 +165,8 @@ export class PostResolver {
 
   // Use hook to get subject for conditional rule
   @Mutation(() => Post)
-  @UseGuards(AuthGuard)
   @UseAbility(Actions.update, Post, PostHook)
+  @UseGuards(AuthGuard)
   async updatePost(@Args('input') input: UpdatePostInput) {
     return this.postService.update(input);
   }
@@ -199,8 +199,8 @@ passed as third argument of UserAbility
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post, PostHook)
+@UseGuards(AuthGuard)
 async updatePost(@Args('input') input: UpdatePostInput) {
   return this.postService.update(input);
 }
@@ -210,11 +210,11 @@ Class hooks are preferred method, it has full dependency injection support and c
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard)
 @UseAbility<Post>(Actions.update, Post, [
   PostService,
   (service: PostService, { params }) => service.findById(params.input.id),
 ])
+@UseGuards(AuthGuard)
 async updatePost(@Args('input') input: UpdatePostInput) {
   return this.postService.update(input);
 }
@@ -225,8 +225,8 @@ Subject instance returned from subject hook is cached on request object and can 
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post, PostHook)
+@UseGuards(AuthGuard)
 async updatePost(
   @Args('input') input: UpdatePostInput,
   @CaslSubject() post: Post
@@ -240,8 +240,8 @@ Permission conditions can be used in resolver through CaslConditions decorator, 
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post)
+@UseGuards(AuthGuard)
 async updatePostConditionParamNoHook(
   @Args('input') input: UpdatePostInput,
   @CaslConditions() conditions: ConditionsProxy
@@ -255,8 +255,8 @@ async updatePostConditionParamNoHook(
 
 ```typescript
 @Mutation(() => Post)
-@UseGuards(AuthGuard)
 @UseAbility(Actions.update, Post)
+@UseGuards(AuthGuard)
 async updatePostConditionParamNoHook(
   @Args('input') input: UpdatePostInput,
   @CaslUser() userProxy: UserProxy<User>
