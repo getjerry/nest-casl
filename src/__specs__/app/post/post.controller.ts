@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Put } from '@nestjs/common';
-import { UseAbility, Actions } from 'nest-casl';
+import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { AccessGuard, UseAbility, Actions } from 'nest-casl';
 import { Post } from './dtos/post.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
 import { PostHook } from './post.hook';
@@ -16,6 +16,7 @@ export class PostController {
   }
 
   @Put(':id')
+  @UseGuards(AccessGuard)
   @UseAbility(Actions.update, Post, PostHook)
   async updatePost(@Param('id') id: string, @Body() updatePostInput: UpdatePostInput) {
     return this.postService.update({ ...updatePostInput, id });

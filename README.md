@@ -124,7 +124,7 @@ Assuming authentication handled by AuthGuard. AccessGuard expects user to at lea
 
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AccessGuard, SetAbility, UseAbility, Actions } from 'nest-casl';
+import { AccessGuard, UseAbility, Actions } from 'nest-casl';
 
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
@@ -150,23 +150,16 @@ export class PostResolver {
   }
 
   // Tags method with ability action and subject and adds AccessGuard implicitly
-  @UseAbility(Actions.create, Post)
-  @UseGuards(AuthGuard)
-  async createPost(@Args('input') input: CreatePostInput) {
-    return this.postService.create(input);
-  }
-
-  // Same as above
   @UseGuards(AuthGuard, AccessGuard)
-  @SetAbility(Actions.create, Post)
+  @UseAbility(Actions.create, Post)
   async createPost(@Args('input') input: CreatePostInput) {
     return this.postService.create(input);
   }
 
   // Use hook to get subject for conditional rule
   @Mutation(() => Post)
+  @UseGuards(AuthGuard, AccessGuard)
   @UseAbility(Actions.update, Post, PostHook)
-  @UseGuards(AuthGuard)
   async updatePost(@Args('input') input: UpdatePostInput) {
     return this.postService.update(input);
   }
@@ -199,8 +192,8 @@ passed as third argument of UserAbility
 
 ```typescript
 @Mutation(() => Post)
+@UseGuards(AuthGuard, AccessGuard)
 @UseAbility(Actions.update, Post, PostHook)
-@UseGuards(AuthGuard)
 async updatePost(@Args('input') input: UpdatePostInput) {
   return this.postService.update(input);
 }
@@ -210,11 +203,11 @@ Class hooks are preferred method, it has full dependency injection support and c
 
 ```typescript
 @Mutation(() => Post)
+@UseGuards(AuthGuard, AccessGuard)
 @UseAbility<Post>(Actions.update, Post, [
   PostService,
   (service: PostService, { params }) => service.findById(params.input.id),
 ])
-@UseGuards(AuthGuard)
 async updatePost(@Args('input') input: UpdatePostInput) {
   return this.postService.update(input);
 }
@@ -225,8 +218,8 @@ Subject instance returned from subject hook is cached on request object and can 
 
 ```typescript
 @Mutation(() => Post)
+@UseGuards(AuthGuard, AccessGuard)
 @UseAbility(Actions.update, Post, PostHook)
-@UseGuards(AuthGuard)
 async updatePost(
   @Args('input') input: UpdatePostInput,
   @CaslSubject() post: Post
@@ -240,8 +233,8 @@ Permission conditions can be used in resolver through CaslConditions decorator, 
 
 ```typescript
 @Mutation(() => Post)
+@UseGuards(AuthGuard, AccessGuard)
 @UseAbility(Actions.update, Post)
-@UseGuards(AuthGuard)
 async updatePostConditionParamNoHook(
   @Args('input') input: UpdatePostInput,
   @CaslConditions() conditions: ConditionsProxy
@@ -255,8 +248,8 @@ async updatePostConditionParamNoHook(
 
 ```typescript
 @Mutation(() => Post)
+@UseGuards(AuthGuard, AccessGuard)
 @UseAbility(Actions.update, Post)
-@UseGuards(AuthGuard)
 async updatePostConditionParamNoHook(
   @Args('input') input: UpdatePostInput,
   @CaslUser() userProxy: UserProxy<User>
