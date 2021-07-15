@@ -16,6 +16,8 @@ export {
 
 export { AnyPermissions, DefinePermissions, Permissions } from './interfaces/permissions.interface';
 
+export { OptionsForRoot, OptionsForFeature } from './interfaces/options.interface';
+
 export { Actions, DefaultActions } from './actions.enum';
 
 export { ConditionsProxy } from './proxies/conditions.proxy';
