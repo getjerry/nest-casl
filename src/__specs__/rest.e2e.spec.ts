@@ -64,7 +64,9 @@ describe('REST controller with CASL authorization', () => {
     return request(app.getHttpServer())
       .get('/posts')
       .expect(200)
-      .expect(await postService.findAll());
+      .expect(async (res) => {
+        expect(res.body).toEqual(await postService.findAll());
+      });
   });
 
   it(`allows /PUT posts/:id`, async () => {
