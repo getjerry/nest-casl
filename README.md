@@ -214,7 +214,7 @@ async updatePost(@Args('input') input: UpdatePostInput) {
 ```
 
 ### CaslSubject decorator
-Subject instance returned from subject hook is cached on request object and can be accessed within resolver method using `CaslSubject` param decorator
+`CaslSubject` decorator provides access to lazy loaded subject, obtained from [subject hook](#subject-hook) and cached on request object.
 
 ```typescript
 @Mutation(() => Post)
@@ -222,9 +222,9 @@ Subject instance returned from subject hook is cached on request object and can 
 @UseAbility(Actions.update, Post, PostHook)
 async updatePost(
   @Args('input') input: UpdatePostInput,
-  @CaslSubject() post: Post
+  @CaslSubject() subjectProxy: SubjectProxy<Post>
 ) {
-  //...
+  const post = await subjectProxy.get();
 }
 ```
 

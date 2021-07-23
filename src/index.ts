@@ -24,6 +24,8 @@ export { ConditionsProxy } from './proxies/conditions.proxy';
 
 export { UserProxy } from './proxies/user.proxy';
 
+export { SubjectProxy } from './proxies/subject.proxy';
+
 export { AccessGuard } from './access.guard';
 
 export { AccessService } from './access.service';

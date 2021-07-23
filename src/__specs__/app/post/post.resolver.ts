@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import {
   AccessService,
   AccessGuard,
@@ -9,15 +10,15 @@ import {
   CaslUser,
   UseAbility,
   UserProxy,
+  SubjectProxy,
 } from 'nest-casl';
 
+import { User } from '../user/dtos/user.dto';
 import { Post } from './dtos/post.dto';
 import { PostHook } from './post.hook';
 import { PostService } from './post.service';
 import { CreatePostInput } from './dtos/create-post-input.dto';
 import { UpdatePostInput } from './dtos/update-post-input.dto';
-import { User } from '../user/dtos/user.dto';
-import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -92,8 +93,12 @@ export class PostResolver {
   @Mutation(() => Post)
   @UseGuards(AccessGuard)
   @UseAbility(Actions.update, Post, PostHook)
-  async updatePostSubjectParam(@Args('input') input: UpdatePostInput, @CaslSubject() subject: Post) {
-    return this.postService.update(subject);
+  async updatePostSubjectParam(@Args('input') input: UpdatePostInput, @CaslSubject() subjectProxy: SubjectProxy<Post>) {
+    const post = await subjectProxy.get();
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return this.postService.update(post);
   }
 
   @Mutation(() => Post)
@@ -102,8 +107,15 @@ export class PostResolver {
     PostService,
     (service: PostService, { params }) => service.findById(params.input.id),
   ])
-  async updatePostSubjectParamTuple(@Args('input') input: UpdatePostInput, @CaslSubject() subject: Post) {
-    return this.postService.update(subject);
+  async updatePostSubjectParamTuple(
+    @Args('input') input: UpdatePostInput,
+    @CaslSubject() subjectProxy: SubjectProxy<Post>,
+  ) {
+    const post = await subjectProxy.get();
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return this.postService.update(post);
   }
 
   @Mutation(() => Post)

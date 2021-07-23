@@ -8,20 +8,20 @@ import { NullSubjectHook } from '../factories/subject-hook.factory';
 import { NullUserHook } from '../factories/user-hook.factory';
 import { ConditionsProxy } from './conditions.proxy';
 
-export class RequestProxy<User = AuthorizableUser> {
-  private readonly defaultCaslCache: CaslRequestCache<User> = {
+export class RequestProxy<User = AuthorizableUser, Subject = AnyObject> {
+  private readonly defaultCaslCache: CaslRequestCache<User, Subject> = {
     hooks: {
       subject: new NullSubjectHook(),
       user: new NullUserHook(),
     },
   };
 
-  constructor(private request: AuthorizableRequest<User>) {
-    this.request.casl = this.request.casl || (this.defaultCaslCache as CaslRequestCache<User>);
+  constructor(private request: AuthorizableRequest<User, Subject>) {
+    this.request.casl = this.request.casl || (this.defaultCaslCache as CaslRequestCache<User, Subject>);
   }
 
-  public get cached(): CaslRequestCache<User> {
-    return this.request.casl as CaslRequestCache<User>;
+  public get cached(): CaslRequestCache<User, Subject> {
+    return this.request.casl as CaslRequestCache<User, Subject>;
   }
 
   public getConditions(): ConditionsProxy | undefined {
@@ -32,11 +32,11 @@ export class RequestProxy<User = AuthorizableUser> {
     this.cached.conditions = conditions;
   }
 
-  public getSubject(): AnyObject | undefined {
+  public getSubject(): Subject | undefined {
     return this.cached.subject;
   }
 
-  public setSubject(subject: AnyObject | undefined): void {
+  public setSubject(subject: Subject | undefined): void {
     this.cached.subject = subject;
   }
 
@@ -56,11 +56,11 @@ export class RequestProxy<User = AuthorizableUser> {
     this.cached.hooks.user = hook;
   }
 
-  public getSubjectHook(): SubjectBeforeFilterHook {
+  public getSubjectHook(): SubjectBeforeFilterHook<Subject> {
     return this.cached.hooks.subject;
   }
 
-  public setSubjectHook(hook: SubjectBeforeFilterHook): void {
+  public setSubjectHook(hook: SubjectBeforeFilterHook<Subject>): void {
     this.cached.hooks.subject = hook;
   }
 }
