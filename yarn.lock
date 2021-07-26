@@ -1238,9 +1238,9 @@
     "@ucast/mongo" "^2.4.0"
 
 "@ucast/mongo@^2.4.0", "@ucast/mongo@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/@ucast/mongo/-/mongo-2.4.1.tgz"
-  integrity sha512-l/hc3TxjWO9inBrgM5iMCAcsIeV2DToppRlabQa5xB/6uHYtCXfm3TPaJgr8TU1OFxqPlaXEnNQhaV0sVHGsoQ==
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@ucast/mongo/-/mongo-2.4.2.tgz#a8a1c32e65ccab623be023e6cedb11d136d50f19"
+  integrity sha512-/zH1TdBJlYGKKD+Wh0oyD+aBvDSWrwHcD8b4tUL9UgHLhzHtkEnMVFuxbw3SRIRsAa01wmy06+LWt+WoZdj1Bw==
   dependencies:
     "@ucast/core" "^1.4.1"
 
