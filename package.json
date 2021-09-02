@@ -27,6 +27,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --cache .",
     "test": "jest",
+    "test:ci": "jest --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
   },
