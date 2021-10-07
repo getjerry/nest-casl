@@ -919,12 +919,12 @@
     tslib "2.3.0"
 
 "@nestjs/testing@^8.0.6":
-  version "8.0.6"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.0.6.tgz#c6f160ce9ced24f00c653d5a284dc35dd5162dd8"
-  integrity sha512-HRXGM5RlGa+o+kxWI9DQCALndSvL3Remjg1cZVFp2w2s5eXRPpiFMo9puXtu9DSc4tz78xYcQGmEaeYNTB7gvg==
+  version "8.0.11"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.0.11.tgz#d41fc20a149dd919c9dfacb668f1c9cbc131f57c"
+  integrity sha512-BYQFsCktbrT/kFNl2uNoUgmNshKxPJLJG2/J+os/+stfX7yeV573I1uo1m4DEPod71cRxVFvxc3Ehc72rOyPmw==
   dependencies:
     optional "0.1.4"
-    tslib "2.3.0"
+    tslib "2.3.1"
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
