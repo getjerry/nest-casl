@@ -75,12 +75,13 @@ Permissions defined per module. `everyone` permissions applied to every user, it
 // post.permissions.ts
 
 import { Actions } from 'nest-casl';
+import { InferSubjects } from '@casl/ability';
 
 import { Roles } from '../app.roles';
 import { Post } from './dtos/post.dto';
 import { Comment } from './dtos/comment.dto';
 
-export type Subjects = InferSubject<typeof Post, typeof Comment>;
+export type Subjects = InferSubjects<typeof Post, typeof Comment>;
 
 export const permissions: Permissions<Roles, Subjects, Actions> = {
   everyone({ can }) {
