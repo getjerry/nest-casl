@@ -883,9 +883,9 @@
     uuid "8.3.2"
 
 "@nestjs/graphql@^9.0.4":
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/@nestjs/graphql/-/graphql-9.0.4.tgz#7f744da9ea3ec97e172c35e7736eecc7924e50d9"
-  integrity sha512-0Nh4iDxTp2Nc0TqC78wVA+85ej2fFj8h27MDTp1jj4B+joYSyp5Ug6AIPL3b7lxvhooLiqNjNkfZCo0Ed/1k2g==
+  version "9.0.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/graphql/-/graphql-9.0.5.tgz#7e70d1d9bc37875fe439d7fe40e169760075160c"
+  integrity sha512-FFNnwWP+vZtJBE+9nz6LPb0DsVKVFkvA8RD8YM9sxs/KKLUoW2PNgIOUkmJAufcP6wG67HIn2zEX77fxykXF9Q==
   dependencies:
     "@graphql-tools/merge" "6.2.5"
     "@graphql-tools/schema" "7.1.5"
@@ -893,14 +893,14 @@
     "@nestjs/mapped-types" "1.0.0"
     chokidar "3.5.2"
     fast-glob "3.2.7"
-    graphql-ws "5.4.0"
+    graphql-ws "5.5.0"
     iterall "1.3.0"
     lodash "4.17.21"
     normalize-path "3.0.0"
     subscriptions-transport-ws "0.9.19"
     tslib "2.3.1"
     uuid "8.3.2"
-    ws "8.2.0"
+    ws "8.2.2"
 
 "@nestjs/mapped-types@1.0.0":
   version "1.0.0"
@@ -2532,7 +2532,7 @@ fast-diff@^1.1.2:
   resolved "https://registry.npmjs.org/fast-diff/-/fast-diff-1.2.0.tgz"
   integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
-fast-glob@3.2.7:
+fast-glob@3.2.7, fast-glob@^3.1.1:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
   integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
@@ -2542,18 +2542,6 @@ fast-glob@3.2.7:
     glob-parent "^5.1.2"
     merge2 "^1.3.0"
     micromatch "^4.0.4"
-
-fast-glob@^3.1.1:
-  version "3.2.5"
-  resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.2.5.tgz"
-  integrity sha512-2DtFcgT68wiTTiwZ2hNdJfcHNke9XOfnwmBRWXhmeKM8rF0TGwmC/Qto3S7RoZKp5cilZbxzO5iTNTQsJ+EeDg==
-  dependencies:
-    "@nodelib/fs.stat" "^2.0.2"
-    "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.0"
-    merge2 "^1.3.0"
-    micromatch "^4.0.2"
-    picomatch "^2.2.1"
 
 fast-json-stable-stringify@2.x, fast-json-stable-stringify@^2.0.0, fast-json-stable-stringify@^2.1.0:
   version "2.1.0"
@@ -2715,7 +2703,7 @@ get-stream@^6.0.0:
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
   integrity sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==
 
-glob-parent@^5.1.0, glob-parent@^5.1.2, glob-parent@~5.1.2:
+glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz"
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
@@ -2770,10 +2758,10 @@ graphql-tag@^2.11.0:
   dependencies:
     tslib "^2.1.0"
 
-graphql-ws@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.4.0.tgz#18cd078e00fc9db7609f7ad76af04073bfbdedb0"
-  integrity sha512-kxct2hGiVQJJlsfHAYoq41LY9zLkEM5SLCy+ySAOJejwYIMR290sXKzPILG3LQBEaXP9iIAiMN3nVPtOQRE8uA==
+graphql-ws@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.5.0.tgz#79f10248d23d104369eaef93acb9f887276a2c42"
+  integrity sha512-WQepPMGQQoqS2VsrI2I3RMLCVz3CW4/6ZqGV6ABDOwH4R62DzjxwMlwZbj6vhSI/7IM3/C911yITwgs77iO/hw==
 
 graphql@^15.5.3:
   version "15.6.1"
@@ -3673,7 +3661,7 @@ methods@^1.1.2, methods@~1.1.2:
   resolved "https://registry.npmjs.org/methods/-/methods-1.1.2.tgz"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
 
-micromatch@^4.0.2, micromatch@^4.0.4:
+micromatch@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.4.tgz#896d519dfe9db25fce94ceb7a500919bf881ebf9"
   integrity sha512-pRmzw/XUcwXGpD9aI9q/0XOwLNygjETJ8y0ao0wdqprrzDa4YnxLcz7fQRZr8voh8V10kGhABbNcHVk5wHgWwg==
@@ -4872,17 +4860,12 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.2.0.tgz#0b738cd484bfc9303421914b11bb4011e07615bb"
-  integrity sha512-uYhVJ/m9oXwEI04iIVmgLmugh2qrZihkywG9y5FfZV2ATeLIzHf93qs+tUNqlttbQK957/VX3mtwAS+UfIwA4g==
+ws@8.2.2:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.2.2.tgz#ca684330c6dd6076a737250ed81ac1606cb0a63e"
+  integrity sha512-Q6B6H2oc8QY3llc3cB8kVmQ6pnJWVQbP7Q5algTcIxx7YEpc0oU4NBVHlztA7Ekzfhw2r0rPducMUiCGWKQRzw==
 
-"ws@^5.2.0 || ^6.0.0 || ^7.0.0":
-  version "7.5.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-7.5.0.tgz"
-  integrity sha512-6ezXvzOZupqKj4jUqbQ9tXuJNo+BR2gU8fFRk3XCP3e0G6WT414u5ELe6Y0vtp7kmSJ3F7YWObSNr1ESsgi4vw==
-
-ws@^7.4.6:
+"ws@^5.2.0 || ^6.0.0 || ^7.0.0", ws@^7.4.6:
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
   integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
