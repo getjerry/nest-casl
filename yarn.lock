@@ -882,9 +882,9 @@
     uuid "8.3.2"
 
 "@nestjs/graphql@^9.0.4":
-  version "9.0.5"
-  resolved "https://registry.yarnpkg.com/@nestjs/graphql/-/graphql-9.0.5.tgz#7e70d1d9bc37875fe439d7fe40e169760075160c"
-  integrity sha512-FFNnwWP+vZtJBE+9nz6LPb0DsVKVFkvA8RD8YM9sxs/KKLUoW2PNgIOUkmJAufcP6wG67HIn2zEX77fxykXF9Q==
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/@nestjs/graphql/-/graphql-9.0.6.tgz#f1bb2047691813a271cf0b3827cd07b25d623543"
+  integrity sha512-ednuH135vm3X/wbObkPPz8JVOrkpocjdSRFNsBxe7VLOx8qGS1iqldIofwVMWC8CficIyb9LQdDC9Wxzlgz8gA==
   dependencies:
     "@graphql-tools/merge" "6.2.5"
     "@graphql-tools/schema" "7.1.5"
