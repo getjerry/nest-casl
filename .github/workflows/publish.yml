@@ -1,6 +1,13 @@
 name: Publish
 
 on:
+  push:
+    branches: [ master ]
+    inputs:
+      dry_run:
+        description: Dry run
+        required: true
+        default: "false"
   workflow_dispatch:
     inputs:
       dry_run:
