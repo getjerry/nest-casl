@@ -31,4 +31,4 @@ workflows:
       - lint-and-test:
           matrix:
             parameters:
-              version: ['12.22.6', '14.17.6', '16.8.0']
+              version: ['14.18.1', '16.11.1']
