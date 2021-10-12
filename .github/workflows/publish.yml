@@ -1,0 +1,36 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Dry run
+        required: true
+        default: "true"
+
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: install nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: install dependencies
+        run: yarn install --production false --frozen-lockfile
+
+      - name: build
+        run: yarn run build
+
+      - name: semantic release
+        run: yarn semantic-release --dry-run ${{ github.event.inputs.dry_run }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
