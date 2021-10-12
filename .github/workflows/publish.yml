@@ -26,6 +26,9 @@ jobs:
       - name: install dependencies
         run: yarn install --production false --frozen-lockfile
 
+      - name: test
+        run: yarn run test:ci
+
       - name: build
         run: yarn run build
 
