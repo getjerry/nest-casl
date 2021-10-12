@@ -3,17 +3,7 @@ name: Publish
 on:
   push:
     branches: [ master ]
-    inputs:
-      dry_run:
-        description: Dry run
-        required: true
-        default: "false"
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: Dry run
-        required: true
-        default: "true"
 
 jobs:
   publish:
@@ -40,7 +30,7 @@ jobs:
         run: yarn run build
 
       - name: semantic release
-        run: yarn semantic-release --dry-run ${{ github.event.inputs.dry_run }}
+        run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
