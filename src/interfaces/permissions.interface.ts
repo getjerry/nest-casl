@@ -1,4 +1,4 @@
-import { Ability, AbilityBuilder, PureAbility } from '@casl/ability';
+import { Ability, AbilityBuilder } from '@casl/ability';
 import { AnyClass, SubjectType } from '@casl/ability/dist/types/types';
 
 import { AuthorizableUser } from './authorizable-user.interface';
@@ -8,7 +8,7 @@ export class UserAbilityBuilder<
   Subjects = SubjectType,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser,
-> extends AbilityBuilder<PureAbility> {
+> extends AbilityBuilder<Ability> {
   constructor(
     public user: User,
     public permissions: AnyPermissions,
