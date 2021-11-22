@@ -14,7 +14,7 @@ export class ContextProxy {
       case 'http':
       case 'ws':
         return this.context.switchToHttp().getRequest();
-      case 'graphql':
+      case 'graphql': {
         const ctx = GqlExecutionContext.create(this.context);
         const request = ctx.getContext().req;
         request.params = {
@@ -22,6 +22,7 @@ export class ContextProxy {
           ...request.params,
         };
         return request;
+      }
       default:
         throw new NotAcceptableException();
     }
