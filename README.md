@@ -294,6 +294,9 @@ export class PostResolver {
 }
 ```
 
+### Testing 
+Check [package e2e tests](https://github.com/getjerry/nest-casl/tree/master/src/__specs__) for application testing example.
+
 ## Advanced usage
 
 ### User Hook
