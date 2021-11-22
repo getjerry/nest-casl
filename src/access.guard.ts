@@ -20,7 +20,7 @@ export class AccessGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ability = this.reflector.get<AbilityMetadata | undefined>(CASL_META_ABILITY, context.getHandler());
-    const request = ContextProxy.create(context).getRequest();
+    const request = await ContextProxy.create(context).getRequest();
     const { getUserHook } = CaslConfig.getRootOptions();
     const req = new RequestProxy(request);
 
