@@ -15,7 +15,7 @@ import { CaslRequestCache } from './interfaces/casl-request-cache.interface';
 import { SubjectBeforeFilterHook, UserBeforeFilterHook } from 'interfaces/hooks.interface';
 import { AbilityMetadata } from 'interfaces/ability-metadata.interface';
 import { User } from '__specs__/app/user/dtos/user.dto';
-import { AuthorizableRequest } from 'interfaces/request.interface';
+import { AuthorizableRequest } from './interfaces/request.interface';
 
 const permissions: Permissions<Roles, Post> = {
   everyone({ can }) {

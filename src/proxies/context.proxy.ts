@@ -1,9 +1,9 @@
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { ContextType, ExecutionContext, NotAcceptableException } from '@nestjs/common';
-import { AuthorizableRequest } from 'interfaces/request.interface';
+import { AuthorizableRequest } from '../interfaces/request.interface';
 
 export class ContextProxy {
-  constructor(private readonly context: ExecutionContext) {}
+  constructor(private readonly context: ExecutionContext) { }
 
   public static create(context: ExecutionContext): ContextProxy {
     return new ContextProxy(context);

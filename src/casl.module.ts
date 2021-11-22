@@ -6,7 +6,7 @@ import { AccessService } from './access.service';
 import { AbilityFactory } from './factories/ability.factory';
 import { AuthorizableUser } from './interfaces/authorizable-user.interface';
 import { CaslConfig } from './casl.config';
-import { AuthorizableRequest } from 'interfaces/request.interface';
+import { AuthorizableRequest } from './interfaces/request.interface';
 
 @Module({
   imports: [],
