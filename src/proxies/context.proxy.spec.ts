@@ -17,6 +17,14 @@ describe('ContextProxy', () => {
     const contextProxy = ContextProxy.create(context);
     expect(contextProxy.getRequest()).toEqual(req);
   });
+  
+  it('should get request from ws context', () => {
+    const req = new Object();
+    const context = new ExecutionContextHost([{}, undefined, { req }]);
+    context.getType = jest.fn().mockImplementation(() => 'ws');
+    const contextProxy = ContextProxy.create(context);
+    expect(contextProxy.getRequest()).toEqual(req);
+  });
 
   it('should throw error for rpc context', () => {
     const req = new Object();

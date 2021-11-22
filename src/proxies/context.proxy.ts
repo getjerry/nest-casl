@@ -1,5 +1,5 @@
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
-import { ExecutionContext, NotAcceptableException } from '@nestjs/common';
+import { ContextType, ExecutionContext, NotAcceptableException } from '@nestjs/common';
 import { AuthorizableRequest } from 'interfaces/request.interface';
 
 export class ContextProxy {
@@ -10,20 +10,21 @@ export class ContextProxy {
   }
 
   public getRequest(): AuthorizableRequest {
-    if (this.context.getType() === 'http') {
-      return this.context.getArgByIndex(0);
+    switch (this.context.getType<ContextType | GqlContextType>()) {
+      case 'http':
+      case 'ws':
+        return this.context.switchToHttp().getRequest();
+      case 'graphql': {
+        const ctx = GqlExecutionContext.create(this.context);
+        const request = ctx.getContext().req;
+        request.params = {
+          ...ctx.getArgs(),
+          ...request.params,
+        };
+        return request;
+      }
+      default:
+        throw new NotAcceptableException();
     }
-
-    if (this.context.getType<GqlContextType>() === 'graphql') {
-      const ctx = GqlExecutionContext.create(this.context);
-      const request = ctx.getContext().req;
-      request.params = {
-        ...ctx.getArgs(),
-        ...request.params,
-      };
-      return request;
-    }
-
-    throw new NotAcceptableException();
   }
 }
