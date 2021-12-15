@@ -6,6 +6,7 @@ import { PostService } from './app/post/post.service';
 import { PostModule } from './app/post/post.module';
 import { CaslModule } from '../casl.module';
 import { Roles } from './app/app.roles';
+import { UserHook } from './app/user/user.hook';
 import { UserModule } from './app/user/user.module';
 import { UserService } from './app/user/user.service';
 import { User } from './app/user/dtos/user.dto';
@@ -45,8 +46,10 @@ describe('REST controller with CASL authorization', () => {
       imports: [
         PostModule,
         UserModule,
-        CaslModule.forRoot<Roles>({
-          getUserFromRequest: () => getUser(Roles.customer),
+        CaslModule.forRootAsync<Roles>({
+          useFactory: () => ({
+            getUserFromRequest: () => getUser(Roles.customer),
+          }),
         }),
       ],
     })
