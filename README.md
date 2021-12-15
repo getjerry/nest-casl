@@ -343,6 +343,35 @@ import { CaslModule } from 'nest-casl';
 export class AppModule {}
 ```
 
+or with dynamic module initialization
+
+```typescript
+//app.module.ts
+
+import { Module } from '@nestjs/common';
+import { CaslModule } from 'nest-casl';
+
+@Module({
+  imports: [
+    CaslModule.forRootAsync({
+      useFactory: async (service: SomeCoolService) => {
+        const isOk = await service.doSomething();
+
+        return {
+          getUserFromRequest: () => {
+            if(isOk) {
+              return request.user;
+            }
+          }
+        }
+      },
+      inject: [SomeCoolService],
+    }),
+  ],
+})
+export class AppModule {}
+```
+
 or with tuple hook
 
 ```typescript
