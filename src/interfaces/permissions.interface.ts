@@ -37,12 +37,12 @@ export type Permissions<
   Roles extends string,
   Subjects = SubjectType,
   Actions extends string = DefaultActions,
-  User extends AuthorizableUser = AuthorizableUser,
+  User extends AuthorizableUser = AuthorizableUser<Roles>,
 > = Partial<Record<Roles | 'every' | 'everyone', DefinePermissions<Subjects, Actions, User>>>;
 
 export type AnyPermissions<
   Roles extends string = string,
   Subjects = SubjectType,
   Actions extends string = string,
-  User extends AuthorizableUser = AuthorizableUser,
+  User extends AuthorizableUser = AuthorizableUser<Roles>,
   > = Permissions<Roles, Subjects, Actions, User>;
