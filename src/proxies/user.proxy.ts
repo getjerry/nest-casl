@@ -2,7 +2,7 @@ import { AuthorizableRequest } from '../interfaces/request.interface';
 import { AuthorizableUser } from '../interfaces/authorizable-user.interface';
 import { RequestProxy } from './request.proxy';
 
-export class UserProxy<User = AuthorizableUser> {
+export class UserProxy<User extends AuthorizableUser = AuthorizableUser> {
   constructor(
     private request: AuthorizableRequest<User>,
     private getUserFromRequest: (request: AuthorizableRequest<User>) => User | undefined,

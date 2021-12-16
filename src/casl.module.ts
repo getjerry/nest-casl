@@ -1,4 +1,6 @@
+import { SubjectType } from '@casl/ability';
 import { DynamicModule, Module } from '@nestjs/common';
+import { DefaultActions } from './actions.enum';
 
 import { OptionsForFeature, OptionsForRoot, OptionsForRootAsync } from './interfaces/options.interface';
 import { CASL_ROOT_OPTIONS, CASL_FEATURE_OPTIONS } from './casl.constants';
@@ -21,7 +23,7 @@ import { AuthorizableRequest } from './interfaces/request.interface';
   exports: [AccessService],
 })
 export class CaslModule {
-  static forFeature(options: OptionsForFeature): DynamicModule {
+  static forFeature<Roles extends string = string, Subjects = SubjectType, Actions extends string = DefaultActions, User extends AuthorizableUser = AuthorizableUser<Roles>>(options: OptionsForFeature<Roles, Subjects, Actions, User>): DynamicModule {
     return {
       module: CaslModule,
       imports: [],
@@ -37,7 +39,7 @@ export class CaslModule {
     };
   }
 
-  static forRoot<Roles = string, User = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
+  static forRoot<Roles extends string = string, User extends AuthorizableUser = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
     options: OptionsForRoot<Roles, User, Request>,
   ): DynamicModule {
     Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, CaslConfig);
@@ -46,7 +48,7 @@ export class CaslModule {
     };
   }
 
-  static forRootAsync<Roles = string, User = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
+  static forRootAsync<Roles extends string = string, User extends AuthorizableUser = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
     options: OptionsForRootAsync<Roles, User, Request>,
   ): DynamicModule {
     return {
