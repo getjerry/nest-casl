@@ -4,7 +4,7 @@ import { SubjectBeforeFilterHook, UserBeforeFilterHook } from './hooks.interface
 import { AuthorizableUser } from './authorizable-user.interface';
 import { ConditionsProxy } from '../proxies/conditions.proxy';
 
-export interface CaslRequestCache<User = AuthorizableUser, Subject = AnyObject> {
+export interface CaslRequestCache<User extends AuthorizableUser = AuthorizableUser, Subject = AnyObject> {
   user?: User;
   subject?: Subject;
   conditions?: ConditionsProxy;

@@ -1,5 +1,4 @@
-import { Ability, AnyAbility, PureAbility } from '@casl/ability';
-import { SubjectType } from '@casl/ability/dist/types/types';
+import { Ability, AnyAbility, PureAbility, SubjectType } from '@casl/ability';
 import { Inject, Injectable } from '@nestjs/common';
 import { DefaultActions } from '../actions.enum';
 
