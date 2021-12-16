@@ -15,7 +15,8 @@ export class TupleSubjectHook<Service> implements SubjectBeforeFilterHook {
   constructor(
     private service: Service,
     private runFunc: (service: Service, request: AuthorizableRequest) => Promise<AnyObject | undefined>,
-  ) {}
+  ) {
+  }
 
   public async run(request: AuthorizableRequest): Promise<AnyObject | undefined> {
     return this.runFunc(this.service, request);
@@ -31,7 +32,7 @@ export async function subjectHookFactory(
   }
   if (Array.isArray(hookOrTuple)) {
     const [ServiceClass, runFunction] = hookOrTuple;
-    const service = moduleRef.get(ServiceClass);
+    const service = moduleRef.get(ServiceClass, { strict: false });
     return new TupleSubjectHook<typeof ServiceClass>(service, runFunction);
   }
   return moduleRef.create<SubjectBeforeFilterHook>(hookOrTuple);
