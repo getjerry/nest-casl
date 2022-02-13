@@ -12,7 +12,7 @@ describe('ContextProxy', () => {
 
   it('should get request from graphql context', async () => {
     const req = new Object();
-    const context = new ExecutionContextHost([{}, undefined, { req }]);
+    const context = new ExecutionContextHost([{}, undefined, { req }, undefined]);
     context.getType = jest.fn().mockImplementation(() => 'graphql');
     const contextProxy = ContextProxy.create(context);
     expect(await contextProxy.getRequest()).toEqual(req);

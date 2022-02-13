@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Test } from '@nestjs/testing';
 
 import { OptionsForRoot } from '../interfaces/options.interface';
@@ -38,7 +39,8 @@ const createCaslTestingModule = async (
     imports: [
       PostModule,
       UserModule,
-      GraphQLModule.forRoot({
+      GraphQLModule.forRoot<ApolloDriverConfig>({
+        driver: ApolloDriver,
         autoSchemaFile: true,
         playground: false,
         debug: true,
