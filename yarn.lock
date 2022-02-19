@@ -1034,9 +1034,9 @@
     lodash.omit "4.5.0"
 
 "@nestjs/common@^8.0.6":
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.3.0.tgz#460e23a188bb56aa6774868b68aa9247dfd97bdb"
-  integrity sha512-WWH1WCwiGDY7XRfJrYFSIKd+vmaDDtQfQlUw3FpzjLMNRF2301Mfz7aFTlbTrl0bvJEyTxOejopWcr/xeudkkw==
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.3.1.tgz#4d5fcc879865acf012733cc5c0f804a46de89fe3"
+  integrity sha512-3kKeaRXn1c2jf0ihVu6bvQ9Ok+7CkqkU0Ggi5NjWXA2oVRs3vPzr2d5DEvqUqY9JZpT5qGvzRDyKzaPlekxD2A==
   dependencies:
     axios "0.26.0"
     iterare "1.2.1"
