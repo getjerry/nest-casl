@@ -1,6 +1,6 @@
 {
   "name": "nest-casl",
-  "version": "1.2.3",
+  "version": "1.6.6",
   "description": "Access control for Nestjs with CASL",
   "author": "Denis Grankin @ Jerry",
   "main": "dist/index.js",
