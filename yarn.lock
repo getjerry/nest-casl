@@ -1093,12 +1093,12 @@
     tslib "2.3.1"
 
 "@nestjs/testing@^8.0.6":
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.3.1.tgz#8af5b6127d1250405fe65a857be98658e04a386a"
-  integrity sha512-QZ7WwXYpUpfuyLddFwPSkJOWbpTUCtxvY2P9DjxcEsafmxaCeEURBM0DjaKcSwsTvyg9WIew803zViJO5NklPA==
+  version "8.4.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.4.5.tgz#b6f6e8c5f8c3c2b8fe6b8f8fa518b97460680f76"
+  integrity sha512-RWFfkRitor8Aw1yWhZqWim/sAYmFv45Hw7jlVaFCx2PCu6IIHCaK2ENv/20yA0+kffaFUQ6KyFzJvCUYKGFoqg==
   dependencies:
     optional "0.1.4"
-    tslib "2.3.1"
+    tslib "2.4.0"
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
@@ -7295,10 +7295,15 @@ ts-node@^10.0.0:
     v8-compile-cache-lib "^3.0.0"
     yn "3.1.1"
 
-tslib@2.3.1, tslib@^2.1.0, tslib@~2.3.0:
+tslib@2.3.1, tslib@~2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
+tslib@2.4.0, tslib@^2.1.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslib@^1.8.1:
   version "1.14.1"
