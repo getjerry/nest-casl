@@ -75,7 +75,7 @@ Permissions defined per module. `everyone` permissions applied to every user, it
 ```typescript
 // post.permissions.ts
 
-import { Actions } from 'nest-casl';
+import { Permissions, Actions } from 'nest-casl';
 import { InferSubjects } from '@casl/ability';
 
 import { Roles } from '../app.roles';
