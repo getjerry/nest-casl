@@ -784,9 +784,9 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@casl/ability@^5.4.3":
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-5.4.3.tgz#4f73c8574dafa7bdc67730e1531c1f37e1a96c37"
-  integrity sha512-X6U79udKkfS7459Y3DCkw58ZQno7BD9VJa5GnTL1rcKRACqERMVDs7qjVMW+JlLUZcT5DB2/GF5uvu0KsudEcA==
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-5.4.4.tgz#fbe54340c156248e73804942eed350903b27b9f3"
+  integrity sha512-7+GOnMUq6q4fqtDDesymBXTS9LSDVezYhFiSJ8Rn3f0aQLeRm7qHn66KWbej4niCOvm0XzNj9jzpkK0yz6hUww==
   dependencies:
     "@ucast/mongo2js" "^1.3.0"
 
@@ -1968,16 +1968,7 @@
   dependencies:
     "@ucast/core" "^1.0.0"
 
-"@ucast/mongo2js@^1.3.0":
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/@ucast/mongo2js/-/mongo2js-1.3.2.tgz"
-  integrity sha512-KNOEs61wxo4VJkVGqwP2a03TKuLx9fLMQgW5HD8Th/mrcuP1SspS4W+kUQD+wB1AA5pOn65hzlHUw5wZBwme0Q==
-  dependencies:
-    "@ucast/core" "^1.6.1"
-    "@ucast/js" "^3.0.0"
-    "@ucast/mongo" "^2.4.0"
-
-"@ucast/mongo2js@^1.3.3":
+"@ucast/mongo2js@^1.3.0", "@ucast/mongo2js@^1.3.3":
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/@ucast/mongo2js/-/mongo2js-1.3.3.tgz#a683a59cea22887a72e4302f3826e41ccf51dbbe"
   integrity sha512-sBPtMUYg+hRnYeVYKL+ATm8FaRPdlU9PijMhGYKgsPGjV9J4Ks41ytIjGayvKUnBOEhiCaKUUnY4qPeifdqATw==
