@@ -1114,16 +1114,16 @@
     uuid "8.3.2"
 
 "@nestjs/core@^8.0.6":
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.3.1.tgz#737c2aef5529da7946de82414e7065ab01c27bad"
-  integrity sha512-tdZkhqopd5xSVjogezpP4tPZWntyUNzwOGrVJCQ3RMVH12oxyDMpaMtDnCNvV7cSyoSyHzepMh5nCgLsZ/c88w==
+  version "8.4.7"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.4.7.tgz#fbec7fa744ac8749a4b966f759a6656c1cf43883"
+  integrity sha512-XB9uexHqzr2xkPo6QSiQWJJttyYYLmvQ5My64cFvWFi7Wk2NIus0/xUNInwX3kmFWB6pF1ab5Y2ZBvWdPwGBhw==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.1.1"
     iterare "1.2.1"
-    object-hash "2.2.0"
+    object-hash "3.0.0"
     path-to-regexp "3.2.0"
-    tslib "2.3.1"
+    tslib "2.4.0"
     uuid "8.3.2"
 
 "@nestjs/graphql@^10.0.5":
@@ -5896,10 +5896,10 @@ object-assign@^4, object-assign@^4.1.1:
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
 
-object-hash@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.2.0.tgz#5ad518581eefc443bd763472b8ff2e9c2c0d54a5"
-  integrity sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==
+object-hash@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-3.0.0.tgz#73f97f753e7baffc0e2cc9d6e079079744ac82e9"
+  integrity sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==
 
 object-inspect@^1.9.0:
   version "1.10.3"
