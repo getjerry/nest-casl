@@ -1,4 +1,4 @@
-export interface AuthorizableUser<Roles = string, Id = string> {
+export interface AuthorizableUser<Roles = string, Id = string | number> {
   id: Id;
   roles: Array<Roles>;
 }
