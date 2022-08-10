@@ -24,10 +24,17 @@ export class AbilityFactory<Roles extends string = string, Subjects = SubjectTyp
     if (everyone) {
       everyone(ability);
     }
+    
+    if(Array.isArray(user.roles)){
 
     user.roles.forEach((role) => {
       ability.permissionsFor(role);
     });
+      
+    }
+    else{
+     ability.permissionsFor(user.roles);
+    }
 
     // For PureAbility skip conditions check, conditions will be available for filtering through @CaslConditions() param
     if (abilityClass === PureAbility) {
