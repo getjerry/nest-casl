@@ -802,10 +802,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@casl/ability@^5.4.3":
-  version "5.4.4"
-  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-5.4.4.tgz#fbe54340c156248e73804942eed350903b27b9f3"
-  integrity sha512-7+GOnMUq6q4fqtDDesymBXTS9LSDVezYhFiSJ8Rn3f0aQLeRm7qHn66KWbej4niCOvm0XzNj9jzpkK0yz6hUww==
+"@casl/ability@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-6.0.0.tgz#fa740b3d18d3fbea1f6712347be0b7a56708a839"
+  integrity sha512-hrL9+SiWVzi1C7fA96eZjuJ9ZEkkHpsBZTmqJTxcUAGju9VdHRqHwZUBYR2EBGxCkWi7WIUZs5AH4kHyL9CcPA==
   dependencies:
     "@ucast/mongo2js" "^1.3.0"
 
