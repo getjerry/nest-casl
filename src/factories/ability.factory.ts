@@ -1,4 +1,4 @@
-import { Ability, AnyAbility, PureAbility, SubjectType } from '@casl/ability';
+import { Ability, AnyAbility, PureAbility, Subject } from '@casl/ability';
 import { Inject, Injectable } from '@nestjs/common';
 import { DefaultActions } from '../actions.enum';
 
@@ -10,7 +10,12 @@ import { CASL_FEATURE_OPTIONS } from '../casl.constants';
 export const nullConditionsMatcher = () => (): boolean => true;
 
 @Injectable()
-export class AbilityFactory<Roles extends string = string, Subjects = SubjectType, Actions extends string = DefaultActions, User extends AuthorizableUser<Roles> = AuthorizableUser<Roles>> {
+export class AbilityFactory<
+  Roles extends string = string,
+  Subjects extends Subject = Subject,
+  Actions extends string = DefaultActions,
+  User extends AuthorizableUser<Roles> = AuthorizableUser<Roles>,
+> {
   constructor(
     @Inject(CASL_FEATURE_OPTIONS)
     private readonly featureOptions: OptionsForFeature<Roles, Subjects, Actions, User>,

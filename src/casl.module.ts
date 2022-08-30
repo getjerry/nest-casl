@@ -1,4 +1,4 @@
-import { SubjectType } from '@casl/ability';
+import { Subject } from '@casl/ability';
 import { DynamicModule, Module } from '@nestjs/common';
 import { DefaultActions } from './actions.enum';
 
@@ -23,7 +23,12 @@ import { AuthorizableRequest } from './interfaces/request.interface';
   exports: [AccessService],
 })
 export class CaslModule {
-  static forFeature<Roles extends string = string, Subjects = SubjectType, Actions extends string = DefaultActions, User extends AuthorizableUser = AuthorizableUser<Roles>>(options: OptionsForFeature<Roles, Subjects, Actions, User>): DynamicModule {
+  static forFeature<
+    Roles extends string = string,
+    Subjects extends Subject = Subject,
+    Actions extends string = DefaultActions,
+    User extends AuthorizableUser = AuthorizableUser<Roles>,
+  >(options: OptionsForFeature<Roles, Subjects, Actions, User>): DynamicModule {
     return {
       module: CaslModule,
       imports: [],
@@ -39,18 +44,22 @@ export class CaslModule {
     };
   }
 
-  static forRoot<Roles extends string = string, User extends AuthorizableUser = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
-    options: OptionsForRoot<Roles, User, Request>,
-  ): DynamicModule {
+  static forRoot<
+    Roles extends string = string,
+    User extends AuthorizableUser = AuthorizableUser<Roles>,
+    Request = AuthorizableRequest<User>,
+  >(options: OptionsForRoot<Roles, User, Request>): DynamicModule {
     Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, CaslConfig);
     return {
       module: CaslModule,
     };
   }
 
-  static forRootAsync<Roles extends string = string, User extends AuthorizableUser = AuthorizableUser<Roles>, Request = AuthorizableRequest<User>>(
-    options: OptionsForRootAsync<Roles, User, Request>,
-  ): DynamicModule {
+  static forRootAsync<
+    Roles extends string = string,
+    User extends AuthorizableUser = AuthorizableUser<Roles>,
+    Request = AuthorizableRequest<User>,
+  >(options: OptionsForRootAsync<Roles, User, Request>): DynamicModule {
     return {
       module: CaslModule,
       imports: options.imports,

@@ -1,10 +1,10 @@
-import { Ability, AnyAbility, AbilityTuple, AbilityBuilder, SubjectType } from '@casl/ability';
+import { Ability, AnyAbility, AbilityTuple, AbilityBuilder, Subject } from '@casl/ability';
 import { AnyClass } from '@casl/ability/dist/types/types';
 import { DefaultActions } from '../actions.enum';
 import { AuthorizableUser } from './authorizable-user.interface';
 
 export class UserAbilityBuilder<
-  Subjects = SubjectType,
+  Subjects extends Subject = Subject,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser,
 > extends AbilityBuilder<AnyAbility> {
@@ -29,21 +29,21 @@ export class UserAbilityBuilder<
 }
 
 export type DefinePermissions<
-  Subjects = SubjectType,
+  Subjects extends Subject = Subject,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser,
 > = (builder: UserAbilityBuilder<Subjects, Actions, User>) => void;
 
 export type Permissions<
   Roles extends string,
-  Subjects = SubjectType,
+  Subjects extends Subject = Subject,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser = AuthorizableUser<Roles>,
 > = Partial<Record<Roles | 'every' | 'everyone', DefinePermissions<Subjects, Actions, User>>>;
 
 export type AnyPermissions<
   Roles extends string = string,
-  Subjects = SubjectType,
+  Subjects extends Subject = Subject,
   Actions extends string = string,
   User extends AuthorizableUser = AuthorizableUser<Roles>,
 > = Permissions<Roles, Subjects, Actions, User>;
