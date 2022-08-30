@@ -24,9 +24,10 @@ export class AbilityFactory<Roles extends string = string, Subjects = SubjectTyp
     if (everyone) {
       everyone(ability);
     }
+    const roles = user.roles ?? [user.role]
 
-    user.roles.forEach((role) => {
-      ability.permissionsFor(role);
+    roles.forEach((role) => {
+      role && ability.permissionsFor(role);
     });
 
     // For PureAbility skip conditions check, conditions will be available for filtering through @CaslConditions() param

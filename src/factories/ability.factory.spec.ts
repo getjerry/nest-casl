@@ -78,6 +78,13 @@ describe('AbilityFactory', () => {
     expect(ability.can(Actions.read, Post)).toBe(false);
   });
 
+  it('works without everyone role', async () => {
+    abilityFactory = await getAbilityFactory(permissionsNoEveryone);
+    const user = { id: 'userId', roles: [Roles.customer] };
+    const ability = abilityFactory.createForUser(user);
+    expect(ability.can(Actions.read, Post)).toBe(false);
+  });
+
   it('operator inherits rules from user', async () => {
     const user = { id: 'userId', roles: [Roles.operator] };
     const ability = abilityFactory.createForUser(user);
@@ -90,4 +97,6 @@ describe('AbilityFactory', () => {
   it('null conditions matcher always true', () => {
     expect(nullConditionsMatcher()()).toBeTruthy();
   });
+
+
 });

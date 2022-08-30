@@ -11,6 +11,10 @@ import { AuthorizableUser } from './interfaces/authorizable-user.interface';
 import { RequestProxy } from './proxies/request.proxy';
 import { ConditionsProxy } from './proxies/conditions.proxy';
 
+function hasRole(user: AuthorizableUser, role: string) {
+  const roles = user.roles ?? [user.role];
+  return roles.includes(role);
+}
 @Injectable()
 export class AccessService {
   constructor(private abilityFactory: AbilityFactory) {}
@@ -30,7 +34,7 @@ export class AccessService {
     const userAbilities = this.abilityFactory.createForUser(user);
 
     // Always allow access for superuser
-    if (superuserRole && user.roles.includes(superuserRole)) {
+    if (superuserRole && hasRole(user, superuserRole)) {
       return true;
     }
 
@@ -71,7 +75,7 @@ export class AccessService {
     }
 
     // Always allow access for superuser
-    if (superuserRole && user.roles.includes(superuserRole)) {
+    if (superuserRole && hasRole(user, superuserRole)) {
       return true;
     }
 
