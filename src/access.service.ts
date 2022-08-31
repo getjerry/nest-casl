@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { Ability, PureAbility, subject } from '@casl/ability';
+import { Ability, subject } from '@casl/ability';
 import { AnyObject, Subject } from '@casl/ability/dist/types/types';
 
 import { AuthorizableRequest } from './interfaces/request.interface';
@@ -75,12 +75,10 @@ export class AccessService {
       return true;
     }
 
-    // for abilities without subject hook use PureAbility to bypass condition check
-    let userAbilities = this.abilityFactory.createForUser(user, ability.subjectHook ? Ability : PureAbility);
-
+    let userAbilities = this.abilityFactory.createForUser(user, Ability);
     const relevantRules = userAbilities.rulesFor(ability.action, ability.subject);
-    const conditions = relevantRules.filter((rule) => rule.conditions).map((rule) => rule.conditions);
-    req.setConditions(new ConditionsProxy(conditions));
+
+    req.setConditions(new ConditionsProxy(userAbilities, ability.action, ability.subject));
 
     // If no relevant rules with conditions or no subject hook exists check against subject class
     if (!relevantRules.every((rule) => rule.conditions) || !ability.subjectHook) {
