@@ -1954,9 +1954,9 @@
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
 "@types/node@*", "@types/node@^18.7.14":
-  version "18.7.19"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.7.19.tgz#ad83aa9b7af470fab7e0f562be87e97dc8ffe08e"
-  integrity sha512-Sq1itGUKUX1ap7GgZlrzdBydjbsJL/NSQt/4wkAxUJ7/OS5c2WkoN6WSpWc2Yc5wtKMZOUA0VCs/j2XJadN3HA==
+  version "18.7.20"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.7.20.tgz#d9442de7b5cb166476340b4271b15300fe058a39"
+  integrity sha512-adzY4vLLr5Uivmx8+zfSJ5fbdgKxX8UMtjtl+17n0B1q1Nz8JEmE151vefMdpD+1gyh+77weN4qEhej/O7budQ==
 
 "@types/node@^10.1.0":
   version "10.17.60"
