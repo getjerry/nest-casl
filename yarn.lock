@@ -726,9 +726,9 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@casl/ability@^6.0.0":
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-6.3.0.tgz#74e11ff6c6eec5e8553dc30621ce2a7a9f5b52d9"
-  integrity sha512-Q1sF+bz90mJed1KfgbagbA5QIBjCgvLHGxVBd4EM7jkB+Oa2dQvnHmzoqogBWSjEVKQqmVe4oo0UTmY9zgLQiA==
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-6.3.1.tgz#fa170ad138b8daa4f942e4b73f7f870686d9cef8"
+  integrity sha512-gNi1iXlttQ6dVwjbtO2fujRq27GDGAjNfSqFMRNVDSaV872xUNpTBxyGldO75KCKMiLzAr6BYiL0vFpdBGwvnQ==
   dependencies:
     "@ucast/mongo2js" "^1.3.0"
 
