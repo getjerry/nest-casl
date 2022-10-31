@@ -30,7 +30,7 @@ export class AbilityFactory<
       everyone(ability);
     }
 
-    user.roles.forEach((role) => {
+    user.roles?.forEach((role) => {
       ability.permissionsFor(role);
     });
 
