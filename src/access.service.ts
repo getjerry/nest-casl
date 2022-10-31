@@ -30,7 +30,7 @@ export class AccessService {
     const userAbilities = this.abilityFactory.createForUser(user);
 
     // Always allow access for superuser
-    if (superuserRole && user.roles.includes(superuserRole)) {
+    if (superuserRole && user.roles?.includes(superuserRole)) {
       return true;
     }
 
@@ -71,7 +71,7 @@ export class AccessService {
     }
 
     // Always allow access for superuser
-    if (superuserRole && user.roles.includes(superuserRole)) {
+    if (superuserRole && user.roles?.includes(superuserRole)) {
       return true;
     }
 
