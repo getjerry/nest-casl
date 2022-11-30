@@ -8,6 +8,7 @@ import { rulesToQuery } from '@casl/ability/extra';
 export type SqlConditions = [string, unknown[], string[]];
 
 function convertToMongoQuery(rule: AnyMongoAbility['rules'][number]) {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const conditions = rule.conditions!;
   return rule.inverted ? { $nor: [conditions] } : conditions;
 }
