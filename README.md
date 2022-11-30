@@ -10,11 +10,13 @@
 [CASL](https://casl.js.org/v5/en/guide/intro)
 
 ## Installation
+
 Install npm package with `yarn add nest-casl` or `npm i nest-casl`
 
-Peer dependencies are `@nestjs/core`, `@nestjs/common` and `@nestjs/graphql` 
+Peer dependencies are `@nestjs/core`, `@nestjs/common` and `@nestjs/graphql`
 
 ## Application configuration
+
 Define roles for app:
 
 ```typescript
@@ -50,9 +52,10 @@ import { Roles } from './app.roles';
 export class AppModule {}
 ```
 
-`superuserRole` will have unrestricted access.  If `getUserFromRequest` omitted `request.user` will be used.  User expected to have properties `id: string` and `roles: Roles[]` by default, request and user types [can be customized](#custom-user-and-request-types).
+`superuserRole` will have unrestricted access. If `getUserFromRequest` omitted `request.user` will be used. User expected to have properties `id: string` and `roles: Roles[]` by default, request and user types [can be customized](#custom-user-and-request-types).
 
 ## Permissions definition
+
 `nest-casl` comes with a set of default actions, aligned with [Nestjs Query](https://doug-martin.github.io/nestjs-query/docs/graphql/authorization).
 `manage` has a special meaning of any action.
 DefaultActions aliased to `Actions` for convenicence.
@@ -119,6 +122,7 @@ export class PostModule {}
 ```
 
 ## Access control
+
 Assuming authentication handled by AuthGuard. AccessGuard expects user to at least exist, if not authenticated user obtained from request acess will be denied.
 
 ```typescript
@@ -141,7 +145,7 @@ export class PostResolver {
   // No access restrictions, no request.user
   @Query(() => [Post])
   posts() {
-	return this.postService.findAll();
+    return this.postService.findAll();
   }
 
   // No access restrictions, request.user populated
@@ -169,6 +173,7 @@ export class PostResolver {
 ```
 
 ### Subject hook
+
 For permissions with conditions we need to provide subject hook in UseAbility decorator. It can be class implementing `SubjectBeforeFilterHook` interface
 
 ```typescript
@@ -187,7 +192,6 @@ export class PostHook implements SubjectBeforeFilterHook<Post, Request> {
     return this.postService.findById(params.input.id);
   }
 }
-
 ```
 
 passed as third argument of UserAbility
@@ -216,6 +220,7 @@ async updatePost(@Args('input') input: UpdatePostInput) {
 ```
 
 ### CaslSubject decorator
+
 `CaslSubject` decorator provides access to lazy loaded subject, obtained from [subject hook](#subject-hook) and cached on request object.
 
 ```typescript
@@ -231,6 +236,7 @@ async updatePost(
 ```
 
 ### CaslConditions decorator
+
 Permission conditions can be used in resolver through CaslConditions decorator, ie to filter selected records. Subject hook is not required.
 
 ```typescript
@@ -242,10 +248,12 @@ async updatePostConditionParamNoHook(
   @CaslConditions() conditions: ConditionsProxy
 ) {
   conditions.toSql(); // ['"userId" = $1', ['userId'], []]
+  conditions.toMongo(); // { $or: [{ userId: 'userId' }] }
 }
 ```
 
 ### CaslUser decorator
+
 `CaslUser` decorator provides access to lazy loaded user, obtained from request or [user hook](#user-hook) and cached on request object.
 
 ```typescript
@@ -261,6 +269,7 @@ async updatePostConditionParamNoHook(
 ```
 
 ### Access service (global)
+
 Use AccessService to check permissions without AccessGuard and UseAbility decorator
 
 ```typescript
@@ -269,38 +278,34 @@ import { AccessService, Actions, CaslUser } from 'nest-casl';
 
 @Resolver(() => Post)
 export class PostResolver {
-  constructor(
-    private postService: PostService,
-    private accessService: AccessService,
-  ) {}
+  constructor(private postService: PostService, private accessService: AccessService) {}
 
   @Mutation(() => Post)
   @UseGuards(AuthGuard)
-  async updatePost(
-    @Args('input') input: UpdatePostInput,
-    @CaslUser() userProxy: UserProxy<User>
-  ) {
+  async updatePost(@Args('input') input: UpdatePostInput, @CaslUser() userProxy: UserProxy<User>) {
     const user = await userProxy.get();
-	const post = await this.postService.findById(input.id)
+    const post = await this.postService.findById(input.id);
 
-	//check and throw error
-	// 403 when no conditions
-	// 404 when conditions set
-	this.accessService.assertAbility(user, Actions.update, post);
+    //check and throw error
+    // 403 when no conditions
+    // 404 when conditions set
+    this.accessService.assertAbility(user, Actions.update, post);
 
-	// return true or false
-	this.accessService.hasAbility(user, Actions.update, post);
+    // return true or false
+    this.accessService.hasAbility(user, Actions.update, post);
   }
 }
 ```
 
-### Testing 
+### Testing
+
 Check [package e2e tests](https://github.com/getjerry/nest-casl/tree/master/src/__specs__) for application testing example.
 
 ## Advanced usage
 
 ### User Hook
-Sometimes permission conditions require more info on user than exists on `request.user`  User hook called after `getUserFromRequest` only for abilities with conditions. Similar to subject hook, it can be class or tuple. 
+
+Sometimes permission conditions require more info on user than exists on `request.user` User hook called after `getUserFromRequest` only for abilities with conditions. Similar to subject hook, it can be class or tuple.
 Despite UserHook is configured on application level, it is executed in context of modules under authorization. To avoid importing user service to each module, consider making user module global.
 
 ```typescript
@@ -323,7 +328,6 @@ export class UserHook implements UserBeforeFilterHook<User> {
     };
   }
 }
-
 ```
 
 ```typescript
@@ -334,9 +338,9 @@ import { CaslModule } from 'nest-casl';
 
 @Module({
   imports: [
-	CaslModule.forRoot({
-	  getUserFromRequest: (request) => request.user,
-	  getUserHook: UserHook,
+    CaslModule.forRoot({
+      getUserFromRequest: (request) => request.user,
+      getUserHook: UserHook,
     }),
   ],
 })
@@ -359,11 +363,11 @@ import { CaslModule } from 'nest-casl';
 
         return {
           getUserFromRequest: () => {
-            if(isOk) {
+            if (isOk) {
               return request.user;
             }
-          }
-        }
+          },
+        };
       },
       inject: [SomeCoolService],
     }),
@@ -382,11 +386,14 @@ import { CaslModule } from 'nest-casl';
 
 @Module({
   imports: [
-	CaslModule.forRoot({
-	  getUserFromRequest: (request) => request.user,
-	  getUserHook: [UserService, async (service: UserService, user) => {
-		 return service.findById(user.id);
-	  }],
+    CaslModule.forRoot({
+      getUserFromRequest: (request) => request.user,
+      getUserHook: [
+        UserService,
+        async (service: UserService, user) => {
+          return service.findById(user.id);
+        },
+      ],
     }),
   ],
 })
@@ -394,6 +401,7 @@ export class AppModule {}
 ```
 
 ### Custom actions
+
 Extending enums is a bit tricky in TypeScript
 There are multiple solutions described in [this issue](https://github.com/microsoft/TypeScript/issues/17592) but this one is the simplest:
 
@@ -403,15 +411,16 @@ enum CustomActions {
 }
 
 export type Actions = DefaultActions | CustomActions;
-export const Actions = {...DefaultActions, ...CustomActions};
+export const Actions = { ...DefaultActions, ...CustomActions };
 ```
 
 ### Custom User and Request types
+
 For example, if you have User with numeric id and current user assigned to `request.loggedInUser`
 
 ```typescript
 class User implements AuthorizableUser<Roles, number> {
-  id: number
+  id: number;
   roles: Array<Roles>;
 }
 
@@ -426,11 +435,14 @@ class Request {
       getUserFromRequest(request) {
         return request.loggedInUser;
       },
-      getUserHook: [UserService, async (service: UserService, user) => {
-        return service.findById(user.id);
-      }],
+      getUserHook: [
+        UserService,
+        async (service: UserService, user) => {
+          return service.findById(user.id);
+        },
+      ],
     }),
-	//  ...
+    //  ...
   ],
 })
 export class AppModule {}
