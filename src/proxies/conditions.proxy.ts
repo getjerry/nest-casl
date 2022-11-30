@@ -1,14 +1,22 @@
 import { AnyAbility, Subject } from '@casl/ability';
 import { rulesToAST } from '@casl/ability/extra';
-import { Condition } from '@ucast/mongo2js';
+import { Condition, MongoQuery } from '@ucast/mongo2js';
 import { createSqlInterpreter, allInterpreters, pg } from '@ucast/sql';
+import { AnyMongoAbility } from '@casl/ability';
+import { rulesToQuery } from '@casl/ability/extra';
 
 export type SqlConditions = [string, unknown[], string[]];
+
+function convertToMongoQuery(rule: AnyMongoAbility['rules'][number]) {
+  const conditions = rule.conditions!;
+  return rule.inverted ? { $nor: [conditions] } : conditions;
+}
+
 export class ConditionsProxy {
-  constructor(private abilitites: AnyAbility, private action: string, private subject: Subject) {}
+  constructor(private abilities: AnyAbility, private action: string, private subject: Subject) {}
 
   public toAst(): Condition | null {
-    return rulesToAST(this.abilitites, this.action, this.subject);
+    return rulesToAST(this.abilities, this.action, this.subject);
   }
 
   public toSql(): SqlConditions | undefined {
@@ -24,5 +32,18 @@ export class ConditionsProxy {
 
   public joinRelation(): boolean {
     return false;
+  }
+
+  public toMongo(): MongoQuery | undefined {
+    if (!this.getRules()) return undefined;
+    return rulesToQuery(this.abilities, this.action, this.subject, convertToMongoQuery) || undefined;
+  }
+
+  public get(): MongoQuery[] {
+    return this.getRules().map((r) => r.conditions);
+  }
+
+  private getRules() {
+    return this.abilities.rulesFor(this.action, this.subject);
   }
 }
