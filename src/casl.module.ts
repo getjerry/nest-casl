@@ -27,7 +27,7 @@ export class CaslModule {
     Roles extends string = string,
     Subjects extends Subject = Subject,
     Actions extends string = DefaultActions,
-    User extends AuthorizableUser = AuthorizableUser<Roles>,
+    User extends AuthorizableUser<unknown, unknown> = AuthorizableUser<Roles>,
   >(options: OptionsForFeature<Roles, Subjects, Actions, User>): DynamicModule {
     return {
       module: CaslModule,
@@ -46,7 +46,7 @@ export class CaslModule {
 
   static forRoot<
     Roles extends string = string,
-    User extends AuthorizableUser = AuthorizableUser<Roles>,
+    User extends AuthorizableUser<unknown, unknown> = AuthorizableUser<Roles>,
     Request = AuthorizableRequest<User>,
   >(options: OptionsForRoot<Roles, User, Request>): DynamicModule {
     Reflect.defineMetadata(CASL_ROOT_OPTIONS, options, CaslConfig);
@@ -57,7 +57,7 @@ export class CaslModule {
 
   static forRootAsync<
     Roles extends string = string,
-    User extends AuthorizableUser = AuthorizableUser<Roles>,
+    User extends AuthorizableUser<unknown, unknown> = AuthorizableUser<Roles>,
     Request = AuthorizableRequest<User>,
   >(options: OptionsForRootAsync<Roles, User, Request>): DynamicModule {
     return {

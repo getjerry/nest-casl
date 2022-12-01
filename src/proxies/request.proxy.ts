@@ -8,7 +8,7 @@ import { NullSubjectHook } from '../factories/subject-hook.factory';
 import { NullUserHook } from '../factories/user-hook.factory';
 import { ConditionsProxy } from './conditions.proxy';
 
-export class RequestProxy<User extends AuthorizableUser = AuthorizableUser, Subject = AnyObject> {
+export class RequestProxy<User extends AuthorizableUser<unknown, unknown> = AuthorizableUser, Subject = AnyObject> {
   private readonly defaultCaslCache: CaslRequestCache<User, Subject> = {
     hooks: {
       subject: new NullSubjectHook(),
