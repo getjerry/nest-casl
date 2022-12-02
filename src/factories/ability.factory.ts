@@ -14,7 +14,7 @@ export class AbilityFactory<
   Roles extends string = string,
   Subjects extends Subject = Subject,
   Actions extends string = DefaultActions,
-  User extends AuthorizableUser<Roles, unknown> = AuthorizableUser<Roles>,
+  User extends AuthorizableUser<Roles, unknown> = AuthorizableUser<Roles, unknown>,
 > {
   constructor(
     @Inject(CASL_FEATURE_OPTIONS)
