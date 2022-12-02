@@ -9,7 +9,7 @@ import { AuthorizableRequest } from './request.interface';
 
 export interface OptionsForRoot<
   Roles extends string = string,
-  User extends AuthorizableUser = AuthorizableUser<Roles>,
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser<Roles>,
   Request = AuthorizableRequest<User>,
 > {
   superuserRole?: Roles;
@@ -21,14 +21,14 @@ export interface OptionsForFeature<
   Roles extends string = string,
   Subjects extends Subject = Subject,
   Actions extends string = DefaultActions,
-  User extends AuthorizableUser = AuthorizableUser<Roles>,
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser<Roles>,
 > {
   permissions: AnyPermissions<Roles, Subjects, Actions, User>;
 }
 
 export interface OptionsForRootAsync<
   Roles extends string = string,
-  User extends AuthorizableUser = AuthorizableUser<Roles>,
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser<Roles>,
   Request = AuthorizableRequest<User>,
 > extends Pick<ModuleMetadata, 'imports'> {
   useFactory: FactoryProvider<

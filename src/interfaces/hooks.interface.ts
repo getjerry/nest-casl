@@ -15,11 +15,14 @@ export type SubjectBeforeFilterTuple<Subject = AnyObject, Request = Authorizable
   (service: InstanceType<AnyClass>, request: Request) => Promise<Subject>,
 ];
 
-export interface UserBeforeFilterHook<User extends AuthorizableUser = AuthorizableUser, RequestUser = User> {
+export interface UserBeforeFilterHook<
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser,
+  RequestUser = User,
+> {
   run: (user: RequestUser) => Promise<User | undefined>;
 }
 
-export type UserBeforeFilterTuple<User extends AuthorizableUser = AuthorizableUser, RequestUser = User> = [
-  AnyClass,
-  (service: InstanceType<AnyClass>, user: RequestUser) => Promise<User>,
-];
+export type UserBeforeFilterTuple<
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser,
+  RequestUser = User,
+> = [AnyClass, (service: InstanceType<AnyClass>, user: RequestUser) => Promise<User>];

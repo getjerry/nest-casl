@@ -3,7 +3,10 @@ import { AnyObject } from '@casl/ability/dist/types/types';
 import { AuthorizableUser } from './authorizable-user.interface';
 import { CaslRequestCache } from './casl-request-cache.interface';
 
-export interface AuthorizableRequest<User extends AuthorizableUser = AuthorizableUser, Subject = AnyObject> {
+export interface AuthorizableRequest<
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser,
+  Subject = AnyObject,
+> {
   user?: User;
   currentUser?: User;
   casl: CaslRequestCache<User, Subject>;
@@ -11,6 +14,9 @@ export interface AuthorizableRequest<User extends AuthorizableUser = Authorizabl
   [key: string]: any;
 }
 
-export interface ContextWithAuthorizableRequest<User extends AuthorizableUser = AuthorizableUser, Subject = AnyObject> {
+export interface ContextWithAuthorizableRequest<
+  User extends AuthorizableUser<unknown, unknown> = AuthorizableUser,
+  Subject = AnyObject,
+> {
   req: AuthorizableRequest<User, Subject>;
 }

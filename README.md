@@ -424,13 +424,13 @@ class User implements AuthorizableUser<Roles, number> {
   roles: Array<Roles>;
 }
 
-class Request {
+interface CustomAuthorizableRequest {
   loggedInUser: User;
 }
 
 @Module({
   imports: [
-    CaslModule.forRoot<Roles, User, Request>({
+    CaslModule.forRoot<Roles, User, CustomAuthorizableRequest>({
       superuserRole: Roles.admin,
       getUserFromRequest(request) {
         return request.loggedInUser;
