@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { Ability, subject } from '@casl/ability';
+import { Ability, AnyAbility, subject } from '@casl/ability';
 import { AnyObject, Subject } from '@casl/ability/dist/types/types';
 
 import { AuthorizableRequest } from './interfaces/request.interface';
@@ -15,7 +15,15 @@ import { ConditionsProxy } from './proxies/conditions.proxy';
 export class AccessService {
   constructor(private abilityFactory: AbilityFactory) {}
 
-  public hasAbility(user: AuthorizableUser, action: string, subject: Subject): boolean {
+  public getAbility<User extends AuthorizableUser<string, unknown> = AuthorizableUser>(user: User): AnyAbility {
+    return this.abilityFactory.createForUser(user);
+  }
+
+  public hasAbility<User extends AuthorizableUser<string, unknown> = AuthorizableUser>(
+    user: User,
+    action: string,
+    subject: Subject,
+  ): boolean {
     // No user - no access
     if (!user) {
       return false;
@@ -37,7 +45,11 @@ export class AccessService {
     return userAbilities.can(action, subject);
   }
 
-  public assertAbility(user: AuthorizableUser, action: string, subject: Subject): void {
+  public assertAbility<User extends AuthorizableUser<string, unknown> = AuthorizableUser>(
+    user: User,
+    action: string,
+    subject: Subject,
+  ): void {
     if (!this.hasAbility(user, action, subject)) {
       const userAbilities = this.abilityFactory.createForUser(user, Ability);
       const relatedRules = userAbilities.rulesFor(action, typeof subject === 'object' ? subject.constructor : subject);

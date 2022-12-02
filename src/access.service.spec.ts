@@ -49,6 +49,19 @@ describe('AccessService', () => {
     accessService = moduleRef.get(AccessService);
   });
 
+  describe('getAbility()', () => {
+    beforeEach(async () => {
+      user = { id: 'userId', roles: [Roles.operator] };
+    });
+
+    it('returns user abilities', async () => {
+      expect(accessService.getAbility(user).rules).toEqual([
+        { action: 'read', subject: Post },
+        { action: 'manage', subject: Post },
+      ]);
+    });
+  });
+
   describe('hasAbility()', () => {
     beforeEach(async () => {
       user = { id: 'userId', roles: [Roles.operator] };
