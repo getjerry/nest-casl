@@ -2,7 +2,7 @@ name: Publish
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
@@ -18,10 +18,10 @@ jobs:
       - name: install nodejs
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: '14'
 
       - name: install dependencies
-        run: yarn install --production false --frozen-lockfile
+        run: yarn install --production false --frozen-lockfile --ignore-engines
 
       - name: test
         run: yarn run test:ci
