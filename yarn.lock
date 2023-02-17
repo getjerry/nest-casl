@@ -2135,9 +2135,9 @@
     eslint-visitor-keys "^3.3.0"
 
 "@ucast/core@^1.0.0", "@ucast/core@^1.10.1", "@ucast/core@^1.4.1", "@ucast/core@^1.6.1":
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/@ucast/core/-/core-1.10.1.tgz#03a77a7804bcb5002a5cad3681e86cd1897e2e1f"
-  integrity sha512-sXKbvQiagjFh2JCpaHUa64P4UdJbOxYeC5xiZFn8y6iYdb0WkismduE+RmiJrIjw/eLDYmIEXiQeIYYowmkcAw==
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@ucast/core/-/core-1.10.2.tgz#30b6b893479823265368e528b61b042f752f2c92"
+  integrity sha512-ons5CwXZ/51wrUPfoduC+cO7AS1/wRb0ybpQJ9RrssossDxVy4t49QxWoWgfBDvVKsz9VXzBk9z0wqTdZ+Cq8g==
 
 "@ucast/js@^3.0.0":
   version "3.0.1"
