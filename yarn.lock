@@ -2146,9 +2146,9 @@
     "@ucast/core" "^1.0.0"
 
 "@ucast/mongo2js@^1.3.0", "@ucast/mongo2js@^1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@ucast/mongo2js/-/mongo2js-1.3.3.tgz#a683a59cea22887a72e4302f3826e41ccf51dbbe"
-  integrity sha512-sBPtMUYg+hRnYeVYKL+ATm8FaRPdlU9PijMhGYKgsPGjV9J4Ks41ytIjGayvKUnBOEhiCaKUUnY4qPeifdqATw==
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@ucast/mongo2js/-/mongo2js-1.3.4.tgz#579f9e5eb074cba54640d5c70c71c500580f3af3"
+  integrity sha512-ahazOr1HtelA5AC1KZ9x0UwPMqqimvfmtSm/PRRSeKKeE5G2SCqTgwiNzO7i9jS8zA3dzXpKVPpXMkcYLnyItA==
   dependencies:
     "@ucast/core" "^1.6.1"
     "@ucast/js" "^3.0.0"
