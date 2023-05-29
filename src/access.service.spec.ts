@@ -21,8 +21,9 @@ const permissions: Permissions<Roles, Post> = {
   everyone({ can }) {
     can(Actions.read, Post);
   },
-  customer({ user, can }) {
+  customer({ user, can, cannot }) {
     can(Actions.update, Post, { userId: user.id });
+    cannot(Actions.update, Post, ['userId']);
   },
   operator({ can }) {
     can(Actions.manage, Post);
@@ -76,8 +77,19 @@ describe('AccessService', () => {
       expect(accessService.hasAbility(user, Actions.delete, Post)).toBeFalsy();
     });
 
+    it('allows access to update not restricted field for customer', async () => {
+      user = { id: 'userId', roles: [Roles.customer] };
+      expect(accessService.hasAbility(user, Actions.update, Post, 'title')).toBeTruthy();
+    });
+
+    it('denies access to update restricted field for customer', async () => {
+      user = { id: 'userId', roles: [Roles.customer] };
+      expect(accessService.hasAbility(user, Actions.update, Post, 'userId')).toBeFalsy();
+    });
+
     it('can check ability', async () => {
       expect(accessService.hasAbility(user, Actions.delete, Post)).toBeTruthy();
+      expect(accessService.hasAbility(user, Actions.update, Post, 'userId')).toBeTruthy();
     });
 
     it('deny access without user', async () => {
@@ -120,7 +132,15 @@ describe('AccessService', () => {
 
     it('do not throw for ability with conditions and class subject', async () => {
       user = { id: 'otherUserId', roles: [Roles.customer] };
-      expect(() => accessService.assertAbility(user, Actions.update, Post)).not.toThrowError();
+      expect(() => accessService.assertAbility(user, Actions.update, Post))
+    });
+
+    it('throw NotFoundException for ability with restricted field', async () => {
+      expect(() => accessService.assertAbility(user, Actions.update, Post, 'userId')).toThrowError(NotFoundException);
+    });
+
+    it('do not throw for ability with not restricted field', async () => {
+      expect(() => accessService.assertAbility(user, Actions.update, Post, 'title')).not.toThrowError();
     });
   });
 

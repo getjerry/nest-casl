@@ -23,6 +23,7 @@ export class AccessService {
     user: User,
     action: string,
     subject: Subject,
+    field?: string,
   ): boolean {
     // No user - no access
     if (!user) {
@@ -42,15 +43,16 @@ export class AccessService {
       return true;
     }
 
-    return userAbilities.can(action, subject);
+    return userAbilities.can(action, subject, field);
   }
 
   public assertAbility<User extends AuthorizableUser<string, unknown> = AuthorizableUser>(
     user: User,
     action: string,
     subject: Subject,
+    field?: string,
   ): void {
-    if (!this.hasAbility(user, action, subject)) {
+    if (!this.hasAbility(user, action, subject, field)) {
       const userAbilities = this.abilityFactory.createForUser(user, Ability);
       const relatedRules = userAbilities.rulesFor(action, typeof subject === 'object' ? subject.constructor : subject);
       if (relatedRules.some((rule) => rule.conditions)) {
