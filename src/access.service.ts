@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Ability, AnyAbility, subject } from '@casl/ability';
 import { AnyObject, Subject } from '@casl/ability/dist/types/types';
+import dot from 'dot-object';
 
 import { AuthorizableRequest } from './interfaces/request.interface';
 import { AbilityFactory } from './factories/ability.factory';
@@ -112,8 +113,32 @@ export class AccessService {
       userAbilities = this.abilityFactory.createForUser(finalUser);
     }
 
-    // and match agains subject instance
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return userAbilities.can(ability.action, subject(ability.subject as any, subjectInstance));
+    const actualSubject = subject(ability.subject as any, subjectInstance);
+
+    const cannotActivateSomeField = this.isThereAnyFieldRestriction(
+      request.body,
+      ability.action,
+      actualSubject,
+      finalUser,
+    );
+
+    if (cannotActivateSomeField) return false;
+
+    // and match agains subject instance
+    return userAbilities.can(ability.action, actualSubject);
+  }
+
+  private isThereAnyFieldRestriction(
+    body: Record<string, string>,
+    action: string,
+    subject: AnyObject,
+    user?: AuthorizableUser<string, string>,
+  ) {
+    if (!user) return true;
+
+    const subjectFields = Object.keys(dot.dot(body));
+
+    return subjectFields.some((field) => !this.hasAbility(user, action, subject, field));
   }
 }

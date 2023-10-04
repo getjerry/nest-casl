@@ -44,7 +44,14 @@ describe('AccessService', () => {
       .spyOn(CaslConfig, 'getRootOptions')
       .mockImplementation(() => ({ superuserRole: Roles.admin, getUserFromRequest: () => undefined }));
     const moduleRef = await Test.createTestingModule({
-      providers: [AccessService, AbilityFactory, { provide: CASL_FEATURE_OPTIONS, useValue: { permissions } }],
+      providers: [
+        AccessService,
+        AbilityFactory,
+        {
+          provide: CASL_FEATURE_OPTIONS,
+          useValue: { permissions },
+        },
+      ],
     }).compile();
 
     accessService = moduleRef.get(AccessService);
@@ -132,7 +139,7 @@ describe('AccessService', () => {
 
     it('do not throw for ability with conditions and class subject', async () => {
       user = { id: 'otherUserId', roles: [Roles.customer] };
-      expect(() => accessService.assertAbility(user, Actions.update, Post))
+      expect(() => accessService.assertAbility(user, Actions.update, Post));
     });
 
     it('throw NotFoundException for ability with restricted field', async () => {
@@ -207,6 +214,7 @@ describe('AccessService', () => {
             user: new UserHook(),
           },
         },
+        body: {},
       };
 
       const abilityMetadata = {
@@ -216,6 +224,108 @@ describe('AccessService', () => {
       };
 
       expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeFalsy();
+    });
+
+    it('denies access for a subject with restricted field', async () => {
+      user = { id: 'userId', roles: [Roles.customer] };
+
+      class UserHook implements UserBeforeFilterHook<User> {
+        public async run() {
+          return user;
+        }
+      }
+
+      class PostHook implements SubjectBeforeFilterHook<Post> {
+        public async run() {
+          return { ...new Post(), userId: 'userId' };
+        }
+      }
+
+      const request: AuthorizableRequest = {
+        user,
+        casl: {
+          user,
+          hooks: {
+            subject: new PostHook(),
+            user: new UserHook(),
+          },
+        },
+        body: {
+          userId: 'userId',
+        },
+      };
+
+      const abilityMetadata = {
+        action: Actions.update,
+        subject: Post,
+        subjectHook: PostHook,
+      };
+
+      expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeFalsy();
+    });
+
+    it('allows access for a subject with non-restricted field', async () => {
+      const permissions: Permissions<Roles, Post> = {
+        everyone({ can }) {
+          can(Actions.read, Post);
+        },
+        customer({ user, can, cannot }) {
+          can(Actions.update, Post, { userId: user.id });
+          cannot(Actions.update, Post, ['title']);
+        },
+        operator({ can }) {
+          can(Actions.manage, Post);
+        },
+      };
+
+      const moduleRef = await Test.createTestingModule({
+        providers: [
+          AccessService,
+          AbilityFactory,
+          {
+            provide: CASL_FEATURE_OPTIONS,
+            useValue: { permissions },
+          },
+        ],
+      }).compile();
+
+      accessService = moduleRef.get(AccessService);
+
+      user = { id: 'userId', roles: [Roles.customer] };
+
+      class UserHook implements UserBeforeFilterHook<User> {
+        public async run() {
+          return user;
+        }
+      }
+
+      class PostHook implements SubjectBeforeFilterHook<Post> {
+        public async run() {
+          return { ...new Post(), description: '', userId: 'userId' };
+        }
+      }
+
+      const request: AuthorizableRequest = {
+        user,
+        casl: {
+          user,
+          hooks: {
+            subject: new PostHook(),
+            user: new UserHook(),
+          },
+        },
+        body: {
+          description: 'test',
+        },
+      };
+
+      const abilityMetadata = {
+        action: Actions.update,
+        subject: Post,
+        subjectHook: PostHook,
+      };
+
+      expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeTruthy();
     });
   });
 });
