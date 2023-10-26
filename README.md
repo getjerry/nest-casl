@@ -111,7 +111,7 @@ export const permissions: Permissions<Roles, Subjects, Actions> = {
 // post.module.ts
 
 import { Module } from '@nestjs/common';
-import { CaslModule } from 'nest-cast';
+import { CaslModule } from 'nest-casl';
 
 import { permissions } from './post.permissions';
 
