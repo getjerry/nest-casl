@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Ability, AnyAbility, subject } from '@casl/ability';
 import { AnyObject, Subject } from '@casl/ability/dist/types/types';
-import dot from 'dot-object';
+import { flatten } from 'flat';
 
 import { AuthorizableRequest } from './interfaces/request.interface';
 import { AbilityFactory } from './factories/ability.factory';
@@ -137,7 +137,7 @@ export class AccessService {
   ) {
     if (!user) return true;
 
-    const subjectFields = Object.keys(dot.dot(body));
+    const subjectFields = Object.keys(flatten(body));
 
     return subjectFields.some((field) => !this.hasAbility(user, action, subject, field));
   }
