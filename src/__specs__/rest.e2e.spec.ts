@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -14,16 +15,16 @@ import { Post } from './app/post/dtos/post.dto';
 const getUser = (role: Roles, id = 'userId') => ({ id, roles: [role] });
 
 const getPostService = (post: Post) => ({
-  findAll: jest.fn().mockImplementation(async () => [post]),
-  findById: jest.fn().mockImplementation(async () => post),
-  create: jest.fn().mockImplementation(async () => post),
-  update: jest.fn().mockImplementation(async () => post),
-  addUser: jest.fn().mockImplementation(async () => post),
-  delete: jest.fn().mockImplementation(async () => post),
+  findAll: vi.fn().mockImplementation(async () => [post]),
+  findById: vi.fn().mockImplementation(async () => post),
+  create: vi.fn().mockImplementation(async () => post),
+  update: vi.fn().mockImplementation(async () => post),
+  addUser: vi.fn().mockImplementation(async () => post),
+  delete: vi.fn().mockImplementation(async () => post),
 });
 
 const getUserService = (user: User) => ({
-  findById: jest.fn(async () => user),
+  findById: vi.fn(async () => user),
 });
 
 describe('REST controller with CASL authorization', () => {

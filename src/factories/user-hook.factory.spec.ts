@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { ModuleRef } from '@nestjs/core';
 import { TupleUserHook, userHookFactory } from './user-hook.factory';
 
@@ -5,7 +6,7 @@ class ServiceClass {}
 
 describe('userHookFactory', () => {
   const moduleRef = {
-    get: jest.fn(),
+    get: vi.fn(),
   } as unknown as ModuleRef;
 
   it('resolves to instance of TupleUserHook with tuple hook passed', async () => {
@@ -13,7 +14,7 @@ describe('userHookFactory', () => {
   });
 
   it('TupleUserHook runs passed function', async () => {
-    const tupleFunc = jest.fn().mockImplementation(async (user) => user);
+    const tupleFunc = vi.fn().mockImplementation(async (user) => user);
     const tupleUserHook = await userHookFactory(moduleRef, [ServiceClass, tupleFunc]);
     tupleUserHook.run({ id: 'id', roles: [] });
     expect(tupleFunc).toBeCalled();

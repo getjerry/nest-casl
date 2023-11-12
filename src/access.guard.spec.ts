@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { Reflector } from '@nestjs/core';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
@@ -13,13 +14,13 @@ describe('AccessGuard', () => {
   let accessService: AccessService;
 
   beforeEach(async () => {
-    CaslConfig.getRootOptions = jest.fn().mockImplementation(() => ({}));
+    CaslConfig.getRootOptions = vi.fn().mockImplementation(() => ({}));
 
     const moduleRef = await Test.createTestingModule({
       providers: [
         AccessGuard,
-        { provide: Reflector, useValue: { get: jest.fn().mockImplementation(() => abilityMetadata) } },
-        { provide: AccessService, useValue: { canActivateAbility: jest.fn() } },
+        { provide: Reflector, useValue: { get: vi.fn().mockImplementation(() => abilityMetadata) } },
+        { provide: AccessService, useValue: { canActivateAbility: vi.fn() } },
       ],
     }).compile();
 
