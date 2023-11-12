@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -18,16 +19,16 @@ import { UserHook } from './app/user/user.hook';
 const getUser = (role: Roles, id = 'userId') => ({ id, roles: [role] });
 
 const getPostService = (post: Post) => ({
-  findAll: jest.fn().mockImplementation(async () => [post]),
-  findById: jest.fn().mockImplementation(async () => post),
-  create: jest.fn().mockImplementation(async () => post),
-  update: jest.fn().mockImplementation(async () => post),
-  addUser: jest.fn().mockImplementation(async () => post),
-  delete: jest.fn().mockImplementation(async () => post),
+  findAll: vi.fn().mockImplementation(async () => [post]),
+  findById: vi.fn().mockImplementation(async () => post),
+  create: vi.fn().mockImplementation(async () => post),
+  update: vi.fn().mockImplementation(async () => post),
+  addUser: vi.fn().mockImplementation(async () => post),
+  delete: vi.fn().mockImplementation(async () => post),
 });
 
 const getUserService = (user: User) => ({
-  findById: jest.fn(async () => user),
+  findById: vi.fn(async () => user),
 });
 
 const createCaslTestingModule = async (
@@ -403,7 +404,7 @@ describe('Graphql resolver with authorization', () => {
     });
 
     it(`should not be called for ability without subject hook`, async () => {
-      postService.update = jest.fn();
+      postService.update = vi.fn();
       await graphql(app).send(Mutations.UPDATE_POST_NO_HOOK).expect(200);
       expect(userService.findById).not.toBeCalled();
     });
@@ -458,14 +459,14 @@ describe('Graphql resolver with authorization', () => {
     });
 
     it(`should get user data through user proxy`, async () => {
-      userService.findById = jest.fn().mockImplementation(() => ({ name: 'john' }));
+      userService.findById = vi.fn().mockImplementation(() => ({ name: 'john' }));
       await graphql(app).send(Mutations.UPDATE_POST_USER_PARAM).expect(200);
       expect(postService.addUser).toBeCalledWith({ ...getUser(Roles.customer), name: 'john' });
       expect(userService.findById).toBeCalledTimes(1);
     });
 
     it(`should get user data through user proxy without ability`, async () => {
-      userService.findById = jest.fn().mockImplementation(() => ({ name: 'john' }));
+      userService.findById = vi.fn().mockImplementation(() => ({ name: 'john' }));
       await graphql(app).send(Mutations.UPDATE_POST_USER_PARAM_NO_ABILITY).expect(200);
       expect(postService.addUser).toBeCalledWith({ ...getUser(Roles.customer), name: 'john' });
       expect(userService.findById).toBeCalledTimes(1);

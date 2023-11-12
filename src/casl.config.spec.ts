@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { OptionsForRoot } from './interfaces/options.interface';
 import { CASL_ROOT_OPTIONS } from './casl.constants';
 import { CaslConfig } from './casl.config';
@@ -9,7 +10,7 @@ describe('CaslConfig', () => {
   let rootOptions: OptionsForRoot = { getUserFromRequest: () => user };
 
   beforeEach(async () => {
-    Reflect.getMetadata = jest.fn().mockImplementation(() => rootOptions);
+    Reflect.getMetadata = vi.fn().mockImplementation(() => rootOptions);
   });
 
   it('should get root options from CaslConfig metadata', async () => {
@@ -18,7 +19,7 @@ describe('CaslConfig', () => {
   });
 
   it('should work with undefined metadata', async () => {
-    Reflect.getMetadata = jest.fn().mockImplementation(() => undefined);
+    Reflect.getMetadata = vi.fn().mockImplementation(() => undefined);
     expect(CaslConfig.getRootOptions()).toBeTruthy();
   });
 

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 
@@ -35,14 +36,15 @@ describe('AccessService', () => {
   let user: User;
 
   afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetAllMocks();
+    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   beforeEach(async () => {
-    jest
-      .spyOn(CaslConfig, 'getRootOptions')
-      .mockImplementation(() => ({ superuserRole: Roles.admin, getUserFromRequest: () => undefined }));
+    vi.spyOn(CaslConfig, 'getRootOptions').mockImplementation(() => ({
+      superuserRole: Roles.admin,
+      getUserFromRequest: () => undefined,
+    }));
     const moduleRef = await Test.createTestingModule({
       providers: [
         AccessService,
@@ -160,9 +162,10 @@ describe('AccessService', () => {
     };
 
     beforeEach(() => {
-      jest
-        .spyOn(CaslConfig, 'getRootOptions')
-        .mockImplementation(() => ({ superuserRole: Roles.admin, getUserFromRequest: () => user }));
+      vi.spyOn(CaslConfig, 'getRootOptions').mockImplementation(() => ({
+        superuserRole: Roles.admin,
+        getUserFromRequest: () => user,
+      }));
     });
 
     it('deny access without user', async () => {

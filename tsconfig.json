@@ -15,12 +15,9 @@
     "strictPropertyInitialization": false,
     "target": "es2019",
     "baseUrl": "./src",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vitest/globals"]
   },
-  "include": [
-    "src/**/*",
-    "__specs__/**/*",
-    "__mocks__/**/*"
-  ],
+  "include": ["src/**/*", "__specs__/**/*", "__mocks__/**/*"],
   "exclude": ["node_modules", "dist"]
 }
