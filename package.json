@@ -27,8 +27,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --cache .",
     "test": "vitest",
-    "test:ci": "vitest --threads=false",
-    "test:watch": "vitest --watch", 
+    "test:ci": "vitest --poolOptions.threads.singleThread",
+    "test:watch": "vitest --watch",
     "test:cov": "vitest --coverage"
   },
   "engines": {
