@@ -43,7 +43,7 @@
     "@ucast/mongo": "^2.4.2",
     "@ucast/mongo2js": "^1.3.3",
     "@ucast/sql": "^1.0.0-alpha.1",
-    "flat": "5.0.2"
+    "flat": "6.0.1"
   },
   "peerDependencies": {
     "@nestjs/apollo": ">= 7.0.0",
