@@ -10,6 +10,7 @@ export const permissions: Permissions<Roles, Subjects, Actions> = {
     can(Actions.read, Post);
   },
   customer({ user, can }) {
+    can(Actions.read, Post, { userId: user.id });
     can(Actions.create, Post);
     can(Actions.update, Post, { userId: user.id });
   },

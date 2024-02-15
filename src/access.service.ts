@@ -137,7 +137,7 @@ export class AccessService {
   ) {
     if (!user) return true;
 
-    const subjectFields = Object.keys(flatten(body));
+    const subjectFields = Object.keys(flatten(body || {}));
 
     return subjectFields.some((field) => !this.hasAbility(user, action, subject, field));
   }

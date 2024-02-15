@@ -15,6 +15,13 @@ export class PostController {
     return await this.postService.findAll();
   }
 
+  @Get(':id')
+  @UseGuards(AccessGuard)
+  @UseAbility(Actions.read, Post, PostHook)
+  async post(@Param('id') id: string) {
+    return await this.postService.findById(id);
+  }
+
   @Put(':id')
   @UseGuards(AccessGuard)
   @UseAbility(Actions.update, Post, PostHook)
