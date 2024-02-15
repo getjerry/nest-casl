@@ -18,7 +18,7 @@ jobs:
       - name: install nodejs
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: install dependencies
         run: yarn install --production false --frozen-lockfile --ignore-engines
