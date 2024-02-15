@@ -17,6 +17,7 @@ import { SubjectBeforeFilterHook, UserBeforeFilterHook } from 'interfaces/hooks.
 import { AbilityMetadata } from 'interfaces/ability-metadata.interface';
 import { User } from '__specs__/app/user/dtos/user.dto';
 import { AuthorizableRequest } from './interfaces/request.interface';
+import { AnyClass } from '@casl/ability/dist/types/types';
 
 const permissions: Permissions<Roles, Post> = {
   everyone({ can }) {
@@ -229,8 +230,30 @@ describe('AccessService', () => {
       expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeFalsy();
     });
 
-    it('denies access for a subject with restricted field', async () => {
+    describe('field restriction', () => {
       user = { id: 'userId', roles: [Roles.customer] };
+
+      function postHookFactory(post: Post): typeof PostHook {
+        return class PostHook implements SubjectBeforeFilterHook<Post> {
+          public async run() {
+            return post;
+          }
+        };
+      }
+
+      function requestFactory(postHook: AnyClass, post?: Partial<Post>): AuthorizableRequest {
+        return {
+          user,
+          casl: {
+            user,
+            hooks: {
+              subject: new postHook(),
+              user: new UserHook(),
+            },
+          },
+          body: post,
+        };
+      }
 
       class UserHook implements UserBeforeFilterHook<User> {
         public async run() {
@@ -238,97 +261,85 @@ describe('AccessService', () => {
         }
       }
 
-      class PostHook implements SubjectBeforeFilterHook<Post> {
-        public async run() {
-          return { ...new Post(), userId: 'userId' };
-        }
-      }
-
-      const request: AuthorizableRequest = {
-        user,
-        casl: {
-          user,
-          hooks: {
-            subject: new PostHook(),
-            user: new UserHook(),
-          },
-        },
-        body: {
+      it('denies access for a subject with restricted field', async () => {
+        const PostHook = postHookFactory({ ...new Post(), description: '', userId: 'userId' });
+        const request = requestFactory(PostHook, {
           userId: 'userId',
-        },
-      };
+        });
 
-      const abilityMetadata = {
-        action: Actions.update,
-        subject: Post,
-        subjectHook: PostHook,
-      };
+        const abilityMetadata = {
+          action: Actions.update,
+          subject: Post,
+          subjectHook: PostHook,
+        };
 
-      expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeFalsy();
-    });
+        expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeFalsy();
+      });
 
-    it('allows access for a subject with non-restricted field', async () => {
-      const permissions: Permissions<Roles, Post> = {
-        everyone({ can }) {
-          can(Actions.read, Post);
-        },
-        customer({ user, can, cannot }) {
-          can(Actions.update, Post, { userId: user.id });
-          cannot(Actions.update, Post, ['title']);
-        },
-        operator({ can }) {
-          can(Actions.manage, Post);
-        },
-      };
+      it('allow access for a subject with restricted field when request body is undefined', async () => {
+        const PostHook = postHookFactory({ ...new Post(), description: '', userId: 'userId' });
+        const request = requestFactory(PostHook, undefined);
 
-      const moduleRef = await Test.createTestingModule({
-        providers: [
-          AccessService,
-          AbilityFactory,
-          {
-            provide: CASL_FEATURE_OPTIONS,
-            useValue: { permissions },
+        const abilityMetadata = {
+          action: Actions.update,
+          subject: Post,
+          subjectHook: PostHook,
+        };
+
+        expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeTruthy();
+      });
+
+      it('allows access for a subject with non-restricted field', async () => {
+        const PostHook = postHookFactory({ ...new Post(), userId: 'userId' });
+
+        const permissions: Permissions<Roles, Post> = {
+          everyone({ can }) {
+            can(Actions.read, Post);
           },
-        ],
-      }).compile();
+          customer({ user, can, cannot }) {
+            can(Actions.update, Post, { userId: user.id });
+            cannot(Actions.update, Post, ['title']);
+          },
+          operator({ can }) {
+            can(Actions.manage, Post);
+          },
+        };
 
-      accessService = moduleRef.get(AccessService);
+        const moduleRef = await Test.createTestingModule({
+          providers: [
+            AccessService,
+            AbilityFactory,
+            {
+              provide: CASL_FEATURE_OPTIONS,
+              useValue: { permissions },
+            },
+          ],
+        }).compile();
 
-      user = { id: 'userId', roles: [Roles.customer] };
+        accessService = moduleRef.get(AccessService);
 
-      class UserHook implements UserBeforeFilterHook<User> {
-        public async run() {
-          return user;
-        }
-      }
-
-      class PostHook implements SubjectBeforeFilterHook<Post> {
-        public async run() {
-          return { ...new Post(), description: '', userId: 'userId' };
-        }
-      }
-
-      const request: AuthorizableRequest = {
-        user,
-        casl: {
+        const request: AuthorizableRequest = {
           user,
-          hooks: {
-            subject: new PostHook(),
-            user: new UserHook(),
+          casl: {
+            user,
+            hooks: {
+              subject: new PostHook(),
+              user: new UserHook(),
+            },
           },
-        },
-        body: {
-          description: 'test',
-        },
-      };
+          body: {
+            description: 'test',
+          },
+        };
 
-      const abilityMetadata = {
-        action: Actions.update,
-        subject: Post,
-        subjectHook: PostHook,
-      };
+        const abilityMetadata = {
+          action: Actions.update,
+          subject: Post,
+          subjectHook: PostHook,
+        };
 
-      expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeTruthy();
+        expect(await accessService.canActivateAbility(request, abilityMetadata)).toBeTruthy();
+      });
     });
   });
 });
