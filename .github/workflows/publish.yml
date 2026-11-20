@@ -5,6 +5,12 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: write # create release tags and GitHub releases
+  issues: write # comment on released issues / open failure issues
+  pull-requests: write # comment on released PRs
+  id-token: write # OIDC token for npm trusted publishing
+
 jobs:
   publish:
     name: publish
@@ -18,7 +24,7 @@ jobs:
       - name: install nodejs
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: install dependencies
         run: yarn install --production false --frozen-lockfile --ignore-engines
@@ -29,8 +35,9 @@ jobs:
       - name: build
         run: yarn run build
 
+      # Publishes to npm via trusted publishing (OIDC), no NPM_TOKEN needed.
+      # The trusted publisher on npmjs.com must point at this workflow file (publish.yml).
       - name: semantic release
         run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
