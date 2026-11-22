@@ -1,4 +1,4 @@
-import { Ability, AnyAbility, AbilityTuple, AbilityBuilder, Subject } from '@casl/ability';
+import { AbilityBuilder, AbilityTuple, MongoAbility, Subject } from '@casl/ability';
 import { AnyClass } from '@casl/ability/dist/types/types';
 import { DefaultActions } from '../actions.enum';
 import { AuthorizableUser } from './authorizable-user.interface';
@@ -7,11 +7,11 @@ export class UserAbilityBuilder<
   Subjects extends Subject = Subject,
   Actions extends string = DefaultActions,
   User extends AuthorizableUser<unknown, unknown> = AuthorizableUser,
-> extends AbilityBuilder<AnyAbility> {
+> extends AbilityBuilder<MongoAbility<AbilityTuple<Actions, Subjects>>> {
   constructor(
     public user: User,
     public permissions: AnyPermissions<string, Subjects, Actions, User>,
-    AbilityType: AnyClass<Ability<AbilityTuple<Actions, Subjects>>>,
+    AbilityType: AnyClass<MongoAbility<AbilityTuple<Actions, Subjects>>>,
   ) {
     super(AbilityType);
   }
