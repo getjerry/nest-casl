@@ -2,8 +2,10 @@ export { CaslModule } from './casl.module';
 
 export { AuthorizableUser } from './interfaces/authorizable-user.interface';
 
-export { AuthorizableRequest } from './interfaces/request.interface';
+export { AuthorizableRequest, ContextWithAuthorizableRequest } from './interfaces/request.interface';
 export { AuthorizableRequest as Request } from './interfaces/request.interface';
+
+export { CaslRequestCache } from './interfaces/casl-request-cache.interface';
 
 export { CaslConditions, CaslSubject, CaslUser, UseAbility } from './decorators';
 
